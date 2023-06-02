@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/components/<%= entity.name %>/<%= h.changeCase.pascal(entity.name) %>SearchForm.tsx
+to: <%= rootDirectory %>/<%= project.name %>/components/<%= struct.name %>/<%= h.changeCase.pascal(struct.name) %>SearchForm.tsx
 ---
 import * as React from 'react'
 import {useCallback, useEffect, useState} from 'react'
@@ -21,8 +21,8 @@ import {formatISO} from 'date-fns'
 
 <%_ const searchConditions = [] -%>
 <%_ let importDateTime = false -%>
-<%_ if (entity.listProperties.listExtraProperties && entity.listProperties.listExtraProperties.length > 0) { -%>
-<%_ entity.listProperties.listExtraProperties.forEach(function (property, key) { -%>
+<%_ if (struct.listProperties.listExtraProperties && struct.listProperties.listExtraProperties.length > 0) { -%>
+<%_ struct.listProperties.listExtraProperties.forEach(function (property, key) { -%>
   <%_ if ((property.type === 'string' || property.type === 'array-string' || property.type === 'time' || property.type === 'array-time') && property.searchType === 1) { -%>
     <%_ searchConditions.push({name: property.name, type: 'string', range: false}) -%>
   <%_ } -%>
@@ -44,7 +44,7 @@ import {formatISO} from 'date-fns'
 <%_ }) -%>
 <%_ } -%>
 <%_ if (searchConditions.length > 0) { -%>
-export interface <%= h.changeCase.pascal(entity.name) %>SearchCondition extends BaseSearchCondition {
+export interface <%= h.changeCase.pascal(struct.name) %>SearchCondition extends BaseSearchCondition {
   <%_ searchConditions.forEach(function(property) { -%>
     <%_ if (property.type === 'string' && !property.range) { -%>
   <%= property.name %>: SingleSearchCondition<<%= property.type %>>
@@ -68,7 +68,7 @@ export interface <%= h.changeCase.pascal(entity.name) %>SearchCondition extends 
   <%_ }) -%>
 }
 
-export const INITIAL_<%= h.changeCase.constant(entity.name) %>_SEARCH_CONDITION: <%= h.changeCase.pascal(entity.name) %>SearchCondition = {
+export const INITIAL_<%= h.changeCase.constant(struct.name) %>_SEARCH_CONDITION: <%= h.changeCase.pascal(struct.name) %>SearchCondition = {
   <%_ searchConditions.forEach(function(property) { -%>
     <%_ if (property.type === 'string' && !property.range) { -%>
   <%= property.name %>: {enabled: false, value: ''},
@@ -92,21 +92,21 @@ export const INITIAL_<%= h.changeCase.constant(entity.name) %>_SEARCH_CONDITION:
   <%_ }) -%>
 }
 <%_ } else { -%>
-export interface <%= h.changeCase.pascal(entity.name) %>SearchCondition {
+export interface <%= h.changeCase.pascal(struct.name) %>SearchCondition {
 }
 
-export const INITIAL_<%= h.changeCase.constant(entity.name) %>_SEARCH_CONDITION: <%= h.changeCase.pascal(entity.name) %>SearchCondition = {}
+export const INITIAL_<%= h.changeCase.constant(struct.name) %>_SEARCH_CONDITION: <%= h.changeCase.pascal(struct.name) %>SearchCondition = {}
 <%_ } -%>
 
-export interface <%= h.changeCase.pascal(entity.name) %>SearchFormProps {
+export interface <%= h.changeCase.pascal(struct.name) %>SearchFormProps {
   open: boolean,
   setOpen: (open: boolean) => void,
-  currentSearchCondition: <%= h.changeCase.pascal(entity.name) %>SearchCondition,
-  onSearch: (searchCondition: <%= h.changeCase.pascal(entity.name) %>SearchCondition) => void
+  currentSearchCondition: <%= h.changeCase.pascal(struct.name) %>SearchCondition,
+  onSearch: (searchCondition: <%= h.changeCase.pascal(struct.name) %>SearchCondition) => void
 }
 
-const <%= h.changeCase.pascal(entity.name) %>SearchForm = ({open, setOpen, currentSearchCondition, onSearch}: <%= h.changeCase.pascal(entity.name) %>SearchFormProps) => {
-  const [searchCondition, setSearchCondition] = useState(cloneDeep(INITIAL_<%= h.changeCase.constant(entity.name) %>_SEARCH_CONDITION))
+const <%= h.changeCase.pascal(struct.name) %>SearchForm = ({open, setOpen, currentSearchCondition, onSearch}: <%= h.changeCase.pascal(struct.name) %>SearchFormProps) => {
+  const [searchCondition, setSearchCondition] = useState(cloneDeep(INITIAL_<%= h.changeCase.constant(struct.name) %>_SEARCH_CONDITION))
 
   useEffect(() => {
     setSearchCondition(cloneDeep(currentSearchCondition))
@@ -122,11 +122,11 @@ const <%= h.changeCase.pascal(entity.name) %>SearchForm = ({open, setOpen, curre
   }, [onSearch, searchCondition, close])
 
   const clear = useCallback(() => {
-    onSearch(cloneDeep(INITIAL_<%= h.changeCase.constant(entity.name) %>_SEARCH_CONDITION))
+    onSearch(cloneDeep(INITIAL_<%= h.changeCase.constant(struct.name) %>_SEARCH_CONDITION))
     close()
   }, [onSearch, close])
 
-  const setSingleSearchCondition = useCallback(<T extends keyof <%= h.changeCase.pascal(entity.name) %>SearchCondition, >(key: T, value: <%= h.changeCase.pascal(entity.name) %>SearchCondition[T]['value']) => {
+  const setSingleSearchCondition = useCallback(<T extends keyof <%= h.changeCase.pascal(struct.name) %>SearchCondition, >(key: T, value: <%= h.changeCase.pascal(struct.name) %>SearchCondition[T]['value']) => {
     setSearchCondition(searchCondition => ({
       ...searchCondition,
       [key] : {
@@ -136,7 +136,7 @@ const <%= h.changeCase.pascal(entity.name) %>SearchForm = ({open, setOpen, curre
     }))
   }, [])
 
-  const toggleEnabled = useCallback((key: keyof <%= h.changeCase.pascal(entity.name) %>SearchCondition) => {
+  const toggleEnabled = useCallback((key: keyof <%= h.changeCase.pascal(struct.name) %>SearchCondition) => {
     setSearchCondition(searchCondition => ({
       ...searchCondition,
       [key]: {
@@ -148,11 +148,11 @@ const <%= h.changeCase.pascal(entity.name) %>SearchForm = ({open, setOpen, curre
 
   return (
     <Dialog open={open} onClose={close}>
-      <DialogTitle><%= entity.label || h.changeCase.constant(entity.name) %>検索</DialogTitle>
+      <DialogTitle><%= struct.label || h.changeCase.constant(struct.name) %>検索</DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
-        <%_ if (entity.listProperties.listExtraProperties) { -%>
-        <%_ entity.listProperties.listExtraProperties.forEach(function (property, key) { -%>
+        <%_ if (struct.listProperties.listExtraProperties) { -%>
+        <%_ struct.listProperties.listExtraProperties.forEach(function (property, key) { -%>
           <%_ if ((property.type === 'string' || property.type === 'array-string' || property.type === 'textarea' || property.type === 'array-textarea') && property.searchType === 1) { -%>
           <Grid item xs={2}>
             <Switch
@@ -309,4 +309,4 @@ const <%= h.changeCase.pascal(entity.name) %>SearchForm = ({open, setOpen, curre
   )
 }
 
-export default <%= h.changeCase.pascal(entity.name) %>SearchForm
+export default <%= h.changeCase.pascal(struct.name) %>SearchForm

@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/pages/_app.tsx
+to: <%= rootDirectory %>/<%= project.name %>/pages/_app.tsx
 force: true
 ---
 import * as React from 'react'
@@ -30,7 +30,7 @@ import Link from '@/components/Link'
 import {AppDialog} from '@/components/modal/AppDialog'
 import {AppLoading} from '@/components/modal/AppLoading'
 import {AppSnackbar} from '@/components/modal/AppSnackbar'
-<%_ if (entity.plugins.includes('auth')) { -%>
+<%_ if (struct.plugins.includes('auth')) { -%>
 import useAuth from "@/components/common/UseAuth"
 import LogoutIcon from '@mui/icons-material/Logout'
 import {getAuth} from "firebase/auth"
@@ -82,7 +82,7 @@ export default function MyApp({Component, pageProps, router, emotionCache = clie
   }, [])
 
   const AppHeader = () => {
-<%_ if (entity.plugins.includes('auth')) { -%>
+<%_ if (struct.plugins.includes('auth')) { -%>
     const {auth, setAuth, isAuthed} = useAuth();
     const fbAuth = getAuth(app)
 
@@ -115,7 +115,7 @@ export default function MyApp({Component, pageProps, router, emotionCache = clie
              }}>{currentPageTitle}</Typography>
            )}
            <Box sx={{ flexGrow: 1 }} />
-<%_ if (entity.plugins.includes('auth')) { -%>
+<%_ if (struct.plugins.includes('auth')) { -%>
            <Stack spacing={1} alignItems="center" direction="row">
              <Typography variant="subtitle2"
                          sx={{color: '#FFFFFF'}}>{auth.user?.displayName}</Typography>
@@ -150,7 +150,7 @@ export default function MyApp({Component, pageProps, router, emotionCache = clie
      </>
   )}
 
-<%_ if (entity.plugins.includes('auth')) { -%>
+<%_ if (struct.plugins.includes('auth')) { -%>
   const Auth = ({ children }: Props) => {
     const {setAuth, isAuthed} = useAuth();
 
@@ -179,7 +179,7 @@ export default function MyApp({Component, pageProps, router, emotionCache = clie
       <CacheProvider value={emotionCache}>
         <ThemeProvider theme={theme}>
           <CssBaseline/>
-<%_ if (entity.plugins.includes('auth')) { -%>
+<%_ if (struct.plugins.includes('auth')) { -%>
           <Auth>
             <Box sx={{display: 'flex'}}>
               <AppHeader/>

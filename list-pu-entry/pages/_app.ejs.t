@@ -1,11 +1,11 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/pages/_app.tsx
+to: <%= rootDirectory %>/<%= project.name %>/pages/_app.tsx
 inject: true
-skip_if: // メニュー <%= entity.name %>
+skip_if: // メニュー <%= struct.name %>
 after: // メニュー
 ---
-  // メニュー <%= entity.name %>
+  // メニュー <%= struct.name %>
   {
-    title: '<%= entity.screenLabel || h.changeCase.pascal(entity.name) %>',
-    to: `/<%= entity.name %>`
+    title: '<%= struct.screenLabel || h.changeCase.pascal(struct.name) %>',
+    to: `/<%= struct.name %>`
   },

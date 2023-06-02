@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/styles/globals.css
+to: <%= rootDirectory %>/<%= project.name %>/styles/globals.css
 force: true
 ---
 html,

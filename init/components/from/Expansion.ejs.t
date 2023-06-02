@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/components/form/Expansion.tsx
+to: <%= rootDirectory %>/<%= project.name %>/components/form/Expansion.tsx
 force: true
 ---
 import * as React from 'react'

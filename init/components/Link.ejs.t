@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/components/Link.tsx
+to: <%= rootDirectory %>/<%= project.name %>/components/Link.tsx
 force: true
 ---
 import MuiLink, { LinkProps as MuiLinkProps } from "@mui/material/Link";

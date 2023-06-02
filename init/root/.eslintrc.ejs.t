@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/.eslintrc.json
+to: <%= rootDirectory %>/<%= project.name %>/.eslintrc.json
 force: true
 ---
 {

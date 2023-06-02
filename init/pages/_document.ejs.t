@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/pages/_document.tsx
+to: <%= rootDirectory %>/<%= project.name %>/pages/_document.tsx
 force: true
 ---
 import createEmotionServer from "@emotion/server/create-instance";

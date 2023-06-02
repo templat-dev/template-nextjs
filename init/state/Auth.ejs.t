@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/state/Auth.tsx
+to: <%= rootDirectory %>/<%= project.name %>/state/Auth.tsx
 force: true
 ---
 import {ModelUser} from '@/apis'

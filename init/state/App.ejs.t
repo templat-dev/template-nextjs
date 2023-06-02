@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/state/App.tsx
+to: <%= rootDirectory %>/<%= project.name %>/state/App.tsx
 force: true
 ---
 import {atom, DefaultValue, selector} from 'recoil'

@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/components/common/Base.ts
+to: <%= rootDirectory %>/<%= project.name %>/components/common/Base.ts
 ---
 
 export interface SingleSearchCondition<T> {

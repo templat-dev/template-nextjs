@@ -1,10 +1,10 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/components/<%= entity.name %>/<%= h.changeCase.pascal(entity.name) %>DataTable.tsx
+to: <%= rootDirectory %>/<%= project.name %>/components/<%= struct.name %>/<%= h.changeCase.pascal(struct.name) %>DataTable.tsx
 ---
 import * as React from 'react'
 import {useMemo, useState} from 'react'
 import {Box, Divider, Fab, IconButton, Paper, Typography} from '@mui/material'
-<%_ if (entity.hasImage === true || entity.hasMultiImage === true) { -%>
+<%_ if (struct.hasImage === true || struct.hasMultiImage === true) { -%>
 import {GridActionsCellItem, GridColumns, GridRenderCellParams, GridToolbarContainer} from '@mui/x-data-grid'
 <%_ } else { -%>
 import {GridActionsCellItem, GridColumns, GridToolbarContainer} from '@mui/x-data-grid'
@@ -12,28 +12,28 @@ import {GridActionsCellItem, GridColumns, GridToolbarContainer} from '@mui/x-dat
 import SearchIcon from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
-<%_ if (entity.hasMultiImage === true) { -%>
+<%_ if (struct.hasMultiImage === true) { -%>
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import {Carousel} from 'react-responsive-carousel'
 <%_ } -%>
-import {Model<%= h.changeCase.pascal(entity.name) %>} from '@/apis'
+import {Model<%= h.changeCase.pascal(struct.name) %>} from '@/apis'
 import {AppDataGrid, AppDataGridBaseProps} from '@/components/common/AppDataGrid'
-<%_ if (entity.screenType !== 'struct') { -%>
-import <%= h.changeCase.pascal(entity.name) %>SearchForm, {
-  INITIAL_<%= h.changeCase.constant(entity.name) %>_SEARCH_CONDITION,
-  <%= h.changeCase.pascal(entity.name) %>SearchCondition
-} from '@/components/<%= entity.name %>/<%= h.changeCase.pascal(entity.name) %>SearchForm'
+<%_ if (struct.structType !== 'struct') { -%>
+import <%= h.changeCase.pascal(struct.name) %>SearchForm, {
+  INITIAL_<%= h.changeCase.constant(struct.name) %>_SEARCH_CONDITION,
+  <%= h.changeCase.pascal(struct.name) %>SearchCondition
+} from '@/components/<%= struct.name %>/<%= h.changeCase.pascal(struct.name) %>SearchForm'
 <%_ } -%>
 
-<%_ if (entity.screenType === 'struct') { -%>
-const <%= h.changeCase.pascal(entity.name) %>DataTable = (props: AppDataGridBaseProps<Model<%= h.changeCase.pascal(entity.name) %>, never>) => {
+<%_ if (struct.structType === 'struct') { -%>
+const <%= h.changeCase.pascal(struct.name) %>DataTable = (props: AppDataGridBaseProps<Model<%= h.changeCase.pascal(struct.name) %>, never>) => {
   const {items = [], onOpenEntryForm, onRemove} = props
 <%_ } -%>
-<%_ if (entity.screenType !== 'struct') { -%>
-const <%= h.changeCase.pascal(entity.name) %>DataTable = (props: AppDataGridBaseProps<Model<%= h.changeCase.pascal(entity.name) %>, <%= h.changeCase.pascal(entity.name) %>SearchCondition>) => {
+<%_ if (struct.structType !== 'struct') { -%>
+const <%= h.changeCase.pascal(struct.name) %>DataTable = (props: AppDataGridBaseProps<Model<%= h.changeCase.pascal(struct.name) %>, <%= h.changeCase.pascal(struct.name) %>SearchCondition>) => {
   const {
     items = [],
-    searchCondition = INITIAL_<%= h.changeCase.constant(entity.name) %>_SEARCH_CONDITION,
+    searchCondition = INITIAL_<%= h.changeCase.constant(struct.name) %>_SEARCH_CONDITION,
     hasParent,
     onChangeSearch = () => {},
     onOpenEntryForm,
@@ -56,8 +56,8 @@ const <%= h.changeCase.pascal(entity.name) %>DataTable = (props: AppDataGridBase
 <%_ } -%>
 
   const columns = useMemo((): GridColumns => [
-      <%_ if (entity.listProperties.listExtraProperties) { -%>
-      <%_ entity.listProperties.listExtraProperties.forEach(function(property, index){ -%>
+      <%_ if (struct.listProperties.listExtraProperties) { -%>
+      <%_ struct.listProperties.listExtraProperties.forEach(function(property, index){ -%>
         <%_ if (property.type === 'image' && property.dataType === 'string') { -%>
     {
       field: '<%= property.name %>',
@@ -138,16 +138,16 @@ const <%= h.changeCase.pascal(entity.name) %>DataTable = (props: AppDataGridBase
       <AppDataGrid
         columns={columns}
         rows={items}
-<%_ if (entity.hasImage === true || entity.hasMultiImage === true) { -%>
+<%_ if (struct.hasImage === true || struct.hasMultiImage === true) { -%>
         rowHeight={100}
 <%_ } -%>
         components={{
           Toolbar: () => (
             <GridToolbarContainer>
               <Typography variant="h6" component="div">
-                <%= entity.listLabel %>
+                <%= struct.listLabel %>
               </Typography>
-<%_ if (entity.screenType !== 'struct') { -%>
+<%_ if (struct.structType !== 'struct') { -%>
               {!hasParent && (
                 <>
                   <Divider orientation="vertical" flexItem sx={{mx: 2, my: 1}}/>
@@ -169,8 +169,8 @@ const <%= h.changeCase.pascal(entity.name) %>DataTable = (props: AppDataGridBase
         }}
         {...props}
       />
-<%_ if (entity.screenType !== 'struct') { -%>
-      <<%= h.changeCase.pascal(entity.name) %>SearchForm
+<%_ if (struct.structType !== 'struct') { -%>
+      <<%= h.changeCase.pascal(struct.name) %>SearchForm
         open={searchFormOpen}
         setOpen={setSearchFormOpen}
         currentSearchCondition={searchCondition}
@@ -181,4 +181,4 @@ const <%= h.changeCase.pascal(entity.name) %>DataTable = (props: AppDataGridBase
   )
 }
 
-export default <%= h.changeCase.pascal(entity.name) %>DataTable
+export default <%= h.changeCase.pascal(struct.name) %>DataTable

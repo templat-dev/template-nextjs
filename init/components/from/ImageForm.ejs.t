@@ -1,5 +1,5 @@
 ---
-to: "<%= entity.plugins.includes('image') ? `${rootDirectory}/${projectName}/components/form/ImageForm.tsx` : null %>"
+to: "<%= struct.plugins.includes('image') ? `${rootDirectory}/${project.name}/components/form/ImageForm.tsx` : null %>"
 force: true
 ---
 import * as React from 'react'

@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/components/modal/AppSnackbar.tsx
+to: <%= rootDirectory %>/<%= project.name %>/components/modal/AppSnackbar.tsx
 force: true
 ---
 import React, {useMemo} from 'react'

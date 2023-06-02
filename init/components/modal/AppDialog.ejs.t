@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/components/modal/AppDialog.tsx
+to: <%= rootDirectory %>/<%= project.name %>/components/modal/AppDialog.tsx
 force: true
 ---
 import React, {useCallback} from 'react'

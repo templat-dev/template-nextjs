@@ -1,5 +1,5 @@
 ---
-to: "<%= entity.plugins.includes('auth') ? `${rootDirectory}/${projectName}/components/common/UseAuth.tsx` : null %>"
+to: "<%= struct.plugins.includes('auth') ? `${rootDirectory}/${project.name}/components/common/UseAuth.tsx` : null %>"
 force: true
 ---
 import {useRecoilState} from 'recoil';

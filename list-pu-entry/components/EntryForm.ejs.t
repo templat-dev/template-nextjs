@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/components/<%= entity.name %>/<%= h.changeCase.pascal(entity.name) %>EntryForm.tsx
+to: <%= rootDirectory %>/<%= project.name %>/components/<%= struct.name %>/<%= h.changeCase.pascal(struct.name) %>EntryForm.tsx
 ---
 import * as React from 'react'
 import {useCallback, useMemo} from 'react'
@@ -13,25 +13,25 @@ import {
   Switch,
   TextField
 } from '@mui/material'
-<%_ if (entity.screenType !== 'struct') { -%>
+<%_ if (struct.structType !== 'struct') { -%>
 import {useResetRecoilState, useSetRecoilState} from 'recoil'
 <%_ } -%>
 import {formatISO} from 'date-fns'
-<%_ if (entity.screenType !== 'struct') { -%>
+<%_ if (struct.structType !== 'struct') { -%>
 import {loadingState} from '@/state/App'
 <%_ } -%>
 import DateTimeForm from '@/components/form/DateTimeForm'
-<%_ if (entity.hasImage === true) { -%>
+<%_ if (struct.hasImage === true) { -%>
 import ImageForm from '@/components/form/ImageForm'
 <%_ } -%>
-<%_ if (entity.hasMultiImage === true) { -%>
+<%_ if (struct.hasMultiImage === true) { -%>
 import ImageArrayForm from '@/components/form/ImageArrayForm'
 <%_ } -%>
 import {
-  <%_ if (entity.screenType !== 'struct') { -%><%= h.changeCase.upperCaseFirst(entity.name) %>Api,
-  <% } -%>Model<%= entity.pascalName %>,
-<%_ entity.editProperties.forEach(function (property, key) { -%>
-  <%_ if (property.type === 'array-struct' || property.type === 'struct') { -%>
+  <%_ if (struct.structType !== 'struct') { -%><%= h.changeCase.upperCaseFirst(struct.name) %>Api,
+  <% } -%>Model<%= struct.pascalName %>,
+<%_ struct.editProperties.forEach(function (property, key) { -%>
+  <%_ if (property.editType === 'array-struct' || property.editType === 'struct') { -%>
   Model<%= h.changeCase.upperCaseFirst(property.structType) %>,
   <%_ } -%>
 <%_ }) -%>
@@ -42,20 +42,20 @@ import {
 <%_ let importStructArrayForm = false -%>
 <%_ let importArrayForm = false -%>
 <%_ let importInitForm = false -%>
-<%_ entity.editProperties.forEach(function (property, key) { -%>
-  <%_ if (property.type === 'struct') { -%>
+<%_ struct.editProperties.forEach(function (property, key) { -%>
+  <%_ if (property.editType === 'struct') { -%>
     <%_ importInitForm = true -%>
     <%_ importExpansion = true -%>
     <%_ importEntryFormSet.add(property.structType) -%>
   <%_ } -%>
-  <%_ if (property.type === 'array-struct') { -%>
+  <%_ if (property.editType === 'array-struct') { -%>
     <%_ importInitForm = true -%>
     <%_ importExpansion = true -%>
     <%_ importStructArrayForm = true -%>
     <%_ importEntryFormSet.add(property.structType) -%>
     <%_ importDataTableSet.add(property.structType) -%>
   <%_ } -%>
-  <%_ if (property.type === 'array-string' || property.type === 'array-textarea' || property.type === 'array-number' || property.type === 'array-time' || property.type === 'array-bool') { -%>
+  <%_ if (property.editType === 'array-string' || property.editType === 'array-textarea' || property.editType === 'array-number' || property.editType === 'array-time' || property.editType === 'array-bool') { -%>
     <%_ importExpansion = true -%>
     <%_ importArrayForm = true -%>
   <%_ } -%>
@@ -80,35 +80,35 @@ import <%= h.changeCase.pascal(structType) %>EntryForm, {INITIAL_<%= h.changeCas
 import <%= h.changeCase.pascal(structType) %>DataTable from '@/components/<%= h.changeCase.camel(structType) %>/<%= h.changeCase.pascal(structType) %>DataTable'
 <%_ }) -%>
 
-export const INITIAL_<%= h.changeCase.constant(entity.name) %>: Model<%= h.changeCase.pascal(entity.name) %> = {
-<%_ entity.editProperties.forEach(function (property, key) { -%>
-  <%_ if (property.type === 'struct') { -%>
+export const INITIAL_<%= h.changeCase.constant(struct.name) %>: Model<%= h.changeCase.pascal(struct.name) %> = {
+<%_ struct.fields.forEach(function (property, key) { -%>
+  <%_ if (property.editType === 'struct') { -%>
   <%= property.name %>: INITIAL_<%= h.changeCase.constant(property.structType) %>,
   <%_ } -%>
-  <%_ if (property.type.startsWith('array')) { -%>
+  <%_ if (property.editType.startsWith('array')) { -%>
   <%= property.name %>: [],
   <%_ } -%>
-  <%_ if (property.type === 'string' || property.type === 'textarea' || property.type === 'time') { -%>
+  <%_ if (property.editType === 'string' || property.editType === 'textarea' || property.editType === 'time') { -%>
   <%= property.name %>: undefined,
   <%_ } -%>
-  <%_ if (property.type === 'bool') { -%>
+  <%_ if (property.editType === 'bool') { -%>
   <%= property.name %>: undefined,
   <%_ } -%>
-  <%_ if (property.type === 'number') { -%>
+  <%_ if (property.editType === 'number') { -%>
   <%= property.name %>: undefined,
   <%_ } -%>
 <%_ }) -%>
 }
 
-export interface <%= h.changeCase.pascal(entity.name) %>EntryFormProps {
+export interface <%= h.changeCase.pascal(struct.name) %>EntryFormProps {
   /** 表示状態 */
   open?: boolean
   /** 表示状態設定コールバック */
   setOpen?: (open: boolean) => void,
   /** 編集対象 */
-  target: Model<%= h.changeCase.pascal(entity.name) %>,
+  target: Model<%= h.changeCase.pascal(struct.name) %>,
   /** 編集対象同期コールバック */
-  syncTarget: (target: Model<%= h.changeCase.pascal(entity.name) %>) => void,
+  syncTarget: (target: Model<%= h.changeCase.pascal(struct.name) %>) => void,
   /** 表示方式 (true: 埋め込み, false: ダイアログ) */
   isEmbedded?: boolean,
   /** 表示方式 (true: 子要素として表示, false: 親要素として表示) */
@@ -121,8 +121,8 @@ export interface <%= h.changeCase.pascal(entity.name) %>EntryFormProps {
   remove?: () => void
 }
 
-const <%= h.changeCase.pascal(entity.name) %>EntryForm = ({open = true, setOpen = () => {}, target, syncTarget, isEmbedded = false, hasParent = false, isNew = true, updated = () => {}, remove = () => {}}: <%= h.changeCase.pascal(entity.name) %>EntryFormProps) => {
-<%_ if (entity.screenType !== 'struct') { -%>
+const <%= h.changeCase.pascal(struct.name) %>EntryForm = ({open = true, setOpen = () => {}, target, syncTarget, isEmbedded = false, hasParent = false, isNew = true, updated = () => {}, remove = () => {}}: <%= h.changeCase.pascal(struct.name) %>EntryFormProps) => {
+<%_ if (struct.structType !== 'struct') { -%>
   const showLoading = useSetRecoilState<boolean>(loadingState)
   const hideLoading = useResetRecoilState(loadingState)
 
@@ -133,7 +133,7 @@ const <%= h.changeCase.pascal(entity.name) %>EntryForm = ({open = true, setOpen 
     }
   }, [isEmbedded, setOpen])
 
-<%_ if (entity.screenType !== 'struct') { -%>
+<%_ if (struct.structType !== 'struct') { -%>
   const save = useCallback(async () => {
     if (hasParent) {
       // 親要素側で保存
@@ -144,12 +144,12 @@ const <%= h.changeCase.pascal(entity.name) %>EntryForm = ({open = true, setOpen 
     try {
       if (isNew) {
         // 新規の場合
-        await new <%= h.changeCase.pascal(entity.name) %>Api().create<%= h.changeCase.pascal(entity.name) %>({
+        await new <%= h.changeCase.pascal(struct.name) %>Api().create<%= h.changeCase.pascal(struct.name) %>({
           body: target
         })
       } else {
         // 更新の場合
-        await new <%= h.changeCase.pascal(entity.name) %>Api().update<%= h.changeCase.pascal(entity.name) %>({
+        await new <%= h.changeCase.pascal(struct.name) %>Api().update<%= h.changeCase.pascal(struct.name) %>({
           id: target.id!,
           body: target
         })
@@ -161,17 +161,17 @@ const <%= h.changeCase.pascal(entity.name) %>EntryForm = ({open = true, setOpen 
     updated()
   }, [hasParent, isNew, target, close, updated, showLoading, hideLoading])
 <%_ } -%>
-<%_ if (entity.screenType === 'struct') { -%>
+<%_ if (struct.structType === 'struct') { -%>
   const save = useCallback(async () => {
     updated()
     close()
   }, [updated, close])
 <%_ } -%>
 
-  <%_ entity.editProperties.forEach(function (property, key) { -%>
-    <%_ if (property.type === 'none') { return } -%>
+  <%_ struct.fields.forEach(function (property, key) { -%>
+    <%_ if (property.editType === 'none') { return } -%>
   const <%= property.name %>Form = useMemo(() => (
-    <%_ if (property.type === 'string' && property.name === 'id') { -%>
+    <%_ if (property.editType === 'string' && property.name === 'id') { -%>
     <TextField
       disabled={!isNew}
       margin="dense"
@@ -184,7 +184,7 @@ const <%= h.changeCase.pascal(entity.name) %>EntryForm = ({open = true, setOpen 
       onChange={e => syncTarget({<%= property.name %>: e.target.value})}
     />
     <%_ } -%>
-    <%_ if (property.type === 'string' && property.name !== 'id') { -%>
+    <%_ if (property.editType === 'string' && property.name !== 'id') { -%>
     <TextField
       margin="dense"
       id="<%= property.name %>"
@@ -196,7 +196,7 @@ const <%= h.changeCase.pascal(entity.name) %>EntryForm = ({open = true, setOpen 
       onChange={e => syncTarget({<%= property.name %>: e.target.value})}
     />
     <%_ } -%>
-    <%_ if (property.type === 'textarea') { -%>
+    <%_ if (property.editType === 'textarea') { -%>
     <TextField
       margin="dense"
       id="<%= property.name %>"
@@ -210,7 +210,7 @@ const <%= h.changeCase.pascal(entity.name) %>EntryForm = ({open = true, setOpen 
       onChange={e => syncTarget({<%= property.name %>: e.target.value})}
     />
     <%_ } -%>
-    <%_ if (property.type === 'number' && property.name === 'id') { -%>
+    <%_ if (property.editType === 'number' && property.name === 'id') { -%>
     <TextField
       disabled={!isNew}
       margin="dense"
@@ -224,7 +224,7 @@ const <%= h.changeCase.pascal(entity.name) %>EntryForm = ({open = true, setOpen 
       onChange={e => syncTarget({<%= property.name %>: e.target.value === '' ? undefined : Number(e.target.value)})}
     />
     <%_ } -%>
-    <%_ if (property.type === 'number' && property.name !== 'id') { -%>
+    <%_ if (property.editType === 'number' && property.name !== 'id') { -%>
     <TextField
       margin="dense"
       id="<%= property.name %>"
@@ -237,14 +237,14 @@ const <%= h.changeCase.pascal(entity.name) %>EntryForm = ({open = true, setOpen 
       onChange={e => syncTarget({<%= property.name %>: e.target.value === '' ? undefined : Number(e.target.value)})}
     />
     <%_ } -%>
-    <%_ if (property.type === 'time') { -%>
+    <%_ if (property.editType === 'time') { -%>
     <DateTimeForm
       label="<%= property.screenLabel ? property.screenLabel : property.name %>"
       dateTime={target.<%= property.name %> ? new Date(target.<%= property.name %>) : null}
       syncDateTime={dateTime => syncTarget({<%= property.name %>: dateTime ? formatISO(dateTime) : undefined})}
     />
     <%_ } -%>
-    <%_ if (property.type === 'bool') { -%>
+    <%_ if (property.editType === 'bool') { -%>
     <FormControlLabel
       control={
         <Switch
@@ -255,23 +255,23 @@ const <%= h.changeCase.pascal(entity.name) %>EntryForm = ({open = true, setOpen 
       label="<%= property.screenLabel ? property.screenLabel : property.name %>"
     />
     <%_ } -%>
-    <%_ if (property.type === 'image' && property.dataType === 'string') { -%>
+    <%_ if (property.editType === 'image' && property.dataType === 'string') { -%>
     <ImageForm
       imageURL={target.<%= property.name %> || null}
-      dir="<%= entity.name %>/<%= property.name %>"
+      dir="<%= struct.name %>/<%= property.name %>"
       label="<%= property.screenLabel ? property.screenLabel : property.name %>"
       onChange={value => syncTarget({<%= property.name %>: value || undefined})}
     />
     <%_ } -%>
-    <%_ if (property.type === 'array-image') { -%>
+    <%_ if (property.editType === 'array-image') { -%>
     <ImageArrayForm
       imageURLs={target.<%= property.name %> || null}
-      dir="<%= entity.name %>/<%= property.name %>"
+      dir="<%= struct.name %>/<%= property.name %>"
       label="<%= property.screenLabel ? property.screenLabel : property.name %>"
       onChange={value => syncTarget({<%= property.name %>: value || undefined})}
     />
     <%_ } -%>
-    <%_ if (property.type === 'array-string' || property.type === 'array-textarea' || property.type === 'array-number' || property.type === 'array-time' || property.type === 'array-bool') { -%>
+    <%_ if (property.editType === 'array-string' || property.editType === 'array-textarea' || property.editType === 'array-number' || property.editType === 'array-time' || property.editType === 'array-bool') { -%>
     <Expansion label="<%= property.screenLabel ? property.screenLabel : property.name %>一覧">
       <%_ if (property.childType === 'string') { -%>
       <ArrayForm
@@ -367,7 +367,7 @@ const <%= h.changeCase.pascal(entity.name) %>EntryForm = ({open = true, setOpen 
       <%_ } -%>
     </Expansion>
     <%_ } -%>
-    <%_ if (property.type === 'array-struct') { -%>
+    <%_ if (property.editType === 'array-struct') { -%>
     <Expansion label="<%= property.screenLabel ? property.screenLabel : property.name %>">
       <StructArrayForm
         items={target.<%= property.name %> || []}
@@ -398,7 +398,7 @@ const <%= h.changeCase.pascal(entity.name) %>EntryForm = ({open = true, setOpen 
       />
     </Expansion>
     <%_ } -%>
-    <%_ if (property.type === 'struct') { -%>
+    <%_ if (property.editType === 'struct') { -%>
     <Expansion label="<%= property.screenLabel ? property.screenLabel : property.name %>">
       {target.<%= property.name %> ? (
         <<%= h.changeCase.pascal(property.structType) %>EntryForm
@@ -425,12 +425,12 @@ const <%= h.changeCase.pascal(entity.name) %>EntryForm = ({open = true, setOpen 
   return (
     <>
       {!isEmbedded && (
-        <DialogTitle><%= entity.label || h.changeCase.constant(entity.name) %>{isNew ? '追加' : '編集'}</DialogTitle>
+        <DialogTitle><%= struct.label || h.changeCase.constant(struct.name) %>{isNew ? '追加' : '編集'}</DialogTitle>
       )}
       <DialogContent>
         <Grid container spacing={2}>
-        <%_ entity.editProperties.forEach(function (property, key) { -%>
-          <%_ if (property.type === 'none') { return } -%>
+        <%_ struct.editProperties.forEach(function (property, key) { -%>
+          <%_ if (property.editType === 'none') { return } -%>
           <Grid item xs={12}>{<%= property.name %>Form}</Grid>
         <%_ }) -%>
         </Grid>
@@ -446,4 +446,4 @@ const <%= h.changeCase.pascal(entity.name) %>EntryForm = ({open = true, setOpen 
   )
 }
 
-export default <%= h.changeCase.pascal(entity.name) %>EntryForm
+export default <%= h.changeCase.pascal(struct.name) %>EntryForm

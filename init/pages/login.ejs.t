@@ -1,5 +1,5 @@
 ---
-to: "<%= entity.plugins.includes('auth') ? `${rootDirectory}/${projectName}/pages/login.tsx` : null %>"
+to: "<%= struct.plugins.includes('auth') ? `${rootDirectory}/${project.name}/pages/login.tsx` : null %>"
 force: true
 ---
 import {NextPage} from "next";

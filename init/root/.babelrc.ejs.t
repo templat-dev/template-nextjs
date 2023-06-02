@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/.babelrc
+to: <%= rootDirectory %>/<%= project.name %>/.babelrc
 force: true
 ---
 {

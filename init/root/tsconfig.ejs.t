@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/tsconfig.json
+to: <%= rootDirectory %>/<%= project.name %>/tsconfig.json
 force: true
 ---
 {

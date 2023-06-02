@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/components/form/InitForm.tsx
+to: <%= rootDirectory %>/<%= project.name %>/components/form/InitForm.tsx
 force: true
 ---
 import * as React from 'react'

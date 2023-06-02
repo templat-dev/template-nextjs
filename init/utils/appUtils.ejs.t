@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/utils/appUtils.ts
+to: <%= rootDirectory %>/<%= project.name %>/utils/appUtils.ts
 force: true
 ---
 import format from 'date-fns/format'

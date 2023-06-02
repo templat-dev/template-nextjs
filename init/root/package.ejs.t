@@ -1,9 +1,9 @@
 ---
-to: <%= rootDirectory %>/<%= projectName %>/package.json
+to: <%= rootDirectory %>/<%= project.name %>/package.json
 force: true
 ---
 {
-  "name": "<%= projectName %>",
+  "name": "<%= project.name %>",
   "private": true,
   "scripts": {
     "dev": "next dev",
