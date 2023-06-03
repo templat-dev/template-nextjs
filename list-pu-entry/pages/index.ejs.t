@@ -20,7 +20,7 @@ import {
 } from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>SearchForm'
 import <%= struct.name.pascalName %>EntryForm, {INITIAL_<%= struct.name.upperSnakeName %>} from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>EntryForm'
 
-const <%= struct.name.pascalPluralName) %>: NextPage = () => {
+const <%= struct.name.pascalPluralName %>: NextPage = () => {
   const router = useRouter()
   const showLoading = useSetRecoilState<boolean>(loadingState)
   const hideLoading = useResetRecoilState(loadingState)
