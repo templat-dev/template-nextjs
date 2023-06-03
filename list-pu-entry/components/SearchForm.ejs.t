@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/components/<%= struct.name %>/<%= h.changeCase.pascal(struct.name) %>SearchForm.tsx
+to: <%= rootDirectory %>/<%= project.name %>/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>SearchForm.tsx
 ---
 import * as React from 'react'
 import {useCallback, useEffect, useState} from 'react'
@@ -24,19 +24,19 @@ import {formatISO} from 'date-fns'
 <%_ if (struct.listProperties.listExtraProperties && struct.listProperties.listExtraProperties.length > 0) { -%>
 <%_ struct.listProperties.listExtraProperties.forEach(function (property, key) { -%>
   <%_ if ((property.type === 'string' || property.type === 'array-string' || property.type === 'time' || property.type === 'array-time') && property.searchType === 1) { -%>
-    <%_ searchConditions.push({name: property.name, type: 'string', range: false}) -%>
+    <%_ searchConditions.push({name: property.name.lowerCamelName, type: 'string', range: false}) -%>
   <%_ } -%>
   <%_ if ((property.type === 'bool' || property.type === 'array-bool') && property.searchType === 1) { -%>
-    <%_ searchConditions.push({name: property.name, type: 'boolean', range: false}) -%>
+    <%_ searchConditions.push({name: property.name.lowerCamelName, type: 'boolean', range: false}) -%>
   <%_ } -%>
   <%_ if ((property.type === 'number' || property.type === 'array-number') && property.searchType === 1) { -%>
-    <%_ searchConditions.push({name: property.name, type: 'number', range: false}) -%>
+    <%_ searchConditions.push({name: property.name.lowerCamelName, type: 'number', range: false}) -%>
   <%_ } -%>
   <%_ if ((property.type === 'number' || property.type === 'array-number') && 2 <= property.searchType &&  property.searchType <= 5) { -%>
-    <%_ searchConditions.push({name: property.name, type: 'number', range: true}) -%>
+    <%_ searchConditions.push({name: property.name.lowerCamelName, type: 'number', range: true}) -%>
   <%_ } -%>
   <%_ if ((property.type === 'time' || property.type === 'array-time') && 2 <= property.searchType &&  property.searchType <= 5) { -%>
-    <%_ searchConditions.push({name: property.name, type: 'string', range: true}) -%>
+    <%_ searchConditions.push({name: property.name.lowerCamelName, type: 'string', range: true}) -%>
   <%_ } -%>
   <%_ if ((property.type === 'time' || property.type === 'array-time')) { -%>
   <%_ importDateTime = true -%>
@@ -44,69 +44,69 @@ import {formatISO} from 'date-fns'
 <%_ }) -%>
 <%_ } -%>
 <%_ if (searchConditions.length > 0) { -%>
-export interface <%= h.changeCase.pascal(struct.name) %>SearchCondition extends BaseSearchCondition {
+export interface <%= struct.name.pascalName %>SearchCondition extends BaseSearchCondition {
   <%_ searchConditions.forEach(function(property) { -%>
     <%_ if (property.type === 'string' && !property.range) { -%>
-  <%= property.name %>: SingleSearchCondition<<%= property.type %>>
+  <%= property.name.lowerCamelName %>: SingleSearchCondition<<%= property.type %>>
     <%_ } -%>
     <%_ if (property.type === 'boolean' && !property.range) { -%>
-  <%= property.name %>: SingleSearchCondition<<%= property.type %>>
+  <%= property.name.lowerCamelName %>: SingleSearchCondition<<%= property.type %>>
     <%_ } -%>
     <%_ if (property.type === 'number' && !property.range) { -%>
-  <%= property.name %>: SingleSearchCondition<<%= property.type %>>
+  <%= property.name.lowerCamelName %>: SingleSearchCondition<<%= property.type %>>
     <%_ } -%>
     <%_ if (property.type === 'number' && property.range) { -%>
-  <%= property.name %>: SingleSearchCondition<<%= property.type %>>
-  <%= property.name %>From: SingleSearchCondition<<%= property.type %>>
-  <%= property.name %>To: SingleSearchCondition<<%= property.type %>>
+  <%= property.name.lowerCamelName %>: SingleSearchCondition<<%= property.type %>>
+  <%= property.name.lowerCamelName %>From: SingleSearchCondition<<%= property.type %>>
+  <%= property.name.lowerCamelName %>To: SingleSearchCondition<<%= property.type %>>
     <%_ } -%>
     <%_ if (property.type === 'string' && property.range) { -%>
-  <%= property.name %>: SingleSearchCondition<<%= property.type %>>
-  <%= property.name %>From: SingleSearchCondition<<%= property.type %>>
-  <%= property.name %>To: SingleSearchCondition<<%= property.type %>>
+  <%= property.name.lowerCamelName %>: SingleSearchCondition<<%= property.type %>>
+  <%= property.name.lowerCamelName %>From: SingleSearchCondition<<%= property.type %>>
+  <%= property.name.lowerCamelName %>To: SingleSearchCondition<<%= property.type %>>
     <%_ } -%>
   <%_ }) -%>
 }
 
-export const INITIAL_<%= h.changeCase.constant(struct.name) %>_SEARCH_CONDITION: <%= h.changeCase.pascal(struct.name) %>SearchCondition = {
+export const INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION: <%= struct.name.pascalName %>SearchCondition = {
   <%_ searchConditions.forEach(function(property) { -%>
     <%_ if (property.type === 'string' && !property.range) { -%>
-  <%= property.name %>: {enabled: false, value: ''},
+  <%= property.name.lowerCamelName %>: {enabled: false, value: ''},
     <%_ } -%>
     <%_ if (property.type === 'boolean' && !property.range) { -%>
-  <%= property.name %>: {enabled: false, value: false},
+  <%= property.name.lowerCamelName %>: {enabled: false, value: false},
     <%_ } -%>
     <%_ if (property.type === 'number' && !property.range) { -%>
-  <%= property.name %>: {enabled: false, value: 0},
+  <%= property.name.lowerCamelName %>: {enabled: false, value: 0},
     <%_ } -%>
     <%_ if (property.type === 'number' && property.range) { -%>
-  <%= property.name %>: {enabled: false, value: 0},
-  <%= property.name %>From: {enabled: false, value: 0},
-  <%= property.name %>To: {enabled: false, value: 0},
+  <%= property.name.lowerCamelName %>: {enabled: false, value: 0},
+  <%= property.name.lowerCamelName %>From: {enabled: false, value: 0},
+  <%= property.name.lowerCamelName %>To: {enabled: false, value: 0},
     <%_ } -%>
     <%_ if (property.type === 'string' && property.range) { -%>
-  <%= property.name %>: {enabled: false, value: ''},
-  <%= property.name %>From: {enabled: false, value: ''},
-  <%= property.name %>To: {enabled: false, value: ''},
+  <%= property.name.lowerCamelName %>: {enabled: false, value: ''},
+  <%= property.name.lowerCamelName %>From: {enabled: false, value: ''},
+  <%= property.name.lowerCamelName %>To: {enabled: false, value: ''},
     <%_ } -%>
   <%_ }) -%>
 }
 <%_ } else { -%>
-export interface <%= h.changeCase.pascal(struct.name) %>SearchCondition {
+export interface <%= struct.name.pascalName %>SearchCondition {
 }
 
-export const INITIAL_<%= h.changeCase.constant(struct.name) %>_SEARCH_CONDITION: <%= h.changeCase.pascal(struct.name) %>SearchCondition = {}
+export const INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION: <%= struct.name.pascalName %>SearchCondition = {}
 <%_ } -%>
 
-export interface <%= h.changeCase.pascal(struct.name) %>SearchFormProps {
+export interface <%= struct.name.pascalName %>SearchFormProps {
   open: boolean,
   setOpen: (open: boolean) => void,
-  currentSearchCondition: <%= h.changeCase.pascal(struct.name) %>SearchCondition,
-  onSearch: (searchCondition: <%= h.changeCase.pascal(struct.name) %>SearchCondition) => void
+  currentSearchCondition: <%= struct.name.pascalName %>SearchCondition,
+  onSearch: (searchCondition: <%= struct.name.pascalName %>SearchCondition) => void
 }
 
-const <%= h.changeCase.pascal(struct.name) %>SearchForm = ({open, setOpen, currentSearchCondition, onSearch}: <%= h.changeCase.pascal(struct.name) %>SearchFormProps) => {
-  const [searchCondition, setSearchCondition] = useState(cloneDeep(INITIAL_<%= h.changeCase.constant(struct.name) %>_SEARCH_CONDITION))
+const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCondition, onSearch}: <%= struct.name.pascalName %>SearchFormProps) => {
+  const [searchCondition, setSearchCondition] = useState(cloneDeep(INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION))
 
   useEffect(() => {
     setSearchCondition(cloneDeep(currentSearchCondition))
@@ -122,11 +122,11 @@ const <%= h.changeCase.pascal(struct.name) %>SearchForm = ({open, setOpen, curre
   }, [onSearch, searchCondition, close])
 
   const clear = useCallback(() => {
-    onSearch(cloneDeep(INITIAL_<%= h.changeCase.constant(struct.name) %>_SEARCH_CONDITION))
+    onSearch(cloneDeep(INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION))
     close()
   }, [onSearch, close])
 
-  const setSingleSearchCondition = useCallback(<T extends keyof <%= h.changeCase.pascal(struct.name) %>SearchCondition, >(key: T, value: <%= h.changeCase.pascal(struct.name) %>SearchCondition[T]['value']) => {
+  const setSingleSearchCondition = useCallback(<T extends keyof <%= struct.name.pascalName %>SearchCondition, >(key: T, value: <%= struct.name.pascalName %>SearchCondition[T]['value']) => {
     setSearchCondition(searchCondition => ({
       ...searchCondition,
       [key] : {
@@ -136,7 +136,7 @@ const <%= h.changeCase.pascal(struct.name) %>SearchForm = ({open, setOpen, curre
     }))
   }, [])
 
-  const toggleEnabled = useCallback((key: keyof <%= h.changeCase.pascal(struct.name) %>SearchCondition) => {
+  const toggleEnabled = useCallback((key: keyof <%= struct.name.pascalName %>SearchCondition) => {
     setSearchCondition(searchCondition => ({
       ...searchCondition,
       [key]: {
@@ -148,7 +148,7 @@ const <%= h.changeCase.pascal(struct.name) %>SearchForm = ({open, setOpen, curre
 
   return (
     <Dialog open={open} onClose={close}>
-      <DialogTitle><%= struct.label || h.changeCase.constant(struct.name) %>検索</DialogTitle>
+      <DialogTitle><%= struct.label || struct.name.upperSnakeName %>検索</DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
         <%_ if (struct.listProperties.listExtraProperties) { -%>
@@ -156,141 +156,141 @@ const <%= h.changeCase.pascal(struct.name) %>SearchForm = ({open, setOpen, curre
           <%_ if ((property.type === 'string' || property.type === 'array-string' || property.type === 'textarea' || property.type === 'array-textarea') && property.searchType === 1) { -%>
           <Grid item xs={2}>
             <Switch
-              checked={searchCondition.<%= property.name %>.enabled}
-              onChange={() => toggleEnabled('<%= property.name %>')}
+              checked={searchCondition.<%= property.name.lowerCamelName %>.enabled}
+              onChange={() => toggleEnabled('<%= property.name.lowerCamelName %>')}
             />
           </Grid>
           <Grid item xs={10}>
             <TextField
               margin="dense"
-              id="<%= property.name %>"
-              label="<%= property.screenLabel ? property.screenLabel : property.name %>"
+              id="<%= property.name.lowerCamelName %>"
+              label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
               type="text"
-              value={searchCondition.<%= property.name %>.value}
+              value={searchCondition.<%= property.name.lowerCamelName %>.value}
               fullWidth
               variant="standard"
-              onChange={e => setSingleSearchCondition('<%= property.name %>', e.target.value)}
+              onChange={e => setSingleSearchCondition('<%= property.name.lowerCamelName %>', e.target.value)}
             />
           </Grid>
           <%_ } -%>
           <%_ if ((property.type === 'number' || property.type === 'array-number') && property.searchType !== 0) { -%>
           <Grid item xs={2}>
             <Switch
-              checked={searchCondition.<%= property.name %>.enabled}
-              onChange={() => toggleEnabled('<%= property.name %>')}
+              checked={searchCondition.<%= property.name.lowerCamelName %>.enabled}
+              onChange={() => toggleEnabled('<%= property.name.lowerCamelName %>')}
             />
           </Grid>
           <Grid item xs={10}>
             <TextField
               margin="dense"
-              id="<%= property.name %>"
-              label="<%= property.screenLabel ? property.screenLabel : property.name %>"
+              id="<%= property.name.lowerCamelName %>"
+              label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
               type="number"
               inputProps={{inputMode: 'numeric', pattern: '[0-9]*'}}
-              value={searchCondition.<%= property.name %>.value}
+              value={searchCondition.<%= property.name.lowerCamelName %>.value}
               fullWidth
               variant="standard"
-              onChange={e => setSingleSearchCondition('<%= property.name %>', Number(e.target.value) || 0)}
+              onChange={e => setSingleSearchCondition('<%= property.name.lowerCamelName %>', Number(e.target.value) || 0)}
             />
           </Grid>
           <%_ } -%>
           <%_ if ((property.type === 'number' || property.type === 'array-number') && 2 <= property.searchType && property.searchType <= 5) { -%>
           <Grid item xs={2}>
             <Switch
-              checked={searchCondition.<%= property.name %>From.enabled}
-              onChange={() => toggleEnabled('<%= property.name %>From')}
+              checked={searchCondition.<%= property.name.lowerCamelName %>From.enabled}
+              onChange={() => toggleEnabled('<%= property.name.lowerCamelName %>From')}
             />
           </Grid>
           <Grid item xs={10}>
             <TextField
               margin="dense"
-              id="<%= property.name %>From"
-              label="<%= property.screenLabel ? property.screenLabel : property.name %>From"
+              id="<%= property.name.lowerCamelName %>From"
+              label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>From"
               type="number"
               inputProps={{inputMode: 'numeric', pattern: '[0-9]*'}}
-              value={searchCondition.<%= property.name %>From.value}
+              value={searchCondition.<%= property.name.lowerCamelName %>From.value}
               fullWidth
               variant="standard"
-              onChange={e => setSingleSearchCondition('<%= property.name %>From', Number(e.target.value) || 0)}
+              onChange={e => setSingleSearchCondition('<%= property.name.lowerCamelName %>From', Number(e.target.value) || 0)}
             />
           </Grid>
           <Grid item xs={2}>
             <Switch
-              checked={searchCondition.<%= property.name %>To.enabled}
-              onChange={() => toggleEnabled('<%= property.name %>To')}
+              checked={searchCondition.<%= property.name.lowerCamelName %>To.enabled}
+              onChange={() => toggleEnabled('<%= property.name.lowerCamelName %>To')}
             />
           </Grid>
           <Grid item xs={10}>
             <TextField
               margin="dense"
-              id="<%= property.name %>To"
-              label="<%= property.screenLabel ? property.screenLabel : property.name %>To"
+              id="<%= property.name.lowerCamelName %>To"
+              label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>To"
               type="number"
               inputProps={{inputMode: 'numeric', pattern: '[0-9]*'}}
-              value={searchCondition.<%= property.name %>To.value}
+              value={searchCondition.<%= property.name.lowerCamelName %>To.value}
               fullWidth
               variant="standard"
-              onChange={e => setSingleSearchCondition('<%= property.name %>To', Number(e.target.value) || 0)}
+              onChange={e => setSingleSearchCondition('<%= property.name.lowerCamelName %>To', Number(e.target.value) || 0)}
             />
           </Grid>
           <%_ } -%>
           <%_ if ((property.type === 'time' || property.type === 'array-time') && property.searchType !== 0) { -%>
           <Grid item xs={2}>
             <Switch
-              checked={searchCondition.<%= property.name %>.enabled}
-              onChange={() => toggleEnabled('<%= property.name %>')}
+              checked={searchCondition.<%= property.name.lowerCamelName %>.enabled}
+              onChange={() => toggleEnabled('<%= property.name.lowerCamelName %>')}
             />
           </Grid>
           <Grid item xs={10}>
             <DateTimeForm
-              label="<%= property.screenLabel ? property.screenLabel : property.name %>"
-              dateTime={searchCondition.<%= property.name %>.value ? new Date(searchCondition.<%= property.name %>.value) : null}
-              syncDateTime={value => setSingleSearchCondition('<%= property.name %>', value ? formatISO(value) : '')}
+              label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
+              dateTime={searchCondition.<%= property.name.lowerCamelName %>.value ? new Date(searchCondition.<%= property.name.lowerCamelName %>.value) : null}
+              syncDateTime={value => setSingleSearchCondition('<%= property.name.lowerCamelName %>', value ? formatISO(value) : '')}
             />
           </Grid>
           <%_ } -%>
           <%_ if ((property.type === 'time' || property.type === 'array-time') && 2 <= property.searchType &&  property.searchType <= 5) { -%>
           <Grid item xs={2}>
             <Switch
-              checked={searchCondition.<%= property.name %>From.enabled}
-              onChange={() => toggleEnabled('<%= property.name %>From')}
+              checked={searchCondition.<%= property.name.lowerCamelName %>From.enabled}
+              onChange={() => toggleEnabled('<%= property.name.lowerCamelName %>From')}
             />
           </Grid>
           <Grid item xs={10}>
             <DateTimeForm
-              label="<%= property.screenLabel ? property.screenLabel : property.name %>From"
-              dateTime={searchCondition.<%= property.name %>From.value ? new Date(searchCondition.<%= property.name %>From.value) : null}
-              syncDateTime={value => setSingleSearchCondition('<%= property.name %>From', value ? formatISO(value) : '')}
+              label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>From"
+              dateTime={searchCondition.<%= property.name.lowerCamelName %>From.value ? new Date(searchCondition.<%= property.name.lowerCamelName %>From.value) : null}
+              syncDateTime={value => setSingleSearchCondition('<%= property.name.lowerCamelName %>From', value ? formatISO(value) : '')}
             />
           </Grid>
           <Grid item xs={2}>
             <Switch
-              checked={searchCondition.<%= property.name %>To.enabled}
-              onChange={() => toggleEnabled('<%= property.name %>To')}
+              checked={searchCondition.<%= property.name.lowerCamelName %>To.enabled}
+              onChange={() => toggleEnabled('<%= property.name.lowerCamelName %>To')}
             />
           </Grid>
           <Grid item xs={10}>
             <DateTimeForm
-              label="<%= property.screenLabel ? property.screenLabel : property.name %>To"
-              dateTime={searchCondition.<%= property.name %>To.value ? new Date(searchCondition.<%= property.name %>To.value) : null}
-              syncDateTime={value => setSingleSearchCondition('<%= property.name %>To', value ? formatISO(value) : '')}
+              label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>To"
+              dateTime={searchCondition.<%= property.name.lowerCamelName %>To.value ? new Date(searchCondition.<%= property.name.lowerCamelName %>To.value) : null}
+              syncDateTime={value => setSingleSearchCondition('<%= property.name.lowerCamelName %>To', value ? formatISO(value) : '')}
             />
           </Grid>
           <%_ } -%>
           <%_ if ((property.type === 'bool' || property.type === 'array-bool') && property.searchType === 1) { -%>
           <Grid item xs={2}>
             <Switch
-              checked={searchCondition.<%= property.name %>.enabled}
-              onChange={() => toggleEnabled('<%= property.name %>')}
+              checked={searchCondition.<%= property.name.lowerCamelName %>.enabled}
+              onChange={() => toggleEnabled('<%= property.name.lowerCamelName %>')}
             />
           </Grid>
           <Grid item xs={10}>
             <FormControlLabel
-              label="<%= property.screenLabel ? property.screenLabel : property.name %>"
+              label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
               control={
                 <Switch
-                  checked={searchCondition.<%= property.name %>.value}
-                  onChange={e => setSingleSearchCondition('<%= property.name %>', e.target.checked)}
+                  checked={searchCondition.<%= property.name.lowerCamelName %>.value}
+                  onChange={e => setSingleSearchCondition('<%= property.name.lowerCamelName %>', e.target.checked)}
                 />
               }
             />
@@ -309,4 +309,4 @@ const <%= h.changeCase.pascal(struct.name) %>SearchForm = ({open, setOpen, curre
   )
 }
 
-export default <%= h.changeCase.pascal(struct.name) %>SearchForm
+export default <%= struct.name.pascalName %>SearchForm

@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/components/<%= struct.name %>/<%= h.changeCase.pascal(struct.name) %>EntryForm.tsx
+to: <%= rootDirectory %>/<%= project.name %>/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>EntryForm.tsx
 ---
 import * as React from 'react'
 import {useCallback, useMemo} from 'react'
@@ -21,14 +21,14 @@ import {formatISO} from 'date-fns'
 import {loadingState} from '@/state/App'
 <%_ } -%>
 import DateTimeForm from '@/components/form/DateTimeForm'
-<%_ if (struct.hasImage === true) { -%>
+<%_ if (struct.exists.image) { -%>
 import ImageForm from '@/components/form/ImageForm'
 <%_ } -%>
-<%_ if (struct.hasMultiImage === true) { -%>
+<%_ if (struct.exists.arrayImage) { -%>
 import ImageArrayForm from '@/components/form/ImageArrayForm'
 <%_ } -%>
 import {
-  <%_ if (struct.structType !== 'struct') { -%><%= h.changeCase.upperCaseFirst(struct.name) %>Api,
+  <%_ if (struct.structType !== 'struct') { -%><%= h.changeCase.upperCaseFirst(struct.name.lowerCamelName) %>Api,
   <% } -%>Model<%= struct.pascalName %>,
 <%_ struct.editProperties.forEach(function (property, key) { -%>
   <%_ if (property.editType === 'array-struct' || property.editType === 'struct') { -%>
@@ -80,35 +80,35 @@ import <%= h.changeCase.pascal(structType) %>EntryForm, {INITIAL_<%= h.changeCas
 import <%= h.changeCase.pascal(structType) %>DataTable from '@/components/<%= h.changeCase.camel(structType) %>/<%= h.changeCase.pascal(structType) %>DataTable'
 <%_ }) -%>
 
-export const INITIAL_<%= h.changeCase.constant(struct.name) %>: Model<%= h.changeCase.pascal(struct.name) %> = {
+export const INITIAL_<%= struct.name.upperSnakeName %>: Model<%= struct.name.pascalName %> = {
 <%_ struct.fields.forEach(function (property, key) { -%>
   <%_ if (property.editType === 'struct') { -%>
-  <%= property.name %>: INITIAL_<%= h.changeCase.constant(property.structType) %>,
+  <%= property.name.lowerCamelName %>: INITIAL_<%= h.changeCase.constant(property.structType) %>,
   <%_ } -%>
   <%_ if (property.editType.startsWith('array')) { -%>
-  <%= property.name %>: [],
+  <%= property.name.lowerCamelName %>: [],
   <%_ } -%>
   <%_ if (property.editType === 'string' || property.editType === 'textarea' || property.editType === 'time') { -%>
-  <%= property.name %>: undefined,
+  <%= property.name.lowerCamelName %>: undefined,
   <%_ } -%>
   <%_ if (property.editType === 'bool') { -%>
-  <%= property.name %>: undefined,
+  <%= property.name.lowerCamelName %>: undefined,
   <%_ } -%>
   <%_ if (property.editType === 'number') { -%>
-  <%= property.name %>: undefined,
+  <%= property.name.lowerCamelName %>: undefined,
   <%_ } -%>
 <%_ }) -%>
 }
 
-export interface <%= h.changeCase.pascal(struct.name) %>EntryFormProps {
+export interface <%= struct.name.pascalName %>EntryFormProps {
   /** 表示状態 */
   open?: boolean
   /** 表示状態設定コールバック */
   setOpen?: (open: boolean) => void,
   /** 編集対象 */
-  target: Model<%= h.changeCase.pascal(struct.name) %>,
+  target: Model<%= struct.name.pascalName %>,
   /** 編集対象同期コールバック */
-  syncTarget: (target: Model<%= h.changeCase.pascal(struct.name) %>) => void,
+  syncTarget: (target: Model<%= struct.name.pascalName %>) => void,
   /** 表示方式 (true: 埋め込み, false: ダイアログ) */
   isEmbedded?: boolean,
   /** 表示方式 (true: 子要素として表示, false: 親要素として表示) */
@@ -121,7 +121,7 @@ export interface <%= h.changeCase.pascal(struct.name) %>EntryFormProps {
   remove?: () => void
 }
 
-const <%= h.changeCase.pascal(struct.name) %>EntryForm = ({open = true, setOpen = () => {}, target, syncTarget, isEmbedded = false, hasParent = false, isNew = true, updated = () => {}, remove = () => {}}: <%= h.changeCase.pascal(struct.name) %>EntryFormProps) => {
+const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}, target, syncTarget, isEmbedded = false, hasParent = false, isNew = true, updated = () => {}, remove = () => {}}: <%= struct.name.pascalName %>EntryFormProps) => {
 <%_ if (struct.structType !== 'struct') { -%>
   const showLoading = useSetRecoilState<boolean>(loadingState)
   const hideLoading = useResetRecoilState(loadingState)
@@ -144,12 +144,12 @@ const <%= h.changeCase.pascal(struct.name) %>EntryForm = ({open = true, setOpen 
     try {
       if (isNew) {
         // 新規の場合
-        await new <%= h.changeCase.pascal(struct.name) %>Api().create<%= h.changeCase.pascal(struct.name) %>({
+        await new <%= struct.name.pascalName %>Api().create<%= struct.name.pascalName %>({
           body: target
         })
       } else {
         // 更新の場合
-        await new <%= h.changeCase.pascal(struct.name) %>Api().update<%= h.changeCase.pascal(struct.name) %>({
+        await new <%= struct.name.pascalName %>Api().update<%= struct.name.pascalName %>({
           id: target.id!,
           body: target
         })
@@ -170,119 +170,119 @@ const <%= h.changeCase.pascal(struct.name) %>EntryForm = ({open = true, setOpen 
 
   <%_ struct.fields.forEach(function (property, key) { -%>
     <%_ if (property.editType === 'none') { return } -%>
-  const <%= property.name %>Form = useMemo(() => (
-    <%_ if (property.editType === 'string' && property.name === 'id') { -%>
+  const <%= property.name.lowerCamelName %>Form = useMemo(() => (
+    <%_ if (property.editType === 'string' && property.name.lowerCamelName === 'id') { -%>
     <TextField
       disabled={!isNew}
       margin="dense"
-      id="<%= property.name %>"
-      label="<%= property.screenLabel ? property.screenLabel : property.name %>"
+      id="<%= property.name.lowerCamelName %>"
+      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
       type="text"
-      value={target.<%= property.name %> || ''}
+      value={target.<%= property.name.lowerCamelName %> || ''}
       fullWidth
       variant="standard"
-      onChange={e => syncTarget({<%= property.name %>: e.target.value})}
+      onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.value})}
     />
     <%_ } -%>
-    <%_ if (property.editType === 'string' && property.name !== 'id') { -%>
+    <%_ if (property.editType === 'string' && property.name.lowerCamelName !== 'id') { -%>
     <TextField
       margin="dense"
-      id="<%= property.name %>"
-      label="<%= property.screenLabel ? property.screenLabel : property.name %>"
+      id="<%= property.name.lowerCamelName %>"
+      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
       type="text"
-      value={target.<%= property.name %> || ''}
+      value={target.<%= property.name.lowerCamelName %> || ''}
       fullWidth
       variant="standard"
-      onChange={e => syncTarget({<%= property.name %>: e.target.value})}
+      onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.value})}
     />
     <%_ } -%>
     <%_ if (property.editType === 'textarea') { -%>
     <TextField
       margin="dense"
-      id="<%= property.name %>"
-      label="<%= property.screenLabel ? property.screenLabel : property.name %>"
+      id="<%= property.name.lowerCamelName %>"
+      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
       type="text"
-      value={target.<%= property.name %> || ''}
+      value={target.<%= property.name.lowerCamelName %> || ''}
       fullWidth
       multiline
       minRows={4}
       variant="standard"
-      onChange={e => syncTarget({<%= property.name %>: e.target.value})}
+      onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.value})}
     />
     <%_ } -%>
-    <%_ if (property.editType === 'number' && property.name === 'id') { -%>
+    <%_ if (property.editType === 'number' && property.name.lowerCamelName === 'id') { -%>
     <TextField
       disabled={!isNew}
       margin="dense"
-      id="<%= property.name %>"
-      label="<%= property.screenLabel ? property.screenLabel : property.name %>"
+      id="<%= property.name.lowerCamelName %>"
+      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
       type="number"
       inputProps={{inputMode: 'numeric', pattern: '[0-9]*'}}
-      value={target.<%= property.name %> || target.<%= property.name %> === 0 ? target.<%= property.name %> : ''}
+      value={target.<%= property.name.lowerCamelName %> || target.<%= property.name.lowerCamelName %> === 0 ? target.<%= property.name.lowerCamelName %> : ''}
       fullWidth
       variant="standard"
-      onChange={e => syncTarget({<%= property.name %>: e.target.value === '' ? undefined : Number(e.target.value)})}
+      onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.value === '' ? undefined : Number(e.target.value)})}
     />
     <%_ } -%>
-    <%_ if (property.editType === 'number' && property.name !== 'id') { -%>
+    <%_ if (property.editType === 'number' && property.name.lowerCamelName !== 'id') { -%>
     <TextField
       margin="dense"
-      id="<%= property.name %>"
-      label="<%= property.screenLabel ? property.screenLabel : property.name %>"
+      id="<%= property.name.lowerCamelName %>"
+      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
       type="number"
       inputProps={{inputMode: 'numeric', pattern: '[0-9]*'}}
-      value={target.<%= property.name %> || target.<%= property.name %> === 0 ? target.<%= property.name %> : ''}
+      value={target.<%= property.name.lowerCamelName %> || target.<%= property.name.lowerCamelName %> === 0 ? target.<%= property.name.lowerCamelName %> : ''}
       fullWidth
       variant="standard"
-      onChange={e => syncTarget({<%= property.name %>: e.target.value === '' ? undefined : Number(e.target.value)})}
+      onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.value === '' ? undefined : Number(e.target.value)})}
     />
     <%_ } -%>
     <%_ if (property.editType === 'time') { -%>
     <DateTimeForm
-      label="<%= property.screenLabel ? property.screenLabel : property.name %>"
-      dateTime={target.<%= property.name %> ? new Date(target.<%= property.name %>) : null}
-      syncDateTime={dateTime => syncTarget({<%= property.name %>: dateTime ? formatISO(dateTime) : undefined})}
+      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
+      dateTime={target.<%= property.name.lowerCamelName %> ? new Date(target.<%= property.name.lowerCamelName %>) : null}
+      syncDateTime={dateTime => syncTarget({<%= property.name.lowerCamelName %>: dateTime ? formatISO(dateTime) : undefined})}
     />
     <%_ } -%>
     <%_ if (property.editType === 'bool') { -%>
     <FormControlLabel
       control={
         <Switch
-          checked={!!target.<%= property.name %>}
-          onChange={e => syncTarget({<%= property.name %>: e.target.checked})}
+          checked={!!target.<%= property.name.lowerCamelName %>}
+          onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.checked})}
         />
       }
-      label="<%= property.screenLabel ? property.screenLabel : property.name %>"
+      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
     />
     <%_ } -%>
     <%_ if (property.editType === 'image' && property.dataType === 'string') { -%>
     <ImageForm
-      imageURL={target.<%= property.name %> || null}
-      dir="<%= struct.name %>/<%= property.name %>"
-      label="<%= property.screenLabel ? property.screenLabel : property.name %>"
-      onChange={value => syncTarget({<%= property.name %>: value || undefined})}
+      imageURL={target.<%= property.name.lowerCamelName %> || null}
+      dir="<%= struct.name.lowerCamelName %>/<%= property.name.lowerCamelName %>"
+      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
+      onChange={value => syncTarget({<%= property.name.lowerCamelName %>: value || undefined})}
     />
     <%_ } -%>
     <%_ if (property.editType === 'array-image') { -%>
     <ImageArrayForm
-      imageURLs={target.<%= property.name %> || null}
-      dir="<%= struct.name %>/<%= property.name %>"
-      label="<%= property.screenLabel ? property.screenLabel : property.name %>"
-      onChange={value => syncTarget({<%= property.name %>: value || undefined})}
+      imageURLs={target.<%= property.name.lowerCamelName %> || null}
+      dir="<%= struct.name.lowerCamelName %>/<%= property.name.lowerCamelName %>"
+      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
+      onChange={value => syncTarget({<%= property.name.lowerCamelName %>: value || undefined})}
     />
     <%_ } -%>
     <%_ if (property.editType === 'array-string' || property.editType === 'array-textarea' || property.editType === 'array-number' || property.editType === 'array-time' || property.editType === 'array-bool') { -%>
-    <Expansion label="<%= property.screenLabel ? property.screenLabel : property.name %>一覧">
+    <Expansion label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>一覧">
       <%_ if (property.childType === 'string') { -%>
       <ArrayForm
-        items={target.<%= property.name %> || []}
-        syncItems={items => syncTarget({<%= property.name %>: items})}
+        items={target.<%= property.name.lowerCamelName %> || []}
+        syncItems={items => syncTarget({<%= property.name.lowerCamelName %>: items})}
         initial={''}
         form={(editTarget, updatedForm) => (
           <TextField
             margin="dense"
-            id="<%= property.name %>"
-            label="<%= property.screenLabel ? property.screenLabel : property.name %>"
+            id="<%= property.name.lowerCamelName %>"
+            label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
             type="text"
             value={editTarget || ''}
             fullWidth
@@ -294,14 +294,14 @@ const <%= h.changeCase.pascal(struct.name) %>EntryForm = ({open = true, setOpen 
       <%_ } -%>
       <%_ if (property.childType === 'textarea') { -%>
       <ArrayForm
-        items={target.<%= property.name %> || []}
-        syncItems={items => syncTarget({<%= property.name %>: items})}
+        items={target.<%= property.name.lowerCamelName %> || []}
+        syncItems={items => syncTarget({<%= property.name.lowerCamelName %>: items})}
         initial={''}
         form={(editTarget, updatedForm) => (
           <TextField
             margin="dense"
-            id="<%= property.name %>"
-            label="<%= property.screenLabel ? property.screenLabel : property.name %>"
+            id="<%= property.name.lowerCamelName %>"
+            label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
             type="text"
             value={editTarget || ''}
             fullWidth
@@ -315,14 +315,14 @@ const <%= h.changeCase.pascal(struct.name) %>EntryForm = ({open = true, setOpen 
       <%_ } -%>
       <%_ if (property.childType === 'number') { -%>
       <ArrayForm
-        items={target.<%= property.name %> || []}
-        syncItems={items => syncTarget({<%= property.name %>: items})}
+        items={target.<%= property.name.lowerCamelName %> || []}
+        syncItems={items => syncTarget({<%= property.name.lowerCamelName %>: items})}
         initial={0}
         form={(editTarget, updatedForm) => (
           <TextField
             margin="dense"
-            id="<%= property.name %>"
-            label="<%= property.screenLabel ? property.screenLabel : property.name %>"
+            id="<%= property.name.lowerCamelName %>"
+            label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
             type="number"
             inputProps={{inputMode: 'numeric', pattern: '[0-9]*'}}
             value={editTarget || editTarget === 0 ? editTarget : ''}
@@ -335,8 +335,8 @@ const <%= h.changeCase.pascal(struct.name) %>EntryForm = ({open = true, setOpen 
       <%_ } -%>
       <%_ if (property.childType === 'bool') { -%>
       <ArrayForm
-        items={target.<%= property.name %> || []}
-        syncItems={items => syncTarget({<%= property.name %>: items})}
+        items={target.<%= property.name.lowerCamelName %> || []}
+        syncItems={items => syncTarget({<%= property.name.lowerCamelName %>: items})}
         initial={false}
         form={(editTarget, updatedForm) => (
           <FormControlLabel
@@ -346,19 +346,19 @@ const <%= h.changeCase.pascal(struct.name) %>EntryForm = ({open = true, setOpen 
                 onChange={e => updatedForm(e.target.checked)}
               />
             }
-            label="<%= property.screenLabel ? property.screenLabel : property.name %>"
+            label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
           />
         )}
       />
       <%_ } -%>
       <%_ if (property.childType === 'time') { -%>
       <ArrayForm
-        items={target.<%= property.name %> || []}
-        syncItems={items => syncTarget({<%= property.name %>: items})}
+        items={target.<%= property.name.lowerCamelName %> || []}
+        syncItems={items => syncTarget({<%= property.name.lowerCamelName %>: items})}
         initial={formatISO(new Date())}
         form={(editTarget, updatedForm) => (
           <DateTimeForm
-            label="<%= property.screenLabel ? property.screenLabel : property.name %>"
+            label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
             dateTime={editTarget ? new Date(editTarget) : null}
             syncDateTime={dateTime => updatedForm(dateTime ? formatISO(dateTime) : undefined)}
           />
@@ -368,10 +368,10 @@ const <%= h.changeCase.pascal(struct.name) %>EntryForm = ({open = true, setOpen 
     </Expansion>
     <%_ } -%>
     <%_ if (property.editType === 'array-struct') { -%>
-    <Expansion label="<%= property.screenLabel ? property.screenLabel : property.name %>">
+    <Expansion label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>">
       <StructArrayForm
-        items={target.<%= property.name %> || []}
-        syncItems={items => syncTarget({<%= property.name %>: items})}
+        items={target.<%= property.name.lowerCamelName %> || []}
+        syncItems={items => syncTarget({<%= property.name.lowerCamelName %>: items})}
         initial={INITIAL_<%= h.changeCase.constant(property.structType) %>}
         table={(items, pageInfo, changePageInfo, openEntryForm, removeRow) => (
           <<%= h.changeCase.pascal(property.structType) %>DataTable
@@ -399,39 +399,39 @@ const <%= h.changeCase.pascal(struct.name) %>EntryForm = ({open = true, setOpen 
     </Expansion>
     <%_ } -%>
     <%_ if (property.editType === 'struct') { -%>
-    <Expansion label="<%= property.screenLabel ? property.screenLabel : property.name %>">
-      {target.<%= property.name %> ? (
+    <Expansion label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>">
+      {target.<%= property.name.lowerCamelName %> ? (
         <<%= h.changeCase.pascal(property.structType) %>EntryForm
-          target={target.<%= property.name %>!}
-          syncTarget={item => syncTarget({<%= property.name %>: item})}
+          target={target.<%= property.name.lowerCamelName %>!}
+          syncTarget={item => syncTarget({<%= property.name.lowerCamelName %>: item})}
           isEmbedded={true}
           hasParent={true}
         />
       ) : (
         <InitForm
           initial={INITIAL_<%= h.changeCase.constant(property.structType) %>}
-          syncTarget={item => syncTarget({<%= property.name %>: item})}
+          syncTarget={item => syncTarget({<%= property.name.lowerCamelName %>: item})}
         />
       )}
     </Expansion>
     <%_ } -%>
-    <%_ if (property.name === 'id') { -%>
-  ), [isNew, target.<%= property.name %>, syncTarget])
+    <%_ if (property.name.lowerCamelName === 'id') { -%>
+  ), [isNew, target.<%= property.name.lowerCamelName %>, syncTarget])
     <%_ } else { -%>
-  ), [target.<%= property.name %>, syncTarget])
+  ), [target.<%= property.name.lowerCamelName %>, syncTarget])
     <%_ } -%>
 
   <%_ }) -%>
   return (
     <>
       {!isEmbedded && (
-        <DialogTitle><%= struct.label || h.changeCase.constant(struct.name) %>{isNew ? '追加' : '編集'}</DialogTitle>
+        <DialogTitle><%= struct.label || struct.name.upperSnakeName %>{isNew ? '追加' : '編集'}</DialogTitle>
       )}
       <DialogContent>
         <Grid container spacing={2}>
         <%_ struct.editProperties.forEach(function (property, key) { -%>
           <%_ if (property.editType === 'none') { return } -%>
-          <Grid item xs={12}>{<%= property.name %>Form}</Grid>
+          <Grid item xs={12}>{<%= property.name.lowerCamelName %>Form}</Grid>
         <%_ }) -%>
         </Grid>
       </DialogContent>
@@ -446,4 +446,4 @@ const <%= h.changeCase.pascal(struct.name) %>EntryForm = ({open = true, setOpen 
   )
 }
 
-export default <%= h.changeCase.pascal(struct.name) %>EntryForm
+export default <%= struct.name.pascalName %>EntryForm

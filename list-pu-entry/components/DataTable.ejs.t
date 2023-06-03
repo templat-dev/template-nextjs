@@ -1,10 +1,10 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/components/<%= struct.name %>/<%= h.changeCase.pascal(struct.name) %>DataTable.tsx
+to: <%= rootDirectory %>/<%= project.name %>/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>DataTable.tsx
 ---
 import * as React from 'react'
 import {useMemo, useState} from 'react'
 import {Box, Divider, Fab, IconButton, Paper, Typography} from '@mui/material'
-<%_ if (struct.hasImage === true || struct.hasMultiImage === true) { -%>
+<%_ if (struct.exists.image || struct.exists.arrayImage) { -%>
 import {GridActionsCellItem, GridColumns, GridRenderCellParams, GridToolbarContainer} from '@mui/x-data-grid'
 <%_ } else { -%>
 import {GridActionsCellItem, GridColumns, GridToolbarContainer} from '@mui/x-data-grid'
@@ -12,28 +12,28 @@ import {GridActionsCellItem, GridColumns, GridToolbarContainer} from '@mui/x-dat
 import SearchIcon from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
-<%_ if (struct.hasMultiImage === true) { -%>
+<%_ if (struct.exists.arrayImage) { -%>
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import {Carousel} from 'react-responsive-carousel'
 <%_ } -%>
-import {Model<%= h.changeCase.pascal(struct.name) %>} from '@/apis'
+import {Model<%= struct.name.pascalName %>} from '@/apis'
 import {AppDataGrid, AppDataGridBaseProps} from '@/components/common/AppDataGrid'
 <%_ if (struct.structType !== 'struct') { -%>
-import <%= h.changeCase.pascal(struct.name) %>SearchForm, {
-  INITIAL_<%= h.changeCase.constant(struct.name) %>_SEARCH_CONDITION,
-  <%= h.changeCase.pascal(struct.name) %>SearchCondition
-} from '@/components/<%= struct.name %>/<%= h.changeCase.pascal(struct.name) %>SearchForm'
+import <%= struct.name.pascalName %>SearchForm, {
+  INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION,
+  <%= struct.name.pascalName %>SearchCondition
+} from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>SearchForm'
 <%_ } -%>
 
 <%_ if (struct.structType === 'struct') { -%>
-const <%= h.changeCase.pascal(struct.name) %>DataTable = (props: AppDataGridBaseProps<Model<%= h.changeCase.pascal(struct.name) %>, never>) => {
+const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Model<%= struct.name.pascalName %>, never>) => {
   const {items = [], onOpenEntryForm, onRemove} = props
 <%_ } -%>
 <%_ if (struct.structType !== 'struct') { -%>
-const <%= h.changeCase.pascal(struct.name) %>DataTable = (props: AppDataGridBaseProps<Model<%= h.changeCase.pascal(struct.name) %>, <%= h.changeCase.pascal(struct.name) %>SearchCondition>) => {
+const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Model<%= struct.name.pascalName %>, <%= struct.name.pascalName %>SearchCondition>) => {
   const {
     items = [],
-    searchCondition = INITIAL_<%= h.changeCase.constant(struct.name) %>_SEARCH_CONDITION,
+    searchCondition = INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION,
     hasParent,
     onChangeSearch = () => {},
     onOpenEntryForm,
@@ -60,8 +60,8 @@ const <%= h.changeCase.pascal(struct.name) %>DataTable = (props: AppDataGridBase
       <%_ struct.fields.forEach(function(property, index){ -%>
         <%_ if (property.listType === 'image' && property.dataType === 'string') { -%>
     {
-      field: '<%= property.name %>',
-      headerName: '<%= property.screenLabel ? property.screenLabel : property.name %>',
+      field: '<%= property.name.lowerCamelName %>',
+      headerName: '<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>',
       width: 120,
       renderCell: (params: GridRenderCellParams<string>) => (
         params.value ?
@@ -75,8 +75,8 @@ const <%= h.changeCase.pascal(struct.name) %>DataTable = (props: AppDataGridBase
     },
         <%_ } else if (property.listType === 'array-image') { -%>
     {
-      field: '<%= property.name %>',
-      headerName: '<%= property.screenLabel ? property.screenLabel : property.name %>',
+      field: '<%= property.name.lowerCamelName %>',
+      headerName: '<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>',
       width: 120,
       renderCell: (params: GridRenderCellParams<string[]>) => (
         params.value ?
@@ -107,7 +107,7 @@ const <%= h.changeCase.pascal(struct.name) %>DataTable = (props: AppDataGridBase
       )
     },
         <%_ } else if (property.listType !== 'none' && property.dataType !== 'struct' && property.dataType !== 'array-struct') { -%>
-    {field: '<%= property.name %>', headerName: '<%= property.screenLabel ? property.screenLabel : property.name === 'id' ? 'ID' : property.name %>', width: <%= property.name === 'id' ? 160 : 120 %>},
+    {field: '<%= property.name.lowerCamelName %>', headerName: '<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName === 'id' ? 'ID' : property.name.lowerCamelName %>', width: <%= property.name.lowerCamelName === 'id' ? 160 : 120 %>},
         <%_ } -%>
       <%_ }); -%>
       <%_ } -%>
@@ -138,7 +138,7 @@ const <%= h.changeCase.pascal(struct.name) %>DataTable = (props: AppDataGridBase
       <AppDataGrid
         columns={columns}
         rows={items}
-<%_ if (struct.hasImage === true || struct.hasMultiImage === true) { -%>
+<%_ if (struct.exists.image || struct.exists.arrayImage) { -%>
         rowHeight={100}
 <%_ } -%>
         components={{
@@ -170,7 +170,7 @@ const <%= h.changeCase.pascal(struct.name) %>DataTable = (props: AppDataGridBase
         {...props}
       />
 <%_ if (struct.structType !== 'struct') { -%>
-      <<%= h.changeCase.pascal(struct.name) %>SearchForm
+      <<%= struct.name.pascalName %>SearchForm
         open={searchFormOpen}
         setOpen={setSearchFormOpen}
         currentSearchCondition={searchCondition}
@@ -181,4 +181,4 @@ const <%= h.changeCase.pascal(struct.name) %>DataTable = (props: AppDataGridBase
   )
 }
 
-export default <%= h.changeCase.pascal(struct.name) %>DataTable
+export default <%= struct.name.pascalName %>DataTable

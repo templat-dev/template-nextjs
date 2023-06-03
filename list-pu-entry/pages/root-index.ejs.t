@@ -1,10 +1,10 @@
 ---
 to: "<%= struct.enable ? `${rootDirectory}/${project.name}/pages/index.tsx` : null %>"
 inject: true
-skip_if: メニュー <%= struct.name %>
+skip_if: メニュー <%= struct.name.lowerCamelName %>
 after: メニュー
 ---
-        {/* メニュー <%= struct.name %> */}
+        {/* メニュー <%= struct.name.lowerCamelName %> */}
         <Grid item xs={6} sm={6} md={4} lg={3} xl={3}>
           <Card>
             <CardContent>
@@ -20,7 +20,7 @@ after: メニュー
             <Divider/>
             <CardActions sx={{padding: 0}}>
               <Button fullWidth startIcon={<ArrowForwardIcon/>} size="small"
-                      component={Link} href="/<%= struct.name %>"
+                      component={Link} href="/<%= struct.name.lowerCamelName %>"
                       sx={{padding: 1.5, justifyContent: 'flex-end'}}>
                 <%= struct.listLabel %>画面に移動
               </Button>

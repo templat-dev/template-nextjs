@@ -1,5 +1,5 @@
 ---
-to: "<%= struct.enable ? `${rootDirectory}/${project.name}/pages/${struct.name}/index.tsx` : null %>"
+to: "<%= struct.enable ? `${rootDirectory}/${project.name}/pages/${struct.name.lowerCamelName}/index.tsx` : null %>"
 force: true
 ---
 import * as React from 'react'
@@ -10,15 +10,15 @@ import {useRouter} from 'next/router'
 import {useResetRecoilState, useSetRecoilState} from 'recoil'
 import {Container, Dialog} from '@mui/material'
 import {dialogState, DialogState, loadingState, snackbarState, SnackbarState} from '@/state/App'
-import {Model<%= h.changeCase.pascal(struct.name) %>, <%= h.changeCase.pascal(struct.name) %>Api} from '@/apis'
+import {Model<%= struct.name.pascalName %>, <%= struct.name.pascalName %>Api} from '@/apis'
 import {NEW_INDEX} from '@/components/common/Base'
 import {GridPageInfo, INITIAL_GRID_PAGE_INFO} from '@/components/common/AppDataGrid'
-import <%= h.changeCase.pascal(struct.name) %>DataTable from '@/components/<%= struct.name %>/<%= h.changeCase.pascal(struct.name) %>DataTable'
+import <%= struct.name.pascalName %>DataTable from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>DataTable'
 import {
-  INITIAL_<%= h.changeCase.constant(struct.name) %>_SEARCH_CONDITION,
-  <%= h.changeCase.pascal(struct.name) %>SearchCondition
-} from '@/components/<%= struct.name %>/<%= h.changeCase.pascal(struct.name) %>SearchForm'
-import <%= h.changeCase.pascal(struct.name) %>EntryForm, {INITIAL_<%= h.changeCase.constant(struct.name) %>} from '@/components/<%= struct.name %>/<%= h.changeCase.pascal(struct.name) %>EntryForm'
+  INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION,
+  <%= struct.name.pascalName %>SearchCondition
+} from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>SearchForm'
+import <%= struct.name.pascalName %>EntryForm, {INITIAL_<%= struct.name.upperSnakeName %>} from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>EntryForm'
 
 const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
   const router = useRouter()
@@ -28,7 +28,7 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
   const showSnackbar = useSetRecoilState<SnackbarState>(snackbarState)
 
   /** 一覧表示用の配列 */
-  const [<%= struct.pluralName %>, set<%= h.changeCase.pascal(struct.pluralName) %>] = useState<Model<%= h.changeCase.pascal(struct.name) %>[]>([])
+  const [<%= struct.pluralName %>, set<%= h.changeCase.pascal(struct.pluralName) %>] = useState<Model<%= struct.name.pascalName %>[]>([])
 
   /** 一覧の表示ページ情報 */
   const [pageInfo, setPageInfo] = useState<GridPageInfo>(cloneDeep(INITIAL_GRID_PAGE_INFO))
@@ -40,13 +40,13 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   /** 検索条件 */
-  const [searchCondition, setSearchCondition] = useState<<%= h.changeCase.pascal(struct.name) %>SearchCondition>(cloneDeep(INITIAL_<%= h.changeCase.constant(struct.name) %>_SEARCH_CONDITION))
+  const [searchCondition, setSearchCondition] = useState<<%= struct.name.pascalName %>SearchCondition>(cloneDeep(INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION))
 
   /** 入力フォームの表示表示状態 (true: 表示, false: 非表示) */
   const [entryFormOpen, setEntryFormOpen] = useState<boolean>(false)
 
   /** 編集対象 */
-  const [editTarget, setEditTarget] = useState<Model<%= h.changeCase.pascal(struct.name) %> | null>(null)
+  const [editTarget, setEditTarget] = useState<Model<%= struct.name.pascalName %> | null>(null)
 
   /** 編集対象のインデックス */
   const [editIndex, setEditIndex] = useState<number>(-1)
@@ -59,30 +59,30 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
   }, [router.pathname])
 
   const fetch = useCallback(async (
-    {searchCondition = INITIAL_<%= h.changeCase.constant(struct.name) %>_SEARCH_CONDITION, pageInfo = INITIAL_GRID_PAGE_INFO}
-      : { searchCondition: <%= h.changeCase.pascal(struct.name) %>SearchCondition, pageInfo: GridPageInfo }
-      = {searchCondition: INITIAL_<%= h.changeCase.constant(struct.name) %>_SEARCH_CONDITION, pageInfo: INITIAL_GRID_PAGE_INFO}
+    {searchCondition = INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION, pageInfo = INITIAL_GRID_PAGE_INFO}
+      : { searchCondition: <%= struct.name.pascalName %>SearchCondition, pageInfo: GridPageInfo }
+      = {searchCondition: INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION, pageInfo: INITIAL_GRID_PAGE_INFO}
   ) => {
     setIsLoading(true)
     try {
-      const data = await new <%= h.changeCase.pascal(struct.name) %>Api().search<%= h.changeCase.pascal(struct.name) %>({
-        <%_ struct.listProperties.listExtraProperties.forEach(function(property, index){ -%>
+      const data = await new <%= struct.name.pascalName %>Api().search<%= struct.name.pascalName %>({
+        <%_ struct.fields.forEach(function(property, index){ -%>
 <%#_ 通常の検索 -%>
-        <%_ if ((property.type === 'string' || property.type === 'time' || property.type === 'bool' || property.type === 'number')  && property.searchType === 1) { -%>
-        <%= property.name %>: searchCondition.<%= property.name %>.enabled ? searchCondition.<%= property.name %>.value : undefined,
+        <%_ if ((property.listType === 'string' || property.listType === 'time' || property.listType === 'bool' || property.listType === 'number')  && property.searchType === 1) { -%>
+        <%= property.name.lowerCamelName %>: searchCondition.<%= property.name.lowerCamelName %>.enabled ? searchCondition.<%= property.name.lowerCamelName %>.value : undefined,
 <%#_ 配列の検索 -%>
-        <%_ } else if ((property.type === 'array-string' || property.type === 'array-time' || property.type === 'array-bool' || property.type === 'array-number')  && property.searchType === 1) { -%>
-        <%= property.name %>: searchCondition.<%= property.name %>.enabled ? [searchCondition.<%= property.name %>.value] : undefined,
+        <%_ } else if ((property.listType === 'array-string' || property.listType === 'array-time' || property.listType === 'array-bool' || property.listType === 'array-number')  && property.searchType === 1) { -%>
+        <%= property.name.lowerCamelName %>: searchCondition.<%= property.name.lowerCamelName %>.enabled ? [searchCondition.<%= property.name.lowerCamelName %>.value] : undefined,
 <%#_ 範囲検索 -%>
-        <%_ } else if ((property.type === 'time' || property.type === 'number') && 2 <= property.searchType &&  property.searchType <= 5) { -%>
-        <%= property.name %>: searchCondition.<%= property.name %>.enabled ? searchCondition.<%= property.name %>.value : undefined,
-        <%= property.name %>From: searchCondition.<%= property.name %>From.enabled ? searchCondition.<%= property.name %>From.value : undefined,
-        <%= property.name %>To: searchCondition.<%= property.name %>To.enabled ? searchCondition.<%= property.name %>To.value : undefined,
+        <%_ } else if ((property.listType === 'time' || property.listType === 'number') && 2 <= property.searchType &&  property.searchType <= 5) { -%>
+        <%= property.name.lowerCamelName %>: searchCondition.<%= property.name.lowerCamelName %>.enabled ? searchCondition.<%= property.name.lowerCamelName %>.value : undefined,
+        <%= property.name.lowerCamelName %>From: searchCondition.<%= property.name.lowerCamelName %>From.enabled ? searchCondition.<%= property.name.lowerCamelName %>From.value : undefined,
+        <%= property.name.lowerCamelName %>To: searchCondition.<%= property.name.lowerCamelName %>To.enabled ? searchCondition.<%= property.name.lowerCamelName %>To.value : undefined,
 <%#_ 配列の範囲検索 -%>
-        <%_ } else if ((property.type === 'array-time' || property.type === 'array-number') && 2 <= property.searchType &&  property.searchType <= 5) { -%>
-        <%= property.name %>: searchCondition.<%= property.name %>.enabled ? [searchCondition.<%= property.name %>.value] : undefined,
-        <%= property.name %>From: searchCondition.<%= property.name %>From.enabled ? searchCondition.<%= property.name %>From.value : undefined,
-        <%= property.name %>To: searchCondition.<%= property.name %>To.enabled ? searchCondition.<%= property.name %>To.value : undefined,
+        <%_ } else if ((property.listType === 'array-time' || property.listType === 'array-number') && 2 <= property.searchType &&  property.searchType <= 5) { -%>
+        <%= property.name.lowerCamelName %>: searchCondition.<%= property.name.lowerCamelName %>.enabled ? [searchCondition.<%= property.name.lowerCamelName %>.value] : undefined,
+        <%= property.name.lowerCamelName %>From: searchCondition.<%= property.name.lowerCamelName %>From.enabled ? searchCondition.<%= property.name.lowerCamelName %>From.value : undefined,
+        <%= property.name.lowerCamelName %>To: searchCondition.<%= property.name.lowerCamelName %>To.enabled ? searchCondition.<%= property.name.lowerCamelName %>To.value : undefined,
         <%_ } -%>
         <%_ }) -%>
         limit: pageInfo.pageSize !== -1 ? pageInfo.pageSize : undefined,
@@ -112,7 +112,7 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
     await fetch({searchCondition, pageInfo})
   }, [fetch, searchCondition, pageInfo])
 
-  const search = useCallback(async (searchCondition: <%= h.changeCase.pascal(struct.name) %>SearchCondition) => {
+  const search = useCallback(async (searchCondition: <%= struct.name.pascalName %>SearchCondition) => {
     setSearchCondition(searchCondition)
     await fetch({searchCondition, pageInfo})
   }, [fetch, pageInfo])
@@ -122,12 +122,12 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
     await fetch({searchCondition, pageInfo})
   }, [fetch, searchCondition])
 
-  const openEntryForm = useCallback((<%= struct.name %>?: Model<%= h.changeCase.pascal(struct.name) %>) => {
-    if (!!<%= struct.name %>) {
-      setEditTarget(cloneDeep(<%= struct.name %>))
-      setEditIndex(<%= struct.pluralName %>.findIndex(item => item.id === <%= struct.name %>.id))
+  const openEntryForm = useCallback((<%= struct.name.lowerCamelName %>?: Model<%= struct.name.pascalName %>) => {
+    if (!!<%= struct.name.lowerCamelName %>) {
+      setEditTarget(cloneDeep(<%= struct.name.lowerCamelName %>))
+      setEditIndex(<%= struct.pluralName %>.findIndex(item => item.id === <%= struct.name.lowerCamelName %>.id))
     } else {
-      setEditTarget(cloneDeep(INITIAL_<%= h.changeCase.constant(struct.name) %>))
+      setEditTarget(cloneDeep(INITIAL_<%= struct.name.upperSnakeName %>))
       setEditIndex(NEW_INDEX)
     }
     setEntryFormOpen(true)
@@ -141,7 +141,7 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
       positive: async () => {
         showLoading(true)
         try {
-          await new <%= h.changeCase.pascal(struct.name) %>Api().delete<%= h.changeCase.pascal(struct.name) %>({id: <%= struct.pluralName %>[index].id!})
+          await new <%= struct.name.pascalName %>Api().delete<%= struct.name.pascalName %>({id: <%= struct.pluralName %>[index].id!})
           setEntryFormOpen(false)
           await reFetch()
         } finally {
@@ -152,8 +152,8 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
     })
   }, [<%= struct.pluralName %>, setEntryFormOpen, reFetch, showDialog, showLoading, hideLoading, showSnackbar])
 
-  const removeRow = useCallback((<%= struct.name %>: Model<%= h.changeCase.pascal(struct.name) %>) => {
-    const index = <%= struct.pluralName %>.indexOf(<%= struct.name %>)
+  const removeRow = useCallback((<%= struct.name.lowerCamelName %>: Model<%= struct.name.pascalName %>) => {
+    const index = <%= struct.pluralName %>.indexOf(<%= struct.name.lowerCamelName %>)
     remove(index)
   }, [<%= struct.pluralName %>, remove])
 
@@ -170,7 +170,7 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
 
   return (
     <Container sx={{padding: 2}}>
-      <<%= h.changeCase.pascal(struct.name) %>DataTable
+      <<%= struct.name.pascalName %>DataTable
         items={<%= struct.pluralName %>}
         pageInfo={pageInfo}
         totalCount={totalCount}
@@ -182,7 +182,7 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
         onRemove={removeRow}
       />
       <Dialog open={entryFormOpen} onClose={() => setEntryFormOpen(false)}>
-        <<%= h.changeCase.pascal(struct.name) %>EntryForm
+        <<%= struct.name.pascalName %>EntryForm
           target={editTarget!}
           isNew={editIndex === NEW_INDEX}
           open={entryFormOpen}
