@@ -260,7 +260,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       imageURL={target.<%= property.name.lowerCamelName %> || null}
       dir="<%= struct.name.lowerCamelName %>/<%= property.name.lowerCamelName %>"
       label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
-      onChange={(value: string) => syncTarget({<%= property.name.lowerCamelName %>: value || undefined})}
+      onChange={(value: string | null) => syncTarget({<%= property.name.lowerCamelName %>: value || undefined})}
     />
     <%_ } -%>
     <%_ if (property.editType === 'array-image') { -%>
@@ -268,7 +268,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       imageURLs={target.<%= property.name.lowerCamelName %> || null}
       dir="<%= struct.name.lowerCamelName %>/<%= property.name.lowerCamelName %>"
       label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
-      onChange={(value: string) => syncTarget({<%= property.name.lowerCamelName %>: value || undefined})}
+      onChange={(value: string | null) => syncTarget({<%= property.name.lowerCamelName %>: value || undefined})}
     />
     <%_ } -%>
     <%_ if (property.editType === 'array-string' || property.editType === 'array-textarea' || property.editType === 'array-number' || property.editType === 'array-time' || property.editType === 'array-bool') { -%>
