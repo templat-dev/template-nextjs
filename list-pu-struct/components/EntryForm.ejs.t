@@ -29,10 +29,10 @@ import ImageArrayForm from '@/components/form/ImageArrayForm'
 <%_ } -%>
 import {
   <%_ if (struct.structType !== 'struct') { -%><%= h.changeCase.upperCaseFirst(struct.name.lowerCamelName) %>Api,
-  <% } -%>Model<%= struct.pascalName %>,
+  <% } -%>Model<%= struct.name.pascalName %>,
 <%_ struct.fields.forEach(function (property, key) { -%>
   <%_ if (property.editType === 'array-struct' || property.editType === 'struct') { -%>
-  Model<%= h.changeCase.upperCaseFirst(property.structType) %>,
+  Model<%= property.structName.pascalName %>,
   <%_ } -%>
 <%_ }) -%>
 } from '@/apis'
@@ -46,14 +46,14 @@ import {
   <%_ if (property.editType === 'struct') { -%>
     <%_ importInitForm = true -%>
     <%_ importExpansion = true -%>
-    <%_ importEntryFormSet.add(property.structType) -%>
+    <%_ importEntryFormSet.add(property.structName.lowerCamelName) -%>
   <%_ } -%>
   <%_ if (property.editType === 'array-struct') { -%>
     <%_ importInitForm = true -%>
     <%_ importExpansion = true -%>
     <%_ importStructArrayForm = true -%>
-    <%_ importEntryFormSet.add(property.structType) -%>
-    <%_ importDataTableSet.add(property.structType) -%>
+    <%_ importEntryFormSet.add(property.structName.lowerCamelName) -%>
+    <%_ importDataTableSet.add(property.structName.lowerCamelName) -%>
   <%_ } -%>
   <%_ if (property.editType === 'array-string' || property.editType === 'array-textarea' || property.editType === 'array-number' || property.editType === 'array-time' || property.editType === 'array-bool') { -%>
     <%_ importExpansion = true -%>
@@ -83,7 +83,7 @@ import <%= h.changeCase.pascal(structType) %>DataTable from '@/components/<%= h.
 export const INITIAL_<%= struct.name.upperSnakeName %>: Model<%= struct.name.pascalName %> = {
 <%_ struct.fields.forEach(function (property, key) { -%>
   <%_ if (property.editType === 'struct') { -%>
-  <%= property.name.lowerCamelName %>: INITIAL_<%= h.changeCase.constant(property.structType) %>,
+  <%= property.name.lowerCamelName %>: INITIAL_<%= property.structName.upperSnakeName %>,
   <%_ } -%>
   <%_ if (property.editType.startsWith('array')) { -%>
   <%= property.name.lowerCamelName %>: [],
@@ -372,9 +372,9 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       <StructArrayForm
         items={target.<%= property.name.lowerCamelName %> || []}
         syncItems={items => syncTarget({<%= property.name.lowerCamelName %>: items})}
-        initial={INITIAL_<%= h.changeCase.constant(property.structType) %>}
+        initial={INITIAL_<%= property.structName.upperSnakeName %>}
         table={(items, pageInfo, changePageInfo, openEntryForm, removeRow) => (
-          <<%= h.changeCase.pascal(property.structType) %>DataTable
+          <<%= property.structName.pascalName %>DataTable
             items={items}
             pageInfo={pageInfo}
             hasParent={true}
@@ -384,7 +384,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
           />
         )}
         form={(editIndex, open, setOpen, editTarget, syncTarget, updatedForm, removeForm) => (
-          <<%= h.changeCase.pascal(property.structType) %>EntryForm
+          <<%= property.structName.pascalName %>EntryForm
             open={open}
             setOpen={setOpen}
             target={editTarget}
@@ -401,7 +401,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
     <%_ if (property.editType === 'struct') { -%>
     <Expansion label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>">
       {target.<%= property.name.lowerCamelName %> ? (
-        <<%= h.changeCase.pascal(property.structType) %>EntryForm
+        <<%= property.structName.pascalName %>EntryForm
           target={target.<%= property.name.lowerCamelName %>!}
           syncTarget={item => syncTarget({<%= property.name.lowerCamelName %>: item})}
           isEmbedded={true}
@@ -409,7 +409,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
         />
       ) : (
         <InitForm
-          initial={INITIAL_<%= h.changeCase.constant(property.structType) %>}
+          initial={INITIAL_<%= property.structName.upperSnakeName %>}
           syncTarget={item => syncTarget({<%= property.name.lowerCamelName %>: item})}
         />
       )}
