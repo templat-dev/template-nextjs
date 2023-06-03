@@ -31,7 +31,7 @@ import {
   <%_ if (struct.structType !== 'struct') { -%><%= h.changeCase.upperCaseFirst(struct.name.lowerCamelName) %>Api,
   <% } -%>Model<%= struct.pascalName %>,
 <%_ struct.fields.forEach(function (property, key) { -%>
-  <%_ if (property.editScreenType === 'array-struct' || property.editScreenType === 'struct') { -%>
+  <%_ if (property.editType === 'array-struct' || property.editType === 'struct') { -%>
   Model<%= h.changeCase.upperCaseFirst(property.structType) %>,
   <%_ } -%>
 <%_ }) -%>
@@ -43,19 +43,19 @@ import {
 <%_ let importArrayForm = false -%>
 <%_ let importInitForm = false -%>
 <%_ struct.fields.forEach(function (property, key) { -%>
-  <%_ if (property.editScreenType === 'struct') { -%>
+  <%_ if (property.editType === 'struct') { -%>
     <%_ importInitForm = true -%>
     <%_ importExpansion = true -%>
     <%_ importEntryFormSet.add(property.structType) -%>
   <%_ } -%>
-  <%_ if (property.editScreenType === 'array-struct') { -%>
+  <%_ if (property.editType === 'array-struct') { -%>
     <%_ importInitForm = true -%>
     <%_ importExpansion = true -%>
     <%_ importStructArrayForm = true -%>
     <%_ importEntryFormSet.add(property.structType) -%>
     <%_ importDataTableSet.add(property.structType) -%>
   <%_ } -%>
-  <%_ if (property.editScreenType === 'array-string' || property.editScreenType === 'array-textarea' || property.editScreenType === 'array-number' || property.editScreenType === 'array-time' || property.editScreenType === 'array-bool') { -%>
+  <%_ if (property.editType === 'array-string' || property.editType === 'array-textarea' || property.editType === 'array-number' || property.editType === 'array-time' || property.editType === 'array-bool') { -%>
     <%_ importExpansion = true -%>
     <%_ importArrayForm = true -%>
   <%_ } -%>
@@ -82,19 +82,19 @@ import <%= h.changeCase.pascal(structType) %>DataTable from '@/components/<%= h.
 
 export const INITIAL_<%= struct.name.upperSnakeName %>: Model<%= struct.name.pascalName %> = {
 <%_ struct.fields.forEach(function (property, key) { -%>
-  <%_ if (property.editScreenType === 'struct') { -%>
+  <%_ if (property.editType === 'struct') { -%>
   <%= property.name.lowerCamelName %>: INITIAL_<%= h.changeCase.constant(property.structType) %>,
   <%_ } -%>
-  <%_ if (property.editScreenType.startsWith('array')) { -%>
+  <%_ if (property.editType.startsWith('array')) { -%>
   <%= property.name.lowerCamelName %>: [],
   <%_ } -%>
-  <%_ if (property.editScreenType === 'string' || property.editScreenType === 'textarea' || property.editScreenType === 'time') { -%>
+  <%_ if (property.editType === 'string' || property.editType === 'textarea' || property.editType === 'time') { -%>
   <%= property.name.lowerCamelName %>: undefined,
   <%_ } -%>
-  <%_ if (property.editScreenType === 'bool') { -%>
+  <%_ if (property.editType === 'bool') { -%>
   <%= property.name.lowerCamelName %>: undefined,
   <%_ } -%>
-  <%_ if (property.editScreenType === 'number') { -%>
+  <%_ if (property.editType === 'number') { -%>
   <%= property.name.lowerCamelName %>: undefined,
   <%_ } -%>
 <%_ }) -%>
@@ -169,9 +169,9 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
 <%_ } -%>
 
   <%_ struct.fields.forEach(function (property, key) { -%>
-    <%_ if (property.editScreenType === 'none') { return } -%>
+    <%_ if (property.editType === 'none') { return } -%>
   const <%= property.name.lowerCamelName %>Form = useMemo(() => (
-    <%_ if (property.editScreenType === 'string' && property.name.lowerCamelName === 'id') { -%>
+    <%_ if (property.editType === 'string' && property.name.lowerCamelName === 'id') { -%>
     <TextField
       disabled={!isNew}
       margin="dense"
@@ -184,7 +184,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.value})}
     />
     <%_ } -%>
-    <%_ if (property.editScreenType === 'string' && property.name.lowerCamelName !== 'id') { -%>
+    <%_ if (property.editType === 'string' && property.name.lowerCamelName !== 'id') { -%>
     <TextField
       margin="dense"
       id="<%= property.name.lowerCamelName %>"
@@ -196,7 +196,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.value})}
     />
     <%_ } -%>
-    <%_ if (property.editScreenType === 'textarea') { -%>
+    <%_ if (property.editType === 'textarea') { -%>
     <TextField
       margin="dense"
       id="<%= property.name.lowerCamelName %>"
@@ -210,7 +210,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.value})}
     />
     <%_ } -%>
-    <%_ if (property.editScreenType === 'number' && property.name.lowerCamelName === 'id') { -%>
+    <%_ if (property.editType === 'number' && property.name.lowerCamelName === 'id') { -%>
     <TextField
       disabled={!isNew}
       margin="dense"
@@ -224,7 +224,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.value === '' ? undefined : Number(e.target.value)})}
     />
     <%_ } -%>
-    <%_ if (property.editScreenType === 'number' && property.name.lowerCamelName !== 'id') { -%>
+    <%_ if (property.editType === 'number' && property.name.lowerCamelName !== 'id') { -%>
     <TextField
       margin="dense"
       id="<%= property.name.lowerCamelName %>"
@@ -237,14 +237,14 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.value === '' ? undefined : Number(e.target.value)})}
     />
     <%_ } -%>
-    <%_ if (property.editScreenType === 'time') { -%>
+    <%_ if (property.editType === 'time') { -%>
     <DateTimeForm
       label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
       dateTime={target.<%= property.name.lowerCamelName %> ? new Date(target.<%= property.name.lowerCamelName %>) : null}
       syncDateTime={dateTime => syncTarget({<%= property.name.lowerCamelName %>: dateTime ? formatISO(dateTime) : undefined})}
     />
     <%_ } -%>
-    <%_ if (property.editScreenType === 'bool') { -%>
+    <%_ if (property.editType === 'bool') { -%>
     <FormControlLabel
       control={
         <Switch
@@ -255,7 +255,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
     />
     <%_ } -%>
-    <%_ if (property.editScreenType === 'image' && property.dataType === 'string') { -%>
+    <%_ if (property.editType === 'image' && property.dataType === 'string') { -%>
     <ImageForm
       imageURL={target.<%= property.name.lowerCamelName %> || null}
       dir="<%= struct.name.lowerCamelName %>/<%= property.name.lowerCamelName %>"
@@ -263,7 +263,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       onChange={value => syncTarget({<%= property.name.lowerCamelName %>: value || undefined})}
     />
     <%_ } -%>
-    <%_ if (property.editScreenType === 'array-image') { -%>
+    <%_ if (property.editType === 'array-image') { -%>
     <ImageArrayForm
       imageURLs={target.<%= property.name.lowerCamelName %> || null}
       dir="<%= struct.name.lowerCamelName %>/<%= property.name.lowerCamelName %>"
@@ -271,7 +271,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       onChange={value => syncTarget({<%= property.name.lowerCamelName %>: value || undefined})}
     />
     <%_ } -%>
-    <%_ if (property.editScreenType === 'array-string' || property.editScreenType === 'array-textarea' || property.editScreenType === 'array-number' || property.editScreenType === 'array-time' || property.editScreenType === 'array-bool') { -%>
+    <%_ if (property.editType === 'array-string' || property.editType === 'array-textarea' || property.editType === 'array-number' || property.editType === 'array-time' || property.editType === 'array-bool') { -%>
     <Expansion label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>一覧">
       <%_ if (property.childType === 'string') { -%>
       <ArrayForm
@@ -367,7 +367,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       <%_ } -%>
     </Expansion>
     <%_ } -%>
-    <%_ if (property.editScreenType === 'array-struct') { -%>
+    <%_ if (property.editType === 'array-struct') { -%>
     <Expansion label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>">
       <StructArrayForm
         items={target.<%= property.name.lowerCamelName %> || []}
@@ -398,7 +398,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       />
     </Expansion>
     <%_ } -%>
-    <%_ if (property.editScreenType === 'struct') { -%>
+    <%_ if (property.editType === 'struct') { -%>
     <Expansion label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>">
       {target.<%= property.name.lowerCamelName %> ? (
         <<%= h.changeCase.pascal(property.structType) %>EntryForm
@@ -430,7 +430,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       <DialogContent>
         <Grid container spacing={2}>
         <%_ struct.fields.forEach(function (property, key) { -%>
-          <%_ if (property.editScreenType === 'none') { return } -%>
+          <%_ if (property.editType === 'none') { return } -%>
           <Grid item xs={12}>{<%= property.name.lowerCamelName %>Form}</Grid>
         <%_ }) -%>
         </Grid>
