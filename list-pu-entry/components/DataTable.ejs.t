@@ -56,9 +56,9 @@ const <%= h.changeCase.pascal(struct.name) %>DataTable = (props: AppDataGridBase
 <%_ } -%>
 
   const columns = useMemo((): GridColumns => [
-      <%_ if (struct.listProperties.listExtraProperties) { -%>
-      <%_ struct.listProperties.listExtraProperties.forEach(function(property, index){ -%>
-        <%_ if (property.type === 'image' && property.dataType === 'string') { -%>
+      <%_ if (struct.fields) { -%>
+      <%_ struct.fields.forEach(function(property, index){ -%>
+        <%_ if (property.listType === 'image' && property.dataType === 'string') { -%>
     {
       field: '<%= property.name %>',
       headerName: '<%= property.screenLabel ? property.screenLabel : property.name %>',
@@ -73,7 +73,7 @@ const <%= h.changeCase.pascal(struct.name) %>DataTable = (props: AppDataGridBase
           }}/> : <Box/>
       ),
     },
-        <%_ } else if (property.type === 'array-image') { -%>
+        <%_ } else if (property.listType === 'array-image') { -%>
     {
       field: '<%= property.name %>',
       headerName: '<%= property.screenLabel ? property.screenLabel : property.name %>',
@@ -106,7 +106,7 @@ const <%= h.changeCase.pascal(struct.name) %>DataTable = (props: AppDataGridBase
           </Carousel> : <Box/>
       )
     },
-        <%_ } else if (property.type !== 'none' && property.dataType !== 'struct' && property.dataType !== 'array-struct') { -%>
+        <%_ } else if (property.listType !== 'none' && property.dataType !== 'struct' && property.dataType !== 'array-struct') { -%>
     {field: '<%= property.name %>', headerName: '<%= property.screenLabel ? property.screenLabel : property.name === 'id' ? 'ID' : property.name %>', width: <%= property.name === 'id' ? 160 : 120 %>},
         <%_ } -%>
       <%_ }); -%>
