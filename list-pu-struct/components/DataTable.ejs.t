@@ -4,7 +4,7 @@ to: <%= rootDirectory %>/components/<%= struct.name.lowerCamelName %>/<%= struct
 import * as React from 'react'
 import {useMemo, useState} from 'react'
 import {Box, Divider, Fab, IconButton, Paper, Typography} from '@mui/material'
-<%_ if (struct.exists.image || struct.exists.arrayImage) { -%>
+<%_ if (struct.exists.list.image || struct.exists.list.arrayImage) { -%>
 import {GridActionsCellItem, GridColumns, GridRenderCellParams, GridToolbarContainer} from '@mui/x-data-grid'
 <%_ } else { -%>
 import {GridActionsCellItem, GridColumns, GridToolbarContainer} from '@mui/x-data-grid'
@@ -12,7 +12,7 @@ import {GridActionsCellItem, GridColumns, GridToolbarContainer} from '@mui/x-dat
 import SearchIcon from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
-<%_ if (struct.exists.arrayImage) { -%>
+<%_ if (struct.exists.list.arrayImage) { -%>
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import {Carousel} from 'react-responsive-carousel'
 <%_ } -%>
@@ -138,7 +138,7 @@ const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Mode
       <AppDataGrid
         columns={columns}
         rows={items}
-<%_ if (struct.exists.image || struct.exists.arrayImage) { -%>
+<%_ if (struct.exists.list.image || struct.exists.list.arrayImage) { -%>
         rowHeight={100}
 <%_ } -%>
         components={{

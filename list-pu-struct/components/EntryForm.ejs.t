@@ -21,10 +21,10 @@ import {formatISO} from 'date-fns'
 import {loadingState} from '@/state/App'
 <%_ } -%>
 import DateTimeForm from '@/components/form/DateTimeForm'
-<%_ if (struct.exists.image) { -%>
+<%_ if (struct.exists.edit.image) { -%>
 import ImageForm from '@/components/form/ImageForm'
 <%_ } -%>
-<%_ if (struct.exists.arrayImage) { -%>
+<%_ if (struct.exists.edit.arrayImage) { -%>
 import ImageArrayForm from '@/components/form/ImageArrayForm'
 <%_ } -%>
 import {
@@ -46,14 +46,14 @@ import {
   <%_ if (property.editType === 'struct') { -%>
     <%_ importInitForm = true -%>
     <%_ importExpansion = true -%>
-    <%_ importEntryFormSet.add(property.structName.lowerCamelName) -%>
+    <%_ importEntryFormSet.add(property.structName) -%>
   <%_ } -%>
   <%_ if (property.editType === 'array-struct') { -%>
     <%_ importInitForm = true -%>
     <%_ importExpansion = true -%>
     <%_ importStructArrayForm = true -%>
-    <%_ importEntryFormSet.add(property.structName.lowerCamelName) -%>
-    <%_ importDataTableSet.add(property.structName.lowerCamelName) -%>
+    <%_ importEntryFormSet.add(property.structName) -%>
+    <%_ importDataTableSet.add(property.structName) -%>
   <%_ } -%>
   <%_ if (property.editType === 'array-string' || property.editType === 'array-textarea' || property.editType === 'array-number' || property.editType === 'array-time' || property.editType === 'array-bool') { -%>
     <%_ importExpansion = true -%>
@@ -73,11 +73,11 @@ import ArrayForm from '@/components/form/ArrayForm'
 import {NEW_INDEX} from '@/components/common/Base'
 import StructArrayForm from '@/components/form/StructArrayForm'
 <%_ } -%>
-<%_ importEntryFormSet.forEach(function (structType) { -%>
-import <%= h.changeCase.pascal(structType) %>EntryForm, {INITIAL_<%= h.changeCase.constant(structType) %>} from '@/components/<%= h.changeCase.camel(structType) %>/<%= h.changeCase.pascal(structType) %>EntryForm'
+<%_ importEntryFormSet.forEach(function (structName) { -%>
+import <%= structName.pascalName %>EntryForm, {INITIAL_<%= structName.upperSnakeName %>} from '@/components/<%= structName.lowerCamelName %>/<%= structName.pascalName %>EntryForm'
 <%_ }) -%>
-<%_ importDataTableSet.forEach(function (structType) { -%>
-import <%= h.changeCase.pascal(structType) %>DataTable from '@/components/<%= h.changeCase.camel(structType) %>/<%= h.changeCase.pascal(structType) %>DataTable'
+<%_ importDataTableSet.forEach(function (structName) { -%>
+import <%= structName.pascalName %>DataTable from '@/components/<%= structName.lowerCamelName %>/<%= structName.pascalName %>DataTable'
 <%_ }) -%>
 
 export const INITIAL_<%= struct.name.upperSnakeName %>: Model<%= struct.name.pascalName %> = {
