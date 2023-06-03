@@ -7,7 +7,7 @@ import {Box, Divider, Fab, IconButton, Paper, Typography} from '@mui/material'
 <%_ if (struct.exists.list.image || struct.exists.list.arrayImage) { -%>
 import {GridActionsCellItem, GridColumns, GridRenderCellParams, GridToolbarContainer} from '@mui/x-data-grid'
 <%_ } else { -%>
-import {GridActionsCellItem, GridColumns, GridToolbarContainer} from '@mui/x-data-grid'
+import {GridActionsCellItem, GridColDef, GridRowParams, GridToolbarContainer} from '@mui/x-data-grid'
 <%_ } -%>
 import SearchIcon from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
@@ -55,7 +55,7 @@ const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Mode
   }, [searchCondition])
 <%_ } -%>
 
-  const columns = useMemo((): GridColumns => [
+  const columns = useMemo((): GridColDef[] => [
       <%_ if (struct.fields) { -%>
       <%_ struct.fields.forEach(function(property, index){ -%>
         <%_ if (property.listType === 'image' && property.dataType === 'string') { -%>
@@ -116,20 +116,19 @@ const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Mode
       type: 'actions',
       headerName: '',
       width: 150,
-      getActions: ({id}) => {
+      getActions: ((params: GridRowParams) => {
         return [
           <GridActionsCellItem
-            key={id}
             icon={<DeleteIcon/>}
             label="Delete"
             onClick={() => {
-              const item = items[id as number]
+              const item = items[params.id as number]
               onRemove(item)
             }}
             color="inherit"
           />
         ]
-      }
+      })
     }
   ], [items, onRemove])
 

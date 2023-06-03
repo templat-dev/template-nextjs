@@ -26,7 +26,7 @@ force: true
     "@mui/icons-material": "^5.1.0",
     "@mui/lab": "^5.0.0-alpha.54",
     "@mui/material": "^5.1.0",
-    "@mui/x-data-grid": "^5.0.0-beta.7",
+    "@mui/x-data-grid": "^6.6.0",
     "axios": "^0.24.0",
     "date-fns": "^2.25.0",
     "firebase": "^9.6.4",
