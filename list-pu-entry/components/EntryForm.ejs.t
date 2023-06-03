@@ -28,8 +28,8 @@ import ImageForm from '@/components/form/ImageForm'
 import ImageArrayForm from '@/components/form/ImageArrayForm'
 <%_ } -%>
 import {
-  <%_ if (struct.structType !== 'struct') { -%><%= h.changeCase.upperCaseFirst(struct.name.lowerCamelName) %>Api,
-  <% } -%>Model<%= struct.pascalName %>,
+  <%_ if (struct.structType !== 'struct') { -%>  <%= struct.name.pascalName %>Api,
+  <% } -%>Model<%= struct.name.pascalName %>,
 <%_ struct.fields.forEach(function (property, key) { -%>
   <%_ if (property.editType === 'array-struct' || property.editType === 'struct') { -%>
   Model<%= property.structName.pascalName %>,
