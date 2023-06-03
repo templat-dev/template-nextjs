@@ -28,7 +28,7 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
   const showSnackbar = useSetRecoilState<SnackbarState>(snackbarState)
 
   /** 一覧表示用の配列 */
-  const [<%= struct.name.lowerCamelPluralName %>, set<%= struct.name.pascalPluralName) %>] = useState<Model<%= struct.name.pascalName %>[]>([])
+  const [<%= struct.name.lowerCamelPluralName %>, set<%= struct.name.pascalPluralName %>] = useState<Model<%= struct.name.pascalName %>[]>([])
 
   /** 一覧の表示ページ情報 */
   const [pageInfo, setPageInfo] = useState<GridPageInfo>(cloneDeep(INITIAL_GRID_PAGE_INFO))
