@@ -11,9 +11,11 @@ import * as React from "react";
 interface NextLinkComposedProps
   extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href">,
     Omit<NextLinkProps, "href" | "as"> {
-  to: NextLinkProps["href"];
-  linkAs?: NextLinkProps["as"];
-  href?: NextLinkProps["href"];
+  to: NextLinkProps["href"]
+  linkAs?: NextLinkProps["as"]
+  href?: NextLinkProps["href"]
+  onMouseEnter?: NextLinkProps["onMouseEnter"]
+  onClick?: NextLinkProps["onMouseEnter"]
 }
 
 export const NextLinkComposed = React.forwardRef<HTMLAnchorElement, NextLinkComposedProps>(function NextLinkComposed(

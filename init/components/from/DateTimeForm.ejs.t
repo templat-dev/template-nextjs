@@ -66,7 +66,7 @@ export const DateTimeForm = ({label, dateTime, disabled = false, syncDateTime}: 
             onChange={(newValue: Date | null) => {
               syncDateTime(newValue)
             }}
-            renderInput={(params) => <TextField {...params} />}
+            renderInput={(params: any) => <TextField {...params} />}
           />
         </Grid>
         <Grid item xs={1}>

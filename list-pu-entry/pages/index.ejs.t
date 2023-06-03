@@ -161,7 +161,7 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
     remove(editIndex)
   }, [remove, editIndex])
 
-  const syncTarget = useCallback((target) => {
+  const syncTarget = useCallback((target: Model<%= struct.name.pascalName %>) => {
     setEditTarget(editTarget => ({
       ...editTarget,
       ...target

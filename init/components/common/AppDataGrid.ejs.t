@@ -3,7 +3,7 @@ to: <%= rootDirectory %>/components/common/AppDataGrid.tsx
 ---
 import * as React from 'react'
 import {styled} from '@mui/system'
-import {DataGrid, DataGridProps, GridColumns, GridSortModel} from '@mui/x-data-grid'
+import {DataGrid, DataGridProps, GridColDef, GridPaginationModel, GridSortModel} from '@mui/x-data-grid'
 import {useMemo} from 'react'
 
 const StyledDataGrid = styled(DataGrid)<DataGridProps>(({theme}) => ({
@@ -76,7 +76,7 @@ export interface AppDataGridBaseProps<I, S> {
 // DataTableから渡されるProps
 interface AppDataGridProps<I, S> extends AppDataGridBaseProps<I, S>, DataGridProps {
   /* 画面表示情報 */
-  columns: GridColumns
+  columns: GridColDef[]
 }
 
 export const AppDataGrid = <I, S>(props: AppDataGridProps<I, S>) => {
@@ -102,14 +102,13 @@ export const AppDataGrid = <I, S>(props: AppDataGridProps<I, S>) => {
       autoHeight
       disableColumnMenu
       rowCount={totalCount}
-      disableSelectionOnClick
+      disableRowSelectionOnClick
       getRowId={item => itemIndexMap.get(item as I)!}
       onRowClick={params => onOpenEntryForm(params.row as I)}
-      pageSize={pageInfo.pageSize}
+      pageSizeOptions={[pageInfo.pageSize]}
       paginationMode={hasParent ? 'client' : 'server'}
-      page={pageInfo.page}
-      onPageChange={(page) => onChangePageInfo({...pageInfo, page})}
-      onPageSizeChange={pageSize => onChangePageInfo({...pageInfo, page: 0, pageSize})}
+      paginationModel={{page: pageInfo.page, pageSize: pageInfo.pageSize}}
+      onPaginationModelChange={(model: GridPaginationModel) => onChangePageInfo({...pageInfo, page: model.page, pageSize: model.pageSize})}
       sortingMode={hasParent ? 'client' : 'server'}
       sortModel={pageInfo.sortModel}
       onSortModelChange={sortModel => onChangePageInfo({...pageInfo, page: 0, sortModel})}

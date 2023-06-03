@@ -89,7 +89,7 @@ export const StructArrayForm = <T, >({items, syncItems, initial, table, form}: S
     remove(editIndex)
   }, [remove, editIndex])
 
-  const syncTarget = useCallback((target) => {
+  const syncTarget = useCallback((target: T) => {
     setEditTarget(editTarget => ({
       ...editTarget,
       ...target

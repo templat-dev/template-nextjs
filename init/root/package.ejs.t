@@ -31,20 +31,25 @@ force: true
     "date-fns": "^2.25.0",
     "firebase": "^9.6.4",
     "lodash-es": "^4.17.21",
-    "next": "12.0.3",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "next": "12.1.6",
+    "react": "18.1.0",
+    "react-dom": "18.1.0",
     "react-firebaseui": "^6.0.0",
     "react-responsive-carousel": "^3.2.22",
-    "recoil": "^0.5.2"
+    "recoil": "^0.7.1"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.3.0",
     "@types/lodash-es": "^4.17.5",
-    "@types/node": "16.11.6",
-    "@types/react": "17.0.34",
+    "@types/node": "17.0.41",
+    "@types/react": "^18.0.10",
+    "@types/react-dom": "^18.0.5",
     "eslint": "7",
     "eslint-config-next": "12.0.3",
     "typescript": "4.4.4"
+  },
+  "resolutions": {
+    "**/@types/react": "^18.0.10",
+    "**/@types/react-dom": "^18.0.5"
   }
 }
