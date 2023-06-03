@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/next-env.d.ts
+to: <%= rootDirectory %>/next-env.d.ts
 force: true
 ---
 /// <reference types="next" />

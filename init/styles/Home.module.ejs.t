@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/styles/Home.module.css
+to: <%= rootDirectory %>/styles/Home.module.css
 force: true
 ---
 .container {

@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/pages/index.tsx
+to: <%= rootDirectory %>/pages/index.tsx
 force: true
 ---
 import * as React from 'react'

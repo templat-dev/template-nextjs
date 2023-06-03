@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/components/modal/AppLoading.tsx
+to: <%= rootDirectory %>/components/modal/AppLoading.tsx
 force: true
 ---
 import {Backdrop, CircularProgress} from '@mui/material'

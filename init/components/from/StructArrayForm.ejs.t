@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/components/form/StructArrayForm.tsx
+to: <%= rootDirectory %>/components/form/StructArrayForm.tsx
 force: true
 ---
 import * as React from 'react'

@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/components/form/ArrayForm.tsx
+to: <%= rootDirectory %>/components/form/ArrayForm.tsx
 force: true
 ---
 import * as React from 'react'

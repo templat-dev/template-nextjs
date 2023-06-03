@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/pages/_app.tsx
+to: <%= rootDirectory %>/pages/_app.tsx
 inject: true
 skip_if: // メニュー <%= struct.name.lowerCamelName %>
 after: // メニュー

@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/styles/theme.ts
+to: <%= rootDirectory %>/styles/theme.ts
 force: true
 ---
 import {red} from '@mui/material/colors'

@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/package.json
+to: <%= rootDirectory %>/package.json
 force: true
 ---
 {

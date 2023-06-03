@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/env.sh
+to: <%= rootDirectory %>/env.sh
 force: true
 ---
 #!/bin/bash

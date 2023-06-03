@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/components/common/AppDataGrid.tsx
+to: <%= rootDirectory %>/components/common/AppDataGrid.tsx
 ---
 import * as React from 'react'
 import {styled} from '@mui/system'

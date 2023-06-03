@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/components/form/DateTimeForm.tsx
+to: <%= rootDirectory %>/components/form/DateTimeForm.tsx
 force: true
 ---
 import * as React from 'react'

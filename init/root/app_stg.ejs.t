@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/app_stg.yaml
+to: <%= rootDirectory %>/app_stg.yaml
 force: true
 ---
 runtime: nodejs14

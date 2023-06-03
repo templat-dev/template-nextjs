@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/.gitignore
+to: <%= rootDirectory %>/.gitignore
 force: true
 ---
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.

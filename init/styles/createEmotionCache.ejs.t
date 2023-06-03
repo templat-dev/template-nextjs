@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/<%= project.name %>/styles/createEmotionCache.ts
+to: <%= rootDirectory %>/styles/createEmotionCache.ts
 force: true
 ---
 import createCache, { EmotionCache } from "@emotion/cache";
