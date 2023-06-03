@@ -2,7 +2,6 @@
 to: <%= rootDirectory %>/state/Auth.tsx
 force: true
 ---
-import {ModelUser} from '@/apis'
 import {atom} from 'recoil'
 import {User} from "firebase/auth";
 import globalAxios, {AxiosRequestConfig} from 'axios'
