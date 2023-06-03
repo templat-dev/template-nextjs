@@ -83,7 +83,7 @@ import <%= h.changeCase.pascal(structType) %>DataTable from '@/components/<%= h.
 export const INITIAL_<%= struct.name.upperSnakeName %>: Model<%= struct.name.pascalName %> = {
 <%_ struct.fields.forEach(function (property, key) { -%>
   <%_ if (property.editType === 'struct') { -%>
-  <%= property.name.lowerCamelName %>: INITIAL_<%= h.changeCase.constant(property.structName.) %>,
+  <%= property.name.lowerCamelName %>: INITIAL_<%= h.changeCase.constant(property.structName.upperSnakeName) %>,
   <%_ } -%>
   <%_ if (property.editType.startsWith('array')) { -%>
   <%= property.name.lowerCamelName %>: [],
