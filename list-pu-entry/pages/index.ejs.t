@@ -1,5 +1,5 @@
 ---
-to: "<%= struct.enable ? `${rootDirectory}/${project.name}/pages/${struct.name.lowerCamelName}/index.tsx` : null %>"
+to: "<%= struct.enable ? `${rootDirectory}/pages/${struct.name.lowerCamelName}/index.tsx` : null %>"
 force: true
 ---
 import * as React from 'react'

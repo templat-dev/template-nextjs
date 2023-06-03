@@ -1,5 +1,5 @@
 ---
-to: "<%= struct.enable ? `${rootDirectory}/${project.name}/pages/index.tsx` : null %>"
+to: "<%= struct.enable ? `${rootDirectory}/pages/index.tsx` : null %>"
 inject: true
 skip_if: メニュー <%= struct.name.lowerCamelName %>
 after: メニュー

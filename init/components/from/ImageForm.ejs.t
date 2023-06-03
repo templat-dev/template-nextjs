@@ -1,5 +1,5 @@
 ---
-to: "<%= project.plugins.find(p => p.name === 'image')?.enable ? `${rootDirectory}/${project.name}/components/form/ImageForm.tsx` : null %>"
+to: "<%= project.plugins.find(p => p.name === 'image')?.enable ? `${rootDirectory}/components/form/ImageForm.tsx` : null %>"
 force: true
 ---
 import * as React from 'react'

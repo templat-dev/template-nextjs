@@ -1,5 +1,5 @@
 ---
-to: "<%= project.plugins.find(p => p.name === 'auth')?.enable ? `${rootDirectory}/${project.name}/components/common/UseAuth.tsx` : null %>"
+to: "<%= project.plugins.find(p => p.name === 'auth')?.enable ? `${rootDirectory}/components/common/UseAuth.tsx` : null %>"
 force: true
 ---
 import {useRecoilState} from 'recoil';
