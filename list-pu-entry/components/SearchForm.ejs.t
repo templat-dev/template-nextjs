@@ -24,19 +24,19 @@ import {formatISO} from 'date-fns'
 <%_ if (struct.fields && struct.fields.length > 0) { -%>
 <%_ struct.fields.forEach(function (property, key) { -%>
   <%_ if ((property.listType === 'string' || property.listType === 'array-string' || property.listType === 'time' || property.listType === 'array-time') && property.searchType === 1) { -%>
-    <%_ searchConditions.push({name: property.name.lowerCamelName, listType: 'string', range: false}) -%>
+    <%_ searchConditions.push({name: property.name, listType: 'string', range: false}) -%>
   <%_ } -%>
   <%_ if ((property.listType === 'bool' || property.listType === 'array-bool') && property.searchType === 1) { -%>
-    <%_ searchConditions.push({name: property.name.lowerCamelName, listType: 'boolean', range: false}) -%>
+    <%_ searchConditions.push({name: property.name, listType: 'boolean', range: false}) -%>
   <%_ } -%>
   <%_ if ((property.listType === 'number' || property.listType === 'array-number') && property.searchType === 1) { -%>
-    <%_ searchConditions.push({name: property.name.lowerCamelName, listType: 'number', range: false}) -%>
+    <%_ searchConditions.push({name: property.name, listType: 'number', range: false}) -%>
   <%_ } -%>
   <%_ if ((property.listType === 'number' || property.listType === 'array-number') && 2 <= property.searchType &&  property.searchType <= 5) { -%>
-    <%_ searchConditions.push({name: property.name.lowerCamelName, listType: 'number', range: true}) -%>
+    <%_ searchConditions.push({name: property.name, listType: 'number', range: true}) -%>
   <%_ } -%>
   <%_ if ((property.listType === 'time' || property.listType === 'array-time') && 2 <= property.searchType &&  property.searchType <= 5) { -%>
-    <%_ searchConditions.push({name: property.name.lowerCamelName, listType: 'string', range: true}) -%>
+    <%_ searchConditions.push({name: property.name, listType: 'string', range: true}) -%>
   <%_ } -%>
   <%_ if ((property.listType === 'time' || property.listType === 'array-time')) { -%>
   <%_ importDateTime = true -%>
