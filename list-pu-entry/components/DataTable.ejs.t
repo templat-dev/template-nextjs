@@ -5,7 +5,7 @@ import * as React from 'react'
 import {useMemo, useState} from 'react'
 import {Box, Divider, Fab, IconButton, Paper, Typography} from '@mui/material'
 <%_ if (struct.exists.list.image || struct.exists.list.arrayImage) { -%>
-import {GridActionsCellItem, GridColumns, GridRenderCellParams, GridToolbarContainer} from '@mui/x-data-grid'
+import {GridActionsCellItem, GridColDef, GridRowParams, GridRenderCellParams, GridToolbarContainer} from '@mui/x-data-grid'
 <%_ } else { -%>
 import {GridActionsCellItem, GridColDef, GridRowParams, GridToolbarContainer} from '@mui/x-data-grid'
 <%_ } -%>
@@ -63,7 +63,7 @@ const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Mode
       field: '<%= property.name.lowerCamelName %>',
       headerName: '<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>',
       width: 120,
-      renderCell: (params: GridRenderCellParams<string>) => (
+      renderCell: (params: GridRenderCellParams) => (
         params.value ?
           <Box component="img" src={params.value} sx={{
             height: '100px',
