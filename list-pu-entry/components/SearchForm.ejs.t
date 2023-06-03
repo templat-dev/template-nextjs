@@ -21,24 +21,24 @@ import {formatISO} from 'date-fns'
 
 <%_ const searchConditions = [] -%>
 <%_ let importDateTime = false -%>
-<%_ if (struct.listProperties.listExtraProperties && struct.listProperties.listExtraProperties.length > 0) { -%>
-<%_ struct.listProperties.listExtraProperties.forEach(function (property, key) { -%>
-  <%_ if ((property.type === 'string' || property.type === 'array-string' || property.type === 'time' || property.type === 'array-time') && property.searchType === 1) { -%>
+<%_ if (struct.fields && struct.fields.length > 0) { -%>
+<%_ struct.fields.forEach(function (property, key) { -%>
+  <%_ if ((property.listType === 'string' || property.listType === 'array-string' || property.listType === 'time' || property.listType === 'array-time') && property.searchType === 1) { -%>
     <%_ searchConditions.push({name: property.name.lowerCamelName, type: 'string', range: false}) -%>
   <%_ } -%>
-  <%_ if ((property.type === 'bool' || property.type === 'array-bool') && property.searchType === 1) { -%>
+  <%_ if ((property.listType === 'bool' || property.listType === 'array-bool') && property.searchType === 1) { -%>
     <%_ searchConditions.push({name: property.name.lowerCamelName, type: 'boolean', range: false}) -%>
   <%_ } -%>
-  <%_ if ((property.type === 'number' || property.type === 'array-number') && property.searchType === 1) { -%>
+  <%_ if ((property.listType === 'number' || property.listType === 'array-number') && property.searchType === 1) { -%>
     <%_ searchConditions.push({name: property.name.lowerCamelName, type: 'number', range: false}) -%>
   <%_ } -%>
-  <%_ if ((property.type === 'number' || property.type === 'array-number') && 2 <= property.searchType &&  property.searchType <= 5) { -%>
+  <%_ if ((property.listType === 'number' || property.listType === 'array-number') && 2 <= property.searchType &&  property.searchType <= 5) { -%>
     <%_ searchConditions.push({name: property.name.lowerCamelName, type: 'number', range: true}) -%>
   <%_ } -%>
-  <%_ if ((property.type === 'time' || property.type === 'array-time') && 2 <= property.searchType &&  property.searchType <= 5) { -%>
+  <%_ if ((property.listType === 'time' || property.listType === 'array-time') && 2 <= property.searchType &&  property.searchType <= 5) { -%>
     <%_ searchConditions.push({name: property.name.lowerCamelName, type: 'string', range: true}) -%>
   <%_ } -%>
-  <%_ if ((property.type === 'time' || property.type === 'array-time')) { -%>
+  <%_ if ((property.listType === 'time' || property.listType === 'array-time')) { -%>
   <%_ importDateTime = true -%>
   <%_ } -%>
 <%_ }) -%>
@@ -46,45 +46,45 @@ import {formatISO} from 'date-fns'
 <%_ if (searchConditions.length > 0) { -%>
 export interface <%= struct.name.pascalName %>SearchCondition extends BaseSearchCondition {
   <%_ searchConditions.forEach(function(property) { -%>
-    <%_ if (property.type === 'string' && !property.range) { -%>
-  <%= property.name.lowerCamelName %>: SingleSearchCondition<<%= property.type %>>
+    <%_ if (property.listType === 'string' && !property.range) { -%>
+  <%= property.name.lowerCamelName %>: SingleSearchCondition<<%= property.listType %>>
     <%_ } -%>
-    <%_ if (property.type === 'boolean' && !property.range) { -%>
-  <%= property.name.lowerCamelName %>: SingleSearchCondition<<%= property.type %>>
+    <%_ if (property.listType === 'boolean' && !property.range) { -%>
+  <%= property.name.lowerCamelName %>: SingleSearchCondition<<%= property.listType %>>
     <%_ } -%>
-    <%_ if (property.type === 'number' && !property.range) { -%>
-  <%= property.name.lowerCamelName %>: SingleSearchCondition<<%= property.type %>>
+    <%_ if (property.listType === 'number' && !property.range) { -%>
+  <%= property.name.lowerCamelName %>: SingleSearchCondition<<%= property.listType %>>
     <%_ } -%>
-    <%_ if (property.type === 'number' && property.range) { -%>
-  <%= property.name.lowerCamelName %>: SingleSearchCondition<<%= property.type %>>
-  <%= property.name.lowerCamelName %>From: SingleSearchCondition<<%= property.type %>>
-  <%= property.name.lowerCamelName %>To: SingleSearchCondition<<%= property.type %>>
+    <%_ if (property.listType === 'number' && property.range) { -%>
+  <%= property.name.lowerCamelName %>: SingleSearchCondition<<%= property.listType %>>
+  <%= property.name.lowerCamelName %>From: SingleSearchCondition<<%= property.listType %>>
+  <%= property.name.lowerCamelName %>To: SingleSearchCondition<<%= property.listType %>>
     <%_ } -%>
-    <%_ if (property.type === 'string' && property.range) { -%>
-  <%= property.name.lowerCamelName %>: SingleSearchCondition<<%= property.type %>>
-  <%= property.name.lowerCamelName %>From: SingleSearchCondition<<%= property.type %>>
-  <%= property.name.lowerCamelName %>To: SingleSearchCondition<<%= property.type %>>
+    <%_ if (property.listType === 'string' && property.range) { -%>
+  <%= property.name.lowerCamelName %>: SingleSearchCondition<<%= property.listType %>>
+  <%= property.name.lowerCamelName %>From: SingleSearchCondition<<%= property.listType %>>
+  <%= property.name.lowerCamelName %>To: SingleSearchCondition<<%= property.listType %>>
     <%_ } -%>
   <%_ }) -%>
 }
 
 export const INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION: <%= struct.name.pascalName %>SearchCondition = {
   <%_ searchConditions.forEach(function(property) { -%>
-    <%_ if (property.type === 'string' && !property.range) { -%>
+    <%_ if (property.listType === 'string' && !property.range) { -%>
   <%= property.name.lowerCamelName %>: {enabled: false, value: ''},
     <%_ } -%>
-    <%_ if (property.type === 'boolean' && !property.range) { -%>
+    <%_ if (property.listType === 'boolean' && !property.range) { -%>
   <%= property.name.lowerCamelName %>: {enabled: false, value: false},
     <%_ } -%>
-    <%_ if (property.type === 'number' && !property.range) { -%>
+    <%_ if (property.listType === 'number' && !property.range) { -%>
   <%= property.name.lowerCamelName %>: {enabled: false, value: 0},
     <%_ } -%>
-    <%_ if (property.type === 'number' && property.range) { -%>
+    <%_ if (property.listType === 'number' && property.range) { -%>
   <%= property.name.lowerCamelName %>: {enabled: false, value: 0},
   <%= property.name.lowerCamelName %>From: {enabled: false, value: 0},
   <%= property.name.lowerCamelName %>To: {enabled: false, value: 0},
     <%_ } -%>
-    <%_ if (property.type === 'string' && property.range) { -%>
+    <%_ if (property.listType === 'string' && property.range) { -%>
   <%= property.name.lowerCamelName %>: {enabled: false, value: ''},
   <%= property.name.lowerCamelName %>From: {enabled: false, value: ''},
   <%= property.name.lowerCamelName %>To: {enabled: false, value: ''},
@@ -151,9 +151,9 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
       <DialogTitle><%= struct.label || struct.name.upperSnakeName %>検索</DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
-        <%_ if (struct.listProperties.listExtraProperties) { -%>
-        <%_ struct.listProperties.listExtraProperties.forEach(function (property, key) { -%>
-          <%_ if ((property.type === 'string' || property.type === 'array-string' || property.type === 'textarea' || property.type === 'array-textarea') && property.searchType === 1) { -%>
+        <%_ if (struct.fields) { -%>
+        <%_ struct.fields.forEach(function (property, key) { -%>
+          <%_ if ((property.listType === 'string' || property.listType === 'array-string' || property.listType === 'textarea' || property.listType === 'array-textarea') && property.searchType === 1) { -%>
           <Grid item xs={2}>
             <Switch
               checked={searchCondition.<%= property.name.lowerCamelName %>.enabled}
@@ -173,7 +173,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
             />
           </Grid>
           <%_ } -%>
-          <%_ if ((property.type === 'number' || property.type === 'array-number') && property.searchType !== 0) { -%>
+          <%_ if ((property.listType === 'number' || property.listType === 'array-number') && property.searchType !== 0) { -%>
           <Grid item xs={2}>
             <Switch
               checked={searchCondition.<%= property.name.lowerCamelName %>.enabled}
@@ -194,7 +194,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
             />
           </Grid>
           <%_ } -%>
-          <%_ if ((property.type === 'number' || property.type === 'array-number') && 2 <= property.searchType && property.searchType <= 5) { -%>
+          <%_ if ((property.listType === 'number' || property.listType === 'array-number') && 2 <= property.searchType && property.searchType <= 5) { -%>
           <Grid item xs={2}>
             <Switch
               checked={searchCondition.<%= property.name.lowerCamelName %>From.enabled}
@@ -234,7 +234,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
             />
           </Grid>
           <%_ } -%>
-          <%_ if ((property.type === 'time' || property.type === 'array-time') && property.searchType !== 0) { -%>
+          <%_ if ((property.listType === 'time' || property.listType === 'array-time') && property.searchType !== 0) { -%>
           <Grid item xs={2}>
             <Switch
               checked={searchCondition.<%= property.name.lowerCamelName %>.enabled}
@@ -249,7 +249,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
             />
           </Grid>
           <%_ } -%>
-          <%_ if ((property.type === 'time' || property.type === 'array-time') && 2 <= property.searchType &&  property.searchType <= 5) { -%>
+          <%_ if ((property.listType === 'time' || property.listType === 'array-time') && 2 <= property.searchType &&  property.searchType <= 5) { -%>
           <Grid item xs={2}>
             <Switch
               checked={searchCondition.<%= property.name.lowerCamelName %>From.enabled}
@@ -277,7 +277,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
             />
           </Grid>
           <%_ } -%>
-          <%_ if ((property.type === 'bool' || property.type === 'array-bool') && property.searchType === 1) { -%>
+          <%_ if ((property.listType === 'bool' || property.listType === 'array-bool') && property.searchType === 1) { -%>
           <Grid item xs={2}>
             <Switch
               checked={searchCondition.<%= property.name.lowerCamelName %>.enabled}
