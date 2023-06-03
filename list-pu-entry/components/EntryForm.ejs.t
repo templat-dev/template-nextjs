@@ -30,7 +30,7 @@ import ImageArrayForm from '@/components/form/ImageArrayForm'
 import {
   <%_ if (struct.structType !== 'struct') { -%><%= h.changeCase.upperCaseFirst(struct.name.lowerCamelName) %>Api,
   <% } -%>Model<%= struct.pascalName %>,
-<%_ struct.editProperties.forEach(function (property, key) { -%>
+<%_ struct.fields.forEach(function (property, key) { -%>
   <%_ if (property.editType === 'array-struct' || property.editType === 'struct') { -%>
   Model<%= h.changeCase.upperCaseFirst(property.structType) %>,
   <%_ } -%>
@@ -42,7 +42,7 @@ import {
 <%_ let importStructArrayForm = false -%>
 <%_ let importArrayForm = false -%>
 <%_ let importInitForm = false -%>
-<%_ struct.editProperties.forEach(function (property, key) { -%>
+<%_ struct.fields.forEach(function (property, key) { -%>
   <%_ if (property.editType === 'struct') { -%>
     <%_ importInitForm = true -%>
     <%_ importExpansion = true -%>
@@ -429,7 +429,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       )}
       <DialogContent>
         <Grid container spacing={2}>
-        <%_ struct.editProperties.forEach(function (property, key) { -%>
+        <%_ struct.fields.forEach(function (property, key) { -%>
           <%_ if (property.editType === 'none') { return } -%>
           <Grid item xs={12}>{<%= property.name.lowerCamelName %>Form}</Grid>
         <%_ }) -%>
