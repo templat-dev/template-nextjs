@@ -30,7 +30,7 @@ import Link from '@/components/Link'
 import {AppDialog} from '@/components/modal/AppDialog'
 import {AppLoading} from '@/components/modal/AppLoading'
 import {AppSnackbar} from '@/components/modal/AppSnackbar'
-<%_ if (struct.plugins.includes('auth')) { -%>
+<%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
 import useAuth from "@/components/common/UseAuth"
 import LogoutIcon from '@mui/icons-material/Logout'
 import {getAuth} from "firebase/auth"
@@ -82,7 +82,7 @@ export default function MyApp({Component, pageProps, router, emotionCache = clie
   }, [])
 
   const AppHeader = () => {
-<%_ if (struct.plugins.includes('auth')) { -%>
+<%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
     const {auth, setAuth, isAuthed} = useAuth();
     const fbAuth = getAuth(app)
 
@@ -115,7 +115,7 @@ export default function MyApp({Component, pageProps, router, emotionCache = clie
              }}>{currentPageTitle}</Typography>
            )}
            <Box sx={{ flexGrow: 1 }} />
-<%_ if (struct.plugins.includes('auth')) { -%>
+<%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
            <Stack spacing={1} alignItems="center" direction="row">
              <Typography variant="subtitle2"
                          sx={{color: '#FFFFFF'}}>{auth.user?.displayName}</Typography>
@@ -150,7 +150,7 @@ export default function MyApp({Component, pageProps, router, emotionCache = clie
      </>
   )}
 
-<%_ if (struct.plugins.includes('auth')) { -%>
+<%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
   const Auth = ({ children }: Props) => {
     const {setAuth, isAuthed} = useAuth();
 
@@ -179,7 +179,7 @@ export default function MyApp({Component, pageProps, router, emotionCache = clie
       <CacheProvider value={emotionCache}>
         <ThemeProvider theme={theme}>
           <CssBaseline/>
-<%_ if (struct.plugins.includes('auth')) { -%>
+<%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
           <Auth>
             <Box sx={{display: 'flex'}}>
               <AppHeader/>
