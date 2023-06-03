@@ -20,7 +20,7 @@ import {
 } from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>SearchForm'
 import <%= struct.name.pascalName %>EntryForm, {INITIAL_<%= struct.name.upperSnakeName %>} from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>EntryForm'
 
-const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
+const <%= struct.name.pascalPluralName) %>: NextPage = () => {
   const router = useRouter()
   const showLoading = useSetRecoilState<boolean>(loadingState)
   const hideLoading = useResetRecoilState(loadingState)
@@ -28,7 +28,7 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
   const showSnackbar = useSetRecoilState<SnackbarState>(snackbarState)
 
   /** 一覧表示用の配列 */
-  const [<%= struct.pluralName %>, set<%= h.changeCase.pascal(struct.pluralName) %>] = useState<Model<%= struct.name.pascalName %>[]>([])
+  const [<%= struct.name.lowerCamelPluralName %>, set<%= struct.name.pascalPluralName) %>] = useState<Model<%= struct.name.pascalName %>[]>([])
 
   /** 一覧の表示ページ情報 */
   const [pageInfo, setPageInfo] = useState<GridPageInfo>(cloneDeep(INITIAL_GRID_PAGE_INFO))
@@ -86,7 +86,7 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
         <%_ } -%>
         <%_ }) -%>
         limit: pageInfo.pageSize !== -1 ? pageInfo.pageSize : undefined,
-<%_ if (struct.dbType === 'datastore') { -%>
+<%_ if (project.dbType === 'datastore') { -%>
         cursor: pageInfo.page !== 0 ? pageInfo.cursors[pageInfo.page - 1] : undefined,
         orderBy: pageInfo.sortModel.map(sm => `${sm.sort === 'desc' ? '-' : ''}${sm.field}`).join(',') || undefined
 <%_ } else { -%>
@@ -94,14 +94,14 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
         orderBy: page.sortModel.map(sm => `${snakeCase(sm.field)} ${sm.sort}`).join(',') || undefined
 <%_ } -%>
       }).then(res => res.data)
-<%_ if (struct.dbType === 'datastore') { -%>
+<%_ if (project.dbType === 'datastore') { -%>
       if (data.cursor) {
         const cursors = cloneDeep(pageInfo.cursors)
         cursors[pageInfo.page] = data.cursor
         setPageInfo({...pageInfo, cursors})
       }
 <%_ } -%>
-      set<%= h.changeCase.pascal(struct.pluralName) %>(data.<%= struct.pluralName %> || [])
+      set<%= struct.name.pascalPluralName %>(data.<%= struct.name.lowerCamelPluralName %> || [])
       setTotalCount(data.count || 0)
     } finally {
       setIsLoading(false)
@@ -125,13 +125,13 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
   const openEntryForm = useCallback((<%= struct.name.lowerCamelName %>?: Model<%= struct.name.pascalName %>) => {
     if (!!<%= struct.name.lowerCamelName %>) {
       setEditTarget(cloneDeep(<%= struct.name.lowerCamelName %>))
-      setEditIndex(<%= struct.pluralName %>.findIndex(item => item.id === <%= struct.name.lowerCamelName %>.id))
+      setEditIndex(<%= struct.name.lowerCamelPluralName %>.findIndex(item => item.id === <%= struct.name.lowerCamelName %>.id))
     } else {
       setEditTarget(cloneDeep(INITIAL_<%= struct.name.upperSnakeName %>))
       setEditIndex(NEW_INDEX)
     }
     setEntryFormOpen(true)
-  }, [<%= struct.pluralName %>])
+  }, [<%= struct.name.lowerCamelPluralName %>])
 
   const remove = useCallback((index: number) => {
     showDialog({
@@ -141,7 +141,7 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
       positive: async () => {
         showLoading(true)
         try {
-          await new <%= struct.name.pascalName %>Api().delete<%= struct.name.pascalName %>({id: <%= struct.pluralName %>[index].id!})
+          await new <%= struct.name.pascalName %>Api().delete<%= struct.name.pascalName %>({id: <%= struct.name.lowerCamelPluralName %>[index].id!})
           setEntryFormOpen(false)
           await reFetch()
         } finally {
@@ -150,12 +150,12 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
         showSnackbar({text: '削除しました。'})
       }
     })
-  }, [<%= struct.pluralName %>, setEntryFormOpen, reFetch, showDialog, showLoading, hideLoading, showSnackbar])
+  }, [<%= struct.name.lowerCamelPluralName %>, setEntryFormOpen, reFetch, showDialog, showLoading, hideLoading, showSnackbar])
 
   const removeRow = useCallback((<%= struct.name.lowerCamelName %>: Model<%= struct.name.pascalName %>) => {
-    const index = <%= struct.pluralName %>.indexOf(<%= struct.name.lowerCamelName %>)
+    const index = <%= struct.name.lowerCamelPluralName %>.indexOf(<%= struct.name.lowerCamelName %>)
     remove(index)
-  }, [<%= struct.pluralName %>, remove])
+  }, [<%= struct.name.lowerCamelPluralName %>, remove])
 
   const removeForm = useCallback(() => {
     remove(editIndex)
@@ -171,7 +171,7 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
   return (
     <Container sx={{padding: 2}}>
       <<%= struct.name.pascalName %>DataTable
-        items={<%= struct.pluralName %>}
+        items={<%= struct.name.lowerCamelPluralName %>}
         pageInfo={pageInfo}
         totalCount={totalCount}
         isLoading={isLoading}
@@ -196,4 +196,4 @@ const <%= h.changeCase.pascal(struct.pluralName) %>: NextPage = () => {
   )
 }
 
-export default <%= h.changeCase.pascal(struct.pluralName) %>
+export default <%= struct.name.pascalPluralName %>

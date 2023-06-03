@@ -32,7 +32,7 @@ export interface GridPageInfo {
   page: number
   /** ページサイズ */
   pageSize: number
-<%_ if (struct.dbType === 'datastore') { -%>
+<%_ if (project.dbType === 'datastore') { -%>
   /** ページング用のcursor配列 */
   cursors: string[]
 <%_ } -%>
@@ -43,7 +43,7 @@ export interface GridPageInfo {
 export const INITIAL_GRID_PAGE_INFO: GridPageInfo = {
   page: 0,
   pageSize: 25,
-<%_ if (struct.dbType === 'datastore') { -%>
+<%_ if (project.dbType === 'datastore') { -%>
   cursors: [],
 <%_ } -%>
   sortModel: []
