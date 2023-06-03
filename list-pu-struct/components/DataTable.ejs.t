@@ -119,6 +119,7 @@ const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Mode
       getActions: ((params: GridRowParams) => {
         return [
           <GridActionsCellItem
+            key={params.id}
             icon={<DeleteIcon/>}
             label="Delete"
             onClick={() => {
