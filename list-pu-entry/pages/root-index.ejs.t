@@ -4,7 +4,7 @@ inject: true
 skip_if: メニュー <%= struct.name.lowerCamelName %>
 after: メニュー
 ---
-        {/* メニュー <%= struct.name.lowerCamelName %> */}
+        {/* メニュー <%= struct.screenLabel || h.changeCase.pascal(struct.name) %> */}
         <Grid item xs={6} sm={6} md={4} lg={3} xl={3}>
           <Card>
             <CardContent>
@@ -14,7 +14,7 @@ after: メニュー
                 <%= struct.label %>
               </Typography>
               <Typography variant="body2" sx={{mb: 2}}>
-                <%= struct.label %>の一覧
+                <%= struct.screenLabel || h.changeCase.pascal(struct.name) %>の一覧
               </Typography>
             </CardContent>
             <Divider/>
@@ -22,7 +22,7 @@ after: メニュー
               <Button fullWidth startIcon={<ArrowForwardIcon/>} size="small"
                       component={Link} href="/<%= struct.name.lowerCamelName %>"
                       sx={{padding: 1.5, justifyContent: 'flex-end'}}>
-                <%= struct.listLabel %>画面に移動
+                <%= struct.screenLabel || h.changeCase.pascal(struct.name) %>画面に移動
               </Button>
             </CardActions>
           </Card>
