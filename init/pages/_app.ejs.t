@@ -101,7 +101,7 @@ export default function MyApp({Component, pageProps, router, emotionCache = clie
            </IconButton>
            <Link href="/">
              <Typography variant="h6" component="h1" sx={{flexGrow: 1}} color="common.white">
-               umafull
+               <%= projectName %>
              </Typography>
            </Link>
            {currentPageTitle && (
