@@ -11,7 +11,7 @@ after: メニュー
               <Typography variant="h5" component="div"
                           sx={{mb: 2, display: 'flex', alignItems: 'center'}}>
                 <PagesIcon sx={{mr: 1}}/>
-                <%= struct.label %>
+                <%= struct.screenLabel %>
               </Typography>
               <Typography variant="body2" sx={{mb: 2}}>
                 <%= struct.screenLabel || struct.name.pascalName %>の一覧
