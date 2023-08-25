@@ -76,7 +76,7 @@ const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Mode
       field: '<%= field.name.lowerCamelName %>',
       headerName: '<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>',
       width: 120,
-      renderCell: (params: GridRenderCellParams) => (
+      renderCell: (params: GridRenderCellParams<any, string>) => (
         params.value ?
           <Box component="img" src={params.value} sx={{
             height: '100px',
@@ -91,7 +91,7 @@ const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Mode
       field: '<%= field.name.lowerCamelName %>',
       headerName: '<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>',
       width: 120,
-      renderCell: (params: GridRenderCellParams<string[]>) => (
+      renderCell: (params: GridRenderCellParams<any, string[]>) => (
         params.value ?
           <Carousel showStatus={false} showIndicators={false} showThumbs={false} width={100} infiniteLoop
                     renderArrowPrev={(clickHandler: any) => (

@@ -261,7 +261,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       imageURLs={target.<%= field.name.lowerCamelName %> || null}
       dir="<%= struct.name.lowerCamelName %>/<%= field.name.lowerCamelName %>"
       label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
-      onChange={(value: string | null) => syncTarget({<%= field.name.lowerCamelName %>: value || undefined})}
+      onChange={(value: string[] | null) => syncTarget({<%= field.name.lowerCamelName %>: value || undefined})}
     />
     <%_ } -%>
     <%_ if (field.editType === 'array-string' || field.editType === 'array-textarea' || field.editType === 'array-number' || field.editType === 'array-time' || field.editType === 'array-bool') { -%>
