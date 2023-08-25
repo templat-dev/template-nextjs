@@ -40,6 +40,7 @@ force: true
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.3.0",
+    "@openapitools/openapi-generator-cli": "^1.0.18-5.0.0-beta2",
     "@types/lodash-es": "^4.17.5",
     "@types/node": "17.0.41",
     "@types/react": "^18.0.10",
