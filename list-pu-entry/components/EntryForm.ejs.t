@@ -11,19 +11,27 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+<%_ if (struct.exists.edit.bool || struct.exists.edit.arrayBool) { -%>
   FormControlLabel,
+<%_ } -%>
   Grid,
+<%_ if (struct.exists.edit.bool || struct.exists.edit.arrayBool) { -%>
   Switch,
+<%_ } -%>
   TextField
 } from '@mui/material'
 <%_ if (struct.structType !== 'struct') { -%>
 import {useResetRecoilState, useSetRecoilState} from 'recoil'
 <%_ } -%>
+<%_ if (struct.exists.edit.time || struct.exists.edit.arrayTime) { -%>
 import {formatISO} from 'date-fns'
+<%_ } -%>
 <%_ if (struct.structType !== 'struct') { -%>
 import {loadingState} from '@/state/App'
 <%_ } -%>
+<%_ if (struct.exists.edit.time || struct.exists.edit.arrayTime) { -%>
 import DateTimeForm from '@/components/form/DateTimeForm'
+<%_ } -%>
 <%_ if (struct.exists.edit.image) { -%>
 import ImageForm from '@/components/form/ImageForm'
 <%_ } -%>
