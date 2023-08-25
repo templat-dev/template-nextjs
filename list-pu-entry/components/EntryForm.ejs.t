@@ -24,7 +24,9 @@ import {
 <%_ if (struct.exists.edit.bool || struct.exists.edit.arrayBool) { -%>
   Switch,
 <%_ } -%>
-  TextField
+<%_ if (struct.exists.edit.text || struct.exists.edit.textArea || struct.exists.edit.number || struct.exists.edit.arrayText || struct.exists.edit.arrayTextArea || struct.exists.edit.arrayNumber) { -%>
+  TextField,
+<%_ } -%>
 } from '@mui/material'
 <%_ if (struct.structType !== 'struct') { -%>
 import {loadingState} from '@/state/App'

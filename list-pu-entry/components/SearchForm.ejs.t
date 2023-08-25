@@ -20,7 +20,9 @@ import {
 <%_ if (struct.exists.search.bool || struct.exists.search.arrayBool) { -%>
   Switch,
 <%_ } -%>
-  TextField
+<%_ if (struct.exists.search.text || struct.exists.search.number) { -%>
+  TextField,
+<%_ } -%>
 } from '@mui/material'
 <%_ if (struct.exists.search.time || struct.exists.search.arrayTime) { -%>
 import DateTimeForm from '@/components/form/DateTimeForm'
