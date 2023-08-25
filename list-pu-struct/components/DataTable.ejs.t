@@ -145,7 +145,7 @@ const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Mode
           Toolbar: () => (
             <GridToolbarContainer>
               <Typography variant="h6" component="div">
-                <%= struct.listLabel %>
+                <%= struct.screenLabel || struct.name.pascalName %>一覧
               </Typography>
 <%_ if (struct.structType !== 'struct') { -%>
               {!hasParent && (

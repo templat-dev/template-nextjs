@@ -148,7 +148,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
 
   return (
     <Dialog open={open} onClose={close}>
-      <DialogTitle><%= struct.screenLabel || struct.name.upperSnakeName %>検索</DialogTitle>
+      <DialogTitle><%= struct.screenLabel || struct.name.pascalName %>検索</DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
         <%_ if (struct.fields) { -%>

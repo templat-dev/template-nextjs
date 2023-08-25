@@ -425,7 +425,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
   return (
     <>
       {!isEmbedded && (
-        <DialogTitle><%= struct.screenLabel || struct.name.upperSnakeName %>{isNew ? '追加' : '編集'}</DialogTitle>
+        <DialogTitle><%= struct.screenLabel || struct.name.pascalName %>{isNew ? '追加' : '編集'}</DialogTitle>
       )}
       <DialogContent>
         <Grid container spacing={2}>
