@@ -5,7 +5,13 @@ import * as React from 'react'
 import {useMemo, useState} from 'react'
 import {Box, Divider, Fab, IconButton, Paper, Typography} from '@mui/material'
 <%_ if (struct.exists.list.image || struct.exists.list.arrayImage) { -%>
-import {GridActionsCellItem, GridColDef, GridRowParams, GridRenderCellParams, GridToolbarContainer} from '@mui/x-data-grid'
+import {
+  GridActionsCellItem,
+  GridColDef,
+  GridRenderCellParams,
+  GridRowParams,
+  GridToolbarContainer
+} from '@mui/x-data-grid'
 <%_ } else { -%>
 import {GridActionsCellItem, GridColDef, GridRowParams, GridToolbarContainer} from '@mui/x-data-grid'
 <%_ } -%>
