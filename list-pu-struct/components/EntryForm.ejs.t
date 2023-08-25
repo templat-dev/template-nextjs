@@ -3,6 +3,9 @@ to: <%= rootDirectory %>/components/<%= struct.name.lowerCamelName %>/<%= struct
 ---
 import * as React from 'react'
 import {useCallback, useMemo} from 'react'
+<%_ if (struct.exists.edit.struct) { -%>
+import {cloneDeep} from 'lodash-es'
+<%_ } -%>
 import {
   Button,
   DialogActions,
@@ -28,7 +31,7 @@ import ImageForm from '@/components/form/ImageForm'
 import ImageArrayForm from '@/components/form/ImageArrayForm'
 <%_ } -%>
 import {
-  <%_ if (struct.structType !== 'struct') { -%><%= h.changeCase.upperCaseFirst(struct.name.lowerCamelName) %>Api,
+  <%_ if (struct.structType !== 'struct') { -%>  <%= struct.name.pascalName %>Api,
   <% } -%>Model<%= struct.name.pascalName %>,
 <%_ struct.fields.forEach(function (property, key) { -%>
   <%_ if (property.editType === 'array-struct' || property.editType === 'struct') { -%>
@@ -36,43 +39,30 @@ import {
   <%_ } -%>
 <%_ }) -%>
 } from '@/apis'
-<%_ const importDataTableSet = new Set() -%>
-<%_ const importEntryFormSet = new Set() -%>
-<%_ let importExpansion = false -%>
-<%_ let importStructArrayForm = false -%>
-<%_ let importArrayForm = false -%>
-<%_ let importInitForm = false -%>
-<%_ struct.fields.forEach(function (property, key) { -%>
-  <%_ if (property.editType === 'struct') { -%>
-    <%_ importInitForm = true -%>
-    <%_ importExpansion = true -%>
-    <%_ importEntryFormSet.add(property.structName) -%>
-  <%_ } -%>
-  <%_ if (property.editType === 'array-struct') { -%>
-    <%_ importInitForm = true -%>
-    <%_ importExpansion = true -%>
-    <%_ importStructArrayForm = true -%>
-    <%_ importEntryFormSet.add(property.structName) -%>
-    <%_ importDataTableSet.add(property.structName) -%>
-  <%_ } -%>
-  <%_ if (property.editType === 'array-string' || property.editType === 'array-textarea' || property.editType === 'array-number' || property.editType === 'array-time' || property.editType === 'array-bool') { -%>
-    <%_ importExpansion = true -%>
-    <%_ importArrayForm = true -%>
-  <%_ } -%>
-<%_ }) -%>
-<%_ if (importInitForm) { -%>
+<%_ if (struct.exists.edit.struct) { -%>
 import InitForm from '@/components/form/InitForm'
 <%_ } -%>
-<%_ if (importExpansion) { -%>
+<%_ if (struct.exists.edit.struct || struct.exists.edit.arrayNumber || struct.exists.edit.arrayText || struct.exists.edit.arrayTextArea || struct.exists.edit.arrayBool || struct.exists.edit.arrayTime || struct.exists.edit.arrayStruct) { -%>
 import Expansion from '@/components/form/Expansion'
 <%_ } -%>
-<%_ if (importArrayForm) { -%>
+<%_ if (struct.exists.edit.arrayNumber || struct.exists.edit.arrayText || struct.exists.edit.arrayTextArea || struct.exists.edit.arrayBool || struct.exists.edit.arrayTime) { -%>
 import ArrayForm from '@/components/form/ArrayForm'
 <%_ } -%>
-<%_ if (importStructArrayForm) { -%>
+<%_ if (struct.exists.edit.arrayStruct) { -%>
 import {NEW_INDEX} from '@/components/common/Base'
 import StructArrayForm from '@/components/form/StructArrayForm'
 <%_ } -%>
+<%_ const importDataTableSet = new Set() -%>
+<%_ const importEntryFormSet = new Set() -%>
+<%_ struct.fields.forEach(function (property, key) { -%>
+  <%_ if (property.editType === 'struct') { -%>
+    <%_ importEntryFormSet.add(property.structName) -%>
+  <%_ } -%>
+  <%_ if (property.editType === 'array-struct') { -%>
+    <%_ importEntryFormSet.add(property.structName) -%>
+    <%_ importDataTableSet.add(property.structName) -%>
+  <%_ } -%>
+<%_ }) -%>
 <%_ importEntryFormSet.forEach(function (structName) { -%>
 import <%= structName.pascalName %>EntryForm, {INITIAL_<%= structName.upperSnakeName %>} from '@/components/<%= structName.lowerCamelName %>/<%= structName.pascalName %>EntryForm'
 <%_ }) -%>
@@ -83,7 +73,7 @@ import <%= structName.pascalName %>DataTable from '@/components/<%= structName.l
 export const INITIAL_<%= struct.name.upperSnakeName %>: Model<%= struct.name.pascalName %> = {
 <%_ struct.fields.forEach(function (property, key) { -%>
   <%_ if (property.editType === 'struct') { -%>
-  <%= property.name.lowerCamelName %>: INITIAL_<%= property.structName.upperSnakeName %>,
+  <%= property.name.lowerCamelName %>: INITIAL_<%= h.changeCase.constant(property.structName.upperSnakeName) %>,
   <%_ } -%>
   <%_ if (property.editType.startsWith('array')) { -%>
   <%= property.name.lowerCamelName %>: [],
@@ -403,13 +393,18 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       {target.<%= property.name.lowerCamelName %> ? (
         <<%= property.structName.pascalName %>EntryForm
           target={target.<%= property.name.lowerCamelName %>!}
-          syncTarget={item => syncTarget({<%= property.name.lowerCamelName %>: item})}
+          syncTarget={item => syncTarget({
+            <%= property.name.lowerCamelName %>: {
+              ...target.<%= property.name.lowerCamelName %>,
+              ...item
+            }
+          })}
           isEmbedded={true}
           hasParent={true}
         />
       ) : (
         <InitForm
-          initial={INITIAL_<%= property.structName.upperSnakeName %>}
+          initial={cloneDeep(INITIAL_<%= property.structName.upperSnakeName %>)}
           syncTarget={item => syncTarget({<%= property.name.lowerCamelName %>: item})}
         />
       )}
