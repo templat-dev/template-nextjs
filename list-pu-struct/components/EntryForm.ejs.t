@@ -38,15 +38,7 @@ import ImageForm from '@/components/form/ImageForm'
 <%_ if (struct.exists.edit.arrayImage) { -%>
 import ImageArrayForm from '@/components/form/ImageArrayForm'
 <%_ } -%>
-import {
-  <%_ if (struct.structType !== 'struct') { -%>  <%= struct.name.pascalName %>Api,
-  <% } -%>Model<%= struct.name.pascalName %>,
-<%_ struct.fields.forEach(function (property, key) { -%>
-  <%_ if (property.editType === 'array-struct' || property.editType === 'struct') { -%>
-  Model<%= property.structName.pascalName %>,
-  <%_ } -%>
-<%_ }) -%>
-} from '@/apis'
+import {<%_ if (struct.structType !== 'struct') { -%><%= struct.name.pascalName %>Api, <% } -%>Model<%= struct.name.pascalName %>} from '@/apis'
 <%_ if (struct.exists.edit.struct) { -%>
 import InitForm from '@/components/form/InitForm'
 <%_ } -%>
@@ -60,22 +52,25 @@ import ArrayForm from '@/components/form/ArrayForm'
 import {NEW_INDEX} from '@/components/common/Base'
 import StructArrayForm from '@/components/form/StructArrayForm'
 <%_ } -%>
-<%_ const importDataTableSet = new Set() -%>
-<%_ const importEntryFormSet = new Set() -%>
-<%_ struct.fields.forEach(function (property, key) { -%>
-  <%_ if (property.editType === 'struct') { -%>
-    <%_ importEntryFormSet.add(property.structName) -%>
+<%_ const importStructTableSet = new Set() -%>
+<%_ const importStructFormSet = new Set() -%>
+<%_ struct.fields.forEach(function (field, key) { -%>
+  <%_ if (field.editType === 'array-struct') { -%>
+    <%_ if (!importStructTableSet.has(field.structName.pascalName)) { -%>
+import <%= field.structName.pascalName %>DataTable from '@/components/<%= field.structName.lowerCamelName %>/<%= field.structName.pascalName %>DataTable'
+      <%_ importStructTableSet.add(field.structName.pascalName) -%>
+    <%_ } -%>
+    <%_ if (!importStructFormSet.has(field.structName.pascalName)) { -%>
+import <%= field.structName.pascalName %>EntryForm, {INITIAL_<%= field.structName.upperSnakeName %>} from '@/components/<%= field.structName.lowerCamelName %>/<%= field.structName.pascalName %>EntryForm'
+      <%_ importStructFormSet.add(field.structName.pascalName) -%>
+    <%_ } -%>
   <%_ } -%>
-  <%_ if (property.editType === 'array-struct') { -%>
-    <%_ importEntryFormSet.add(property.structName) -%>
-    <%_ importDataTableSet.add(property.structName) -%>
+  <%_ if (field.editType === 'struct') { -%>
+    <%_ if (!importStructFormSet.has(field.structName.pascalName)) { -%>
+import <%= field.structName.pascalName %>EntryForm, {INITIAL_<%= field.structName.upperSnakeName %>} from '@/components/<%= field.structName.lowerCamelName %>/<%= field.structName.pascalName %>EntryForm'
+      <%_ importStructFormSet.add(field.structName.pascalName) -%>
+    <%_ } -%>
   <%_ } -%>
-<%_ }) -%>
-<%_ importEntryFormSet.forEach(function (structName) { -%>
-import <%= structName.pascalName %>EntryForm, {INITIAL_<%= structName.upperSnakeName %>} from '@/components/<%= structName.lowerCamelName %>/<%= structName.pascalName %>EntryForm'
-<%_ }) -%>
-<%_ importDataTableSet.forEach(function (structName) { -%>
-import <%= structName.pascalName %>DataTable from '@/components/<%= structName.lowerCamelName %>/<%= structName.pascalName %>DataTable'
 <%_ }) -%>
 
 export const INITIAL_<%= struct.name.upperSnakeName %>: Model<%= struct.name.pascalName %> = {
