@@ -129,7 +129,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
   const setSingleSearchCondition = useCallback(<T extends keyof <%= struct.name.pascalName %>SearchCondition, >(key: T, value: <%= struct.name.pascalName %>SearchCondition[T]['value']) => {
     setSearchCondition(searchCondition => ({
       ...searchCondition,
-      [key] : {
+      [key]: {
         ...searchCondition[key],
         value
       }
