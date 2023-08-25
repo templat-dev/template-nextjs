@@ -63,11 +63,11 @@ const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Mode
 
   const columns = useMemo((): GridColDef[] => [
       <%_ if (struct.fields) { -%>
-      <%_ struct.fields.forEach(function(property, index){ -%>
-        <%_ if (property.listType === 'image' && property.dataType === 'string') { -%>
+      <%_ struct.fields.forEach(function(field, index){ -%>
+        <%_ if (field.listType === 'image' && field.dataType === 'string') { -%>
     {
-      field: '<%= property.name.lowerCamelName %>',
-      headerName: '<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>',
+      field: '<%= field.name.lowerCamelName %>',
+      headerName: '<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>',
       width: 120,
       renderCell: (params: GridRenderCellParams) => (
         params.value ?
@@ -79,10 +79,10 @@ const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Mode
           }}/> : <Box/>
       ),
     },
-        <%_ } else if (property.listType === 'array-image') { -%>
+        <%_ } else if (field.listType === 'array-image') { -%>
     {
-      field: '<%= property.name.lowerCamelName %>',
-      headerName: '<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>',
+      field: '<%= field.name.lowerCamelName %>',
+      headerName: '<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>',
       width: 120,
       renderCell: (params: GridRenderCellParams<string[]>) => (
         params.value ?
@@ -112,8 +112,8 @@ const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Mode
           </Carousel> : <Box/>
       )
     },
-        <%_ } else if (property.listType !== 'none' && property.dataType !== 'struct' && property.dataType !== 'array-struct') { -%>
-    {field: '<%= property.name.lowerCamelName %>', headerName: '<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName === 'id' ? 'ID' : property.name.lowerCamelName %>', width: <%= property.name.lowerCamelName === 'id' ? 160 : 120 %>},
+        <%_ } else if (field.listType !== 'none' && field.dataType !== 'struct' && field.dataType !== 'array-struct') { -%>
+    {field: '<%= field.name.lowerCamelName %>', headerName: '<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName === 'id' ? 'ID' : field.name.lowerCamelName %>', width: <%= field.name.lowerCamelName === 'id' ? 160 : 120 %>},
         <%_ } -%>
       <%_ }); -%>
       <%_ } -%>

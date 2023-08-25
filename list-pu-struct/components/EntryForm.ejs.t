@@ -74,21 +74,21 @@ import <%= field.structName.pascalName %>EntryForm, {INITIAL_<%= field.structNam
 <%_ }) -%>
 
 export const INITIAL_<%= struct.name.upperSnakeName %>: Model<%= struct.name.pascalName %> = {
-<%_ struct.fields.forEach(function (property, key) { -%>
-  <%_ if (property.editType === 'struct') { -%>
-  <%= property.name.lowerCamelName %>: INITIAL_<%= property.structName.upperSnakeName %>,
+<%_ struct.fields.forEach(function (field, key) { -%>
+  <%_ if (field.editType === 'struct') { -%>
+  <%= field.name.lowerCamelName %>: INITIAL_<%= field.structName.upperSnakeName %>,
   <%_ } -%>
-  <%_ if (property.editType.startsWith('array')) { -%>
-  <%= property.name.lowerCamelName %>: [],
+  <%_ if (field.editType.startsWith('array')) { -%>
+  <%= field.name.lowerCamelName %>: [],
   <%_ } -%>
-  <%_ if (property.editType === 'string' || property.editType === 'textarea' || property.editType === 'time') { -%>
-  <%= property.name.lowerCamelName %>: undefined,
+  <%_ if (field.editType === 'string' || field.editType === 'textarea' || field.editType === 'time') { -%>
+  <%= field.name.lowerCamelName %>: undefined,
   <%_ } -%>
-  <%_ if (property.editType === 'bool') { -%>
-  <%= property.name.lowerCamelName %>: undefined,
+  <%_ if (field.editType === 'bool') { -%>
+  <%= field.name.lowerCamelName %>: undefined,
   <%_ } -%>
-  <%_ if (property.editType === 'number') { -%>
-  <%= property.name.lowerCamelName %>: undefined,
+  <%_ if (field.editType === 'number') { -%>
+  <%= field.name.lowerCamelName %>: undefined,
   <%_ } -%>
 <%_ }) -%>
 }
@@ -161,121 +161,121 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
   }, [updated, close])
 <%_ } -%>
 
-  <%_ struct.fields.forEach(function (property, key) { -%>
-    <%_ if (property.editType === 'none') { return } -%>
-  const <%= property.name.lowerCamelName %>Form = useMemo(() => (
-    <%_ if (property.editType === 'string' && property.name.lowerCamelName === 'id') { -%>
+  <%_ struct.fields.forEach(function (field, key) { -%>
+    <%_ if (field.editType === 'none') { return } -%>
+  const <%= field.name.lowerCamelName %>Form = useMemo(() => (
+    <%_ if (field.editType === 'string' && field.name.lowerCamelName === 'id') { -%>
     <TextField
       disabled={!isNew}
       margin="dense"
-      id="<%= property.name.lowerCamelName %>"
-      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
+      id="<%= field.name.lowerCamelName %>"
+      label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
       type="text"
-      value={target.<%= property.name.lowerCamelName %> || ''}
+      value={target.<%= field.name.lowerCamelName %> || ''}
       fullWidth
       variant="standard"
-      onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.value})}
+      onChange={e => syncTarget({<%= field.name.lowerCamelName %>: e.target.value})}
     />
     <%_ } -%>
-    <%_ if (property.editType === 'string' && property.name.lowerCamelName !== 'id') { -%>
+    <%_ if (field.editType === 'string' && field.name.lowerCamelName !== 'id') { -%>
     <TextField
       margin="dense"
-      id="<%= property.name.lowerCamelName %>"
-      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
+      id="<%= field.name.lowerCamelName %>"
+      label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
       type="text"
-      value={target.<%= property.name.lowerCamelName %> || ''}
+      value={target.<%= field.name.lowerCamelName %> || ''}
       fullWidth
       variant="standard"
-      onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.value})}
+      onChange={e => syncTarget({<%= field.name.lowerCamelName %>: e.target.value})}
     />
     <%_ } -%>
-    <%_ if (property.editType === 'textarea') { -%>
+    <%_ if (field.editType === 'textarea') { -%>
     <TextField
       margin="dense"
-      id="<%= property.name.lowerCamelName %>"
-      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
+      id="<%= field.name.lowerCamelName %>"
+      label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
       type="text"
-      value={target.<%= property.name.lowerCamelName %> || ''}
+      value={target.<%= field.name.lowerCamelName %> || ''}
       fullWidth
       multiline
       minRows={4}
       variant="standard"
-      onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.value})}
+      onChange={e => syncTarget({<%= field.name.lowerCamelName %>: e.target.value})}
     />
     <%_ } -%>
-    <%_ if (property.editType === 'number' && property.name.lowerCamelName === 'id') { -%>
+    <%_ if (field.editType === 'number' && field.name.lowerCamelName === 'id') { -%>
     <TextField
       disabled={!isNew}
       margin="dense"
-      id="<%= property.name.lowerCamelName %>"
-      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
+      id="<%= field.name.lowerCamelName %>"
+      label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
       type="number"
       inputProps={{inputMode: 'numeric', pattern: '[0-9]*'}}
-      value={target.<%= property.name.lowerCamelName %> || target.<%= property.name.lowerCamelName %> === 0 ? target.<%= property.name.lowerCamelName %> : ''}
+      value={target.<%= field.name.lowerCamelName %> || target.<%= field.name.lowerCamelName %> === 0 ? target.<%= field.name.lowerCamelName %> : ''}
       fullWidth
       variant="standard"
-      onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.value === '' ? undefined : Number(e.target.value)})}
+      onChange={e => syncTarget({<%= field.name.lowerCamelName %>: e.target.value === '' ? undefined : Number(e.target.value)})}
     />
     <%_ } -%>
-    <%_ if (property.editType === 'number' && property.name.lowerCamelName !== 'id') { -%>
+    <%_ if (field.editType === 'number' && field.name.lowerCamelName !== 'id') { -%>
     <TextField
       margin="dense"
-      id="<%= property.name.lowerCamelName %>"
-      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
+      id="<%= field.name.lowerCamelName %>"
+      label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
       type="number"
       inputProps={{inputMode: 'numeric', pattern: '[0-9]*'}}
-      value={target.<%= property.name.lowerCamelName %> || target.<%= property.name.lowerCamelName %> === 0 ? target.<%= property.name.lowerCamelName %> : ''}
+      value={target.<%= field.name.lowerCamelName %> || target.<%= field.name.lowerCamelName %> === 0 ? target.<%= field.name.lowerCamelName %> : ''}
       fullWidth
       variant="standard"
-      onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.value === '' ? undefined : Number(e.target.value)})}
+      onChange={e => syncTarget({<%= field.name.lowerCamelName %>: e.target.value === '' ? undefined : Number(e.target.value)})}
     />
     <%_ } -%>
-    <%_ if (property.editType === 'time') { -%>
+    <%_ if (field.editType === 'time') { -%>
     <DateTimeForm
-      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
-      dateTime={target.<%= property.name.lowerCamelName %> ? new Date(target.<%= property.name.lowerCamelName %>) : null}
-      syncDateTime={dateTime => syncTarget({<%= property.name.lowerCamelName %>: dateTime ? formatISO(dateTime) : undefined})}
+      label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
+      dateTime={target.<%= field.name.lowerCamelName %> ? new Date(target.<%= field.name.lowerCamelName %>) : null}
+      syncDateTime={dateTime => syncTarget({<%= field.name.lowerCamelName %>: dateTime ? formatISO(dateTime) : undefined})}
     />
     <%_ } -%>
-    <%_ if (property.editType === 'bool') { -%>
+    <%_ if (field.editType === 'bool') { -%>
     <FormControlLabel
       control={
         <Switch
-          checked={!!target.<%= property.name.lowerCamelName %>}
-          onChange={e => syncTarget({<%= property.name.lowerCamelName %>: e.target.checked})}
+          checked={!!target.<%= field.name.lowerCamelName %>}
+          onChange={e => syncTarget({<%= field.name.lowerCamelName %>: e.target.checked})}
         />
       }
-      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
+      label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
     />
     <%_ } -%>
-    <%_ if (property.editType === 'image' && property.dataType === 'string') { -%>
+    <%_ if (field.editType === 'image' && field.dataType === 'string') { -%>
     <ImageForm
-      imageURL={target.<%= property.name.lowerCamelName %> || null}
-      dir="<%= struct.name.lowerCamelName %>/<%= property.name.lowerCamelName %>"
-      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
-      onChange={(value: string | null) => syncTarget({<%= property.name.lowerCamelName %>: value || undefined})}
+      imageURL={target.<%= field.name.lowerCamelName %> || null}
+      dir="<%= struct.name.lowerCamelName %>/<%= field.name.lowerCamelName %>"
+      label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
+      onChange={(value: string | null) => syncTarget({<%= field.name.lowerCamelName %>: value || undefined})}
     />
     <%_ } -%>
-    <%_ if (property.editType === 'array-image') { -%>
+    <%_ if (field.editType === 'array-image') { -%>
     <ImageArrayForm
-      imageURLs={target.<%= property.name.lowerCamelName %> || null}
-      dir="<%= struct.name.lowerCamelName %>/<%= property.name.lowerCamelName %>"
-      label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
-      onChange={(value: string | null) => syncTarget({<%= property.name.lowerCamelName %>: value || undefined})}
+      imageURLs={target.<%= field.name.lowerCamelName %> || null}
+      dir="<%= struct.name.lowerCamelName %>/<%= field.name.lowerCamelName %>"
+      label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
+      onChange={(value: string | null) => syncTarget({<%= field.name.lowerCamelName %>: value || undefined})}
     />
     <%_ } -%>
-    <%_ if (property.editType === 'array-string' || property.editType === 'array-textarea' || property.editType === 'array-number' || property.editType === 'array-time' || property.editType === 'array-bool') { -%>
-    <Expansion label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>一覧">
-      <%_ if (property.childType === 'string') { -%>
+    <%_ if (field.editType === 'array-string' || field.editType === 'array-textarea' || field.editType === 'array-number' || field.editType === 'array-time' || field.editType === 'array-bool') { -%>
+    <Expansion label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>一覧">
+      <%_ if (field.childType === 'string') { -%>
       <ArrayForm
-        items={target.<%= property.name.lowerCamelName %> || []}
-        syncItems={items => syncTarget({<%= property.name.lowerCamelName %>: items})}
+        items={target.<%= field.name.lowerCamelName %> || []}
+        syncItems={items => syncTarget({<%= field.name.lowerCamelName %>: items})}
         initial={''}
         form={(editTarget, updatedForm) => (
           <TextField
             margin="dense"
-            id="<%= property.name.lowerCamelName %>"
-            label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
+            id="<%= field.name.lowerCamelName %>"
+            label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
             type="text"
             value={editTarget || ''}
             fullWidth
@@ -285,16 +285,16 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
         )}
       />
       <%_ } -%>
-      <%_ if (property.childType === 'textarea') { -%>
+      <%_ if (field.childType === 'textarea') { -%>
       <ArrayForm
-        items={target.<%= property.name.lowerCamelName %> || []}
-        syncItems={items => syncTarget({<%= property.name.lowerCamelName %>: items})}
+        items={target.<%= field.name.lowerCamelName %> || []}
+        syncItems={items => syncTarget({<%= field.name.lowerCamelName %>: items})}
         initial={''}
         form={(editTarget, updatedForm) => (
           <TextField
             margin="dense"
-            id="<%= property.name.lowerCamelName %>"
-            label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
+            id="<%= field.name.lowerCamelName %>"
+            label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
             type="text"
             value={editTarget || ''}
             fullWidth
@@ -306,16 +306,16 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
         )}
       />
       <%_ } -%>
-      <%_ if (property.childType === 'number') { -%>
+      <%_ if (field.childType === 'number') { -%>
       <ArrayForm
-        items={target.<%= property.name.lowerCamelName %> || []}
-        syncItems={items => syncTarget({<%= property.name.lowerCamelName %>: items})}
+        items={target.<%= field.name.lowerCamelName %> || []}
+        syncItems={items => syncTarget({<%= field.name.lowerCamelName %>: items})}
         initial={0}
         form={(editTarget, updatedForm) => (
           <TextField
             margin="dense"
-            id="<%= property.name.lowerCamelName %>"
-            label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
+            id="<%= field.name.lowerCamelName %>"
+            label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
             type="number"
             inputProps={{inputMode: 'numeric', pattern: '[0-9]*'}}
             value={editTarget || editTarget === 0 ? editTarget : ''}
@@ -326,10 +326,10 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
         )}
       />
       <%_ } -%>
-      <%_ if (property.childType === 'bool') { -%>
+      <%_ if (field.childType === 'bool') { -%>
       <ArrayForm
-        items={target.<%= property.name.lowerCamelName %> || []}
-        syncItems={items => syncTarget({<%= property.name.lowerCamelName %>: items})}
+        items={target.<%= field.name.lowerCamelName %> || []}
+        syncItems={items => syncTarget({<%= field.name.lowerCamelName %>: items})}
         initial={false}
         form={(editTarget, updatedForm) => (
           <FormControlLabel
@@ -339,19 +339,19 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
                 onChange={e => updatedForm(e.target.checked)}
               />
             }
-            label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
+            label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
           />
         )}
       />
       <%_ } -%>
-      <%_ if (property.childType === 'time') { -%>
+      <%_ if (field.childType === 'time') { -%>
       <ArrayForm
-        items={target.<%= property.name.lowerCamelName %> || []}
-        syncItems={items => syncTarget({<%= property.name.lowerCamelName %>: items})}
+        items={target.<%= field.name.lowerCamelName %> || []}
+        syncItems={items => syncTarget({<%= field.name.lowerCamelName %>: items})}
         initial={formatISO(new Date())}
         form={(editTarget, updatedForm) => (
           <DateTimeForm
-            label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>"
+            label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
             dateTime={editTarget ? new Date(editTarget) : null}
             syncDateTime={dateTime => updatedForm(dateTime ? formatISO(dateTime) : undefined)}
           />
@@ -360,14 +360,14 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       <%_ } -%>
     </Expansion>
     <%_ } -%>
-    <%_ if (property.editType === 'array-struct') { -%>
-    <Expansion label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>">
+    <%_ if (field.editType === 'array-struct') { -%>
+    <Expansion label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>">
       <StructArrayForm
-        items={target.<%= property.name.lowerCamelName %> || []}
-        syncItems={items => syncTarget({<%= property.name.lowerCamelName %>: items})}
-        initial={INITIAL_<%= property.structName.upperSnakeName %>}
+        items={target.<%= field.name.lowerCamelName %> || []}
+        syncItems={items => syncTarget({<%= field.name.lowerCamelName %>: items})}
+        initial={INITIAL_<%= field.structName.upperSnakeName %>}
         table={(items, pageInfo, changePageInfo, openEntryForm, removeRow) => (
-          <<%= property.structName.pascalName %>DataTable
+          <<%= field.structName.pascalName %>DataTable
             items={items}
             pageInfo={pageInfo}
             hasParent={true}
@@ -377,7 +377,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
           />
         )}
         form={(editIndex, open, setOpen, editTarget, syncTarget, updatedForm, removeForm) => (
-          <<%= property.structName.pascalName %>EntryForm
+          <<%= field.structName.pascalName %>EntryForm
             open={open}
             setOpen={setOpen}
             target={editTarget}
@@ -391,14 +391,14 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       />
     </Expansion>
     <%_ } -%>
-    <%_ if (property.editType === 'struct') { -%>
-    <Expansion label="<%= property.screenLabel ? property.screenLabel : property.name.lowerCamelName %>">
-      {target.<%= property.name.lowerCamelName %> ? (
-        <<%= property.structName.pascalName %>EntryForm
-          target={target.<%= property.name.lowerCamelName %>!}
+    <%_ if (field.editType === 'struct') { -%>
+    <Expansion label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>">
+      {target.<%= field.name.lowerCamelName %> ? (
+        <<%= field.structName.pascalName %>EntryForm
+          target={target.<%= field.name.lowerCamelName %>!}
           syncTarget={item => syncTarget({
-            <%= property.name.lowerCamelName %>: {
-              ...target.<%= property.name.lowerCamelName %>,
+            <%= field.name.lowerCamelName %>: {
+              ...target.<%= field.name.lowerCamelName %>,
               ...item
             }
           })}
@@ -407,16 +407,16 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
         />
       ) : (
         <InitForm
-          initial={cloneDeep(INITIAL_<%= property.structName.upperSnakeName %>)}
-          syncTarget={item => syncTarget({<%= property.name.lowerCamelName %>: item})}
+          initial={cloneDeep(INITIAL_<%= field.structName.upperSnakeName %>)}
+          syncTarget={item => syncTarget({<%= field.name.lowerCamelName %>: item})}
         />
       )}
     </Expansion>
     <%_ } -%>
-    <%_ if (property.name.lowerCamelName === 'id') { -%>
-  ), [isNew, target.<%= property.name.lowerCamelName %>, syncTarget])
+    <%_ if (field.name.lowerCamelName === 'id') { -%>
+  ), [isNew, target.<%= field.name.lowerCamelName %>, syncTarget])
     <%_ } else { -%>
-  ), [target.<%= property.name.lowerCamelName %>, syncTarget])
+  ), [target.<%= field.name.lowerCamelName %>, syncTarget])
     <%_ } -%>
 
   <%_ }) -%>
@@ -427,9 +427,9 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       )}
       <DialogContent>
         <Grid container spacing={2}>
-        <%_ struct.fields.forEach(function (property, key) { -%>
-          <%_ if (property.editType === 'none') { return } -%>
-          <Grid item xs={12}>{<%= property.name.lowerCamelName %>Form}</Grid>
+        <%_ struct.fields.forEach(function (field, key) { -%>
+          <%_ if (field.editType === 'none') { return } -%>
+          <Grid item xs={12}>{<%= field.name.lowerCamelName %>Form}</Grid>
         <%_ }) -%>
         </Grid>
       </DialogContent>
