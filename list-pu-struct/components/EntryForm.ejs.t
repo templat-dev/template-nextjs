@@ -73,7 +73,7 @@ import <%= structName.pascalName %>DataTable from '@/components/<%= structName.l
 export const INITIAL_<%= struct.name.upperSnakeName %>: Model<%= struct.name.pascalName %> = {
 <%_ struct.fields.forEach(function (property, key) { -%>
   <%_ if (property.editType === 'struct') { -%>
-  <%= property.name.lowerCamelName %>: INITIAL_<%= property.name.upperSnakeName %>,
+  <%= property.name.lowerCamelName %>: INITIAL_<%= property.structName.upperSnakeName %>,
   <%_ } -%>
   <%_ if (property.editType.startsWith('array')) { -%>
   <%= property.name.lowerCamelName %>: [],
