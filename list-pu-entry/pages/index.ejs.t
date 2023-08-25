@@ -69,20 +69,20 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
         <%_ struct.fields.forEach(function(field, index){ -%>
 <%#_ 通常の検索 -%>
         <%_ if ((field.listType === 'string' || field.listType === 'time' || field.listType === 'bool' || field.listType === 'number')  && field.searchType === 1) { -%>
-        <%= field.name.lowerCamelName %>: searchCondition.<%= field.name.lowerCamelName %>.enabled ? searchCondition.<%= field.name.lowerCamelName %>.value : undefined,
+        <%= field.name.lowerCamelName %>: searchCondition.<%= field.name.lowerCamelName %> || undefined,
 <%#_ 配列の検索 -%>
         <%_ } else if ((field.listType === 'array-string' || field.listType === 'array-time' || field.listType === 'array-bool' || field.listType === 'array-number')  && field.searchType === 1) { -%>
-        <%= field.name.lowerCamelName %>: searchCondition.<%= field.name.lowerCamelName %>.enabled ? [searchCondition.<%= field.name.lowerCamelName %>.value] : undefined,
+        <%= field.name.lowerCamelName %>: searchCondition.<%= field.name.lowerCamelName %> ? [searchCondition.<%= field.name.lowerCamelName %>] : undefined,
 <%#_ 範囲検索 -%>
         <%_ } else if ((field.listType === 'time' || field.listType === 'number') && 2 <= field.searchType &&  field.searchType <= 5) { -%>
-        <%= field.name.lowerCamelName %>: searchCondition.<%= field.name.lowerCamelName %>.enabled ? searchCondition.<%= field.name.lowerCamelName %>.value : undefined,
-        <%= field.name.lowerCamelName %>From: searchCondition.<%= field.name.lowerCamelName %>From.enabled ? searchCondition.<%= field.name.lowerCamelName %>From.value : undefined,
-        <%= field.name.lowerCamelName %>To: searchCondition.<%= field.name.lowerCamelName %>To.enabled ? searchCondition.<%= field.name.lowerCamelName %>To.value : undefined,
+        <%= field.name.lowerCamelName %>: searchCondition.<%= field.name.lowerCamelName %> || undefined,
+        <%= field.name.lowerCamelName %>From: searchCondition.<%= field.name.lowerCamelName %>From || undefined,
+        <%= field.name.lowerCamelName %>To: searchCondition.<%= field.name.lowerCamelName %>To || undefined,
 <%#_ 配列の範囲検索 -%>
         <%_ } else if ((field.listType === 'array-time' || field.listType === 'array-number') && 2 <= field.searchType &&  field.searchType <= 5) { -%>
-        <%= field.name.lowerCamelName %>: searchCondition.<%= field.name.lowerCamelName %>.enabled ? [searchCondition.<%= field.name.lowerCamelName %>.value] : undefined,
-        <%= field.name.lowerCamelName %>From: searchCondition.<%= field.name.lowerCamelName %>From.enabled ? searchCondition.<%= field.name.lowerCamelName %>From.value : undefined,
-        <%= field.name.lowerCamelName %>To: searchCondition.<%= field.name.lowerCamelName %>To.enabled ? searchCondition.<%= field.name.lowerCamelName %>To.value : undefined,
+        <%= field.name.lowerCamelName %>: searchCondition.<%= field.name.lowerCamelName %> ? [searchCondition.<%= field.name.lowerCamelName %>] : undefined,
+        <%= field.name.lowerCamelName %>From: searchCondition.<%= field.name.lowerCamelName %>From || undefined,
+        <%= field.name.lowerCamelName %>To: searchCondition.<%= field.name.lowerCamelName %>To || undefined,
         <%_ } -%>
         <%_ }) -%>
         limit: pageInfo.pageSize !== -1 ? pageInfo.pageSize : undefined,
