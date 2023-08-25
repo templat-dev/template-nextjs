@@ -59,10 +59,10 @@ const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Mode
   const previewSearchCondition = useMemo((): string => {
     const previewSearchConditions = []
     for (const [key, value] of Object.entries(searchCondition)) {
-      if (!value.enabled) {
+      if (!value) {
         continue
       }
-      previewSearchConditions.push(`${key}=${value.value}`)
+      previewSearchConditions.push(`${key}=${value}`)
     }
     return previewSearchConditions.join(', ')
   }, [searchCondition])
