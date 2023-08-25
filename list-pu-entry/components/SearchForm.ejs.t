@@ -20,7 +20,7 @@ import {
   TextField
 } from '@mui/material'
 <%_ if (struct.exists.search.time || struct.exists.search.arrayTime) { -%>
-import DateTimeForm from '@/components/form/DateTimeForm.vue'
+import DateTimeForm from '@/components/form/DateTimeForm'
 import {formatISO} from 'date-fns'
 <%_ } -%>
 
@@ -46,45 +46,45 @@ import {formatISO} from 'date-fns'
 <%_ } -%>
 export interface <%= struct.name.pascalName %>SearchCondition {
   <%_ searchConditions.forEach(function(searchCondition) { -%>
-    <%_ if (searchCondition.listType === 'string' && !searchCondition.range) { -%>
-  <%= searchCondition.name %>?: <%= searchCondition.listType %>
+    <%_ if (searchCondition.type === 'string' && !searchCondition.range) { -%>
+  <%= searchCondition.name %>?: <%= searchCondition.type %>
     <%_ } -%>
-    <%_ if (searchCondition.listType === 'boolean' && !searchCondition.range) { -%>
-  <%= searchCondition.name %>?: <%= searchCondition.listType %>
+    <%_ if (searchCondition.type === 'boolean' && !searchCondition.range) { -%>
+  <%= searchCondition.name %>?: <%= searchCondition.type %>
     <%_ } -%>
-    <%_ if (searchCondition.listType === 'number' && !searchCondition.range) { -%>
-  <%= searchCondition.name %>?: <%= searchCondition.listType %>
+    <%_ if (searchCondition.type === 'number' && !searchCondition.range) { -%>
+  <%= searchCondition.name %>?: <%= searchCondition.type %>
     <%_ } -%>
-    <%_ if (searchCondition.listType === 'number' && searchCondition.range) { -%>
-  <%= searchCondition.name %>?: <%= searchCondition.listType %>
-  <%= searchCondition.name %>From?: <%= searchCondition.listType %>
-  <%= searchCondition.name %>To?: <%= searchCondition.listType %>
+    <%_ if (searchCondition.type === 'number' && searchCondition.range) { -%>
+  <%= searchCondition.name %>?: <%= searchCondition.type %>
+  <%= searchCondition.name %>From?: <%= searchCondition.type %>
+  <%= searchCondition.name %>To?: <%= searchCondition.type %>
     <%_ } -%>
-    <%_ if (searchCondition.listType === 'string' && searchCondition.range) { -%>
-  <%= searchCondition.name %>?: <%= searchCondition.listType %>
-  <%= searchCondition.name %>From?: <%= searchCondition.listType %>
-  <%= searchCondition.name %>To?: <%= searchCondition.listType %>
+    <%_ if (searchCondition.type === 'string' && searchCondition.range) { -%>
+  <%= searchCondition.name %>?: <%= searchCondition.type %>
+  <%= searchCondition.name %>From?: <%= searchCondition.type %>
+  <%= searchCondition.name %>To?: <%= searchCondition.type %>
     <%_ } -%>
   <%_ }) -%>
 }
 
 export const INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION: <%= struct.name.pascalName %>SearchCondition = {
   <%_ searchConditions.forEach(function(searchCondition) { -%>
-    <%_ if (searchCondition.listType === 'string' && !searchCondition.range) { -%>
+    <%_ if (searchCondition.type === 'string' && !searchCondition.range) { -%>
   <%= searchCondition.name %>: undefined,
     <%_ } -%>
-    <%_ if (searchCondition.listType === 'boolean' && !searchCondition.range) { -%>
+    <%_ if (searchCondition.type === 'boolean' && !searchCondition.range) { -%>
   <%= searchCondition.name %>: undefined,
     <%_ } -%>
-    <%_ if (searchCondition.listType === 'number' && !searchCondition.range) { -%>
+    <%_ if (searchCondition.type === 'number' && !searchCondition.range) { -%>
   <%= searchCondition.name %>: undefined,
     <%_ } -%>
-    <%_ if (searchCondition.listType === 'number' && searchCondition.range) { -%>
+    <%_ if (searchCondition.type === 'number' && searchCondition.range) { -%>
   <%= searchCondition.name %>: undefined,
   <%= searchCondition.name %>From: undefined,
   <%= searchCondition.name %>To: undefined,
     <%_ } -%>
-    <%_ if (searchCondition.listType === 'string' && searchCondition.range) { -%>
+    <%_ if (searchCondition.type === 'string' && searchCondition.range) { -%>
   <%= searchCondition.name %>: undefined,
   <%= searchCondition.name %>From: undefined,
   <%= searchCondition.name %>To: undefined,
@@ -120,7 +120,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
     close()
   }, [onSearch, close])
 
-  const setSingleSearchCondition = useCallback((value: Partial<SimpleTableSearchCondition>) => {
+  const setSingleSearchCondition = useCallback((value: Partial<<%= struct.name.pascalName %>SearchCondition>) => {
     setSearchCondition(searchCondition => ({
       ...searchCondition,
       ...value
