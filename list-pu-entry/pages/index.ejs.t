@@ -91,7 +91,7 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
         orderBy: pageInfo.sortModel.map(sm => `${sm.sort === 'desc' ? '-' : ''}${sm.field}`).join(',') || undefined
 <%_ } else { -%>
         offset: pageInfo.page * pageInfo.pageSize,
-        orderBy: page.sortModel.map(sm => `${snakeCase(sm.field)} ${sm.sort}`).join(',') || undefined
+        orderBy: pageInfo.sortModel.map(sm => `${sm.field} ${sm.sort}`).join(',') || undefined
 <%_ } -%>
       }).then(res => res.data)
 <%_ if (project.dbType === 'datastore') { -%>
