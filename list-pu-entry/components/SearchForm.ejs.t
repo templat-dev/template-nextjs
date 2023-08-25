@@ -4,6 +4,9 @@ to: <%= rootDirectory %>/components/<%= struct.name.lowerCamelName %>/<%= struct
 import * as React from 'react'
 import {useCallback, useEffect, useState} from 'react'
 import {cloneDeep} from 'lodash-es'
+<%_ if (struct.exists.search.time || struct.exists.search.arrayTime) { -%>
+import {formatISO} from 'date-fns'
+<%_ } -%>
 import {
   Button,
   Dialog,
@@ -21,7 +24,6 @@ import {
 } from '@mui/material'
 <%_ if (struct.exists.search.time || struct.exists.search.arrayTime) { -%>
 import DateTimeForm from '@/components/form/DateTimeForm'
-import {formatISO} from 'date-fns'
 <%_ } -%>
 
 <%_ const searchConditions = [] -%>

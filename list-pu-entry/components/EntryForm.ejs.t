@@ -6,6 +6,12 @@ import {useCallback, useMemo} from 'react'
 <%_ if (struct.exists.edit.struct) { -%>
 import {cloneDeep} from 'lodash-es'
 <%_ } -%>
+<%_ if (struct.structType !== 'struct') { -%>
+import {useResetRecoilState, useSetRecoilState} from 'recoil'
+<%_ } -%>
+<%_ if (struct.exists.edit.time || struct.exists.edit.arrayTime) { -%>
+import {formatISO} from 'date-fns'
+<%_ } -%>
 import {
   Button,
   DialogActions,
@@ -20,12 +26,6 @@ import {
 <%_ } -%>
   TextField
 } from '@mui/material'
-<%_ if (struct.structType !== 'struct') { -%>
-import {useResetRecoilState, useSetRecoilState} from 'recoil'
-<%_ } -%>
-<%_ if (struct.exists.edit.time || struct.exists.edit.arrayTime) { -%>
-import {formatISO} from 'date-fns'
-<%_ } -%>
 <%_ if (struct.structType !== 'struct') { -%>
 import {loadingState} from '@/state/App'
 <%_ } -%>
