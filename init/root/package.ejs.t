@@ -7,9 +7,9 @@ force: true
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev:dev": "sh ./env.sh dev development && next dev",
-    "dev:stg": "sh ./env.sh stg development && next dev",
-    "dev:prod": "sh ./env.sh prod development && next dev",
+    "dev:dev": "sh ./env.sh dev local && next dev",
+    "dev:stg": "sh ./env.sh stg local && next dev",
+    "dev:prod": "sh ./env.sh prod local && next dev",
     "build": "next build",
     "build:dev": "sh ./env.sh dev production && next build",
     "build:stg": "sh ./env.sh stg production && next build",
