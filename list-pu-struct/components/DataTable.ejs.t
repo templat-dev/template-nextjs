@@ -2,8 +2,13 @@
 to: <%= rootDirectory %>/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>DataTable.tsx
 ---
 import * as React from 'react'
+<%_ if (struct.structType !== 'struct') { -%>
 import {useMemo, useState} from 'react'
 import {Box, Divider, Fab, IconButton, Paper, Typography} from '@mui/material'
+<%_ } else { -%>
+import {useMemo} from 'react'
+import {Box, Fab, Paper, Typography} from '@mui/material'
+<%_ } -%>
 <%_ if (struct.exists.list.image || struct.exists.list.arrayImage) { -%>
 import {
   GridActionsCellItem,
@@ -15,7 +20,9 @@ import {
 <%_ } else { -%>
 import {GridActionsCellItem, GridColDef, GridRowParams, GridToolbarContainer} from '@mui/x-data-grid'
 <%_ } -%>
+<%_ if (struct.structType !== 'struct') { -%>
 import SearchIcon from '@mui/icons-material/Search'
+<%_ } -%>
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 <%_ if (struct.exists.list.arrayImage) { -%>
