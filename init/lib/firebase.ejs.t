@@ -2,7 +2,11 @@
 to: "<%= project.plugins.find(p => p.name === 'auth')?.enable ? `${rootDirectory}/lib/firebase.ts` : null %>"
 force: true
 ---
-import { initializeApp } from "firebase/app";
+import {initializeApp} from 'firebase/app'
+import f, {getAuth} from 'firebase/auth'
+import {initializeAnalytics} from 'firebase/analytics'
+import {auth} from 'firebaseui'
+import 'firebaseui/dist/firebaseui.css'
 
 // Your web app's Firebase configuration
 <%- project.plugins.find(p => p.name === 'auth')?.parameter %>
