@@ -3,11 +3,12 @@ to: <%= rootDirectory %>/components/form/DateTimeForm.tsx
 force: true
 ---
 import * as React from 'react'
-import {DatePicker, LocalizationProvider, TimePicker} from '@mui/lab';
-import {Grid, IconButton, TextField} from '@mui/material';
+import {Grid, IconButton} from '@mui/material'
 import ClearIcon from '@mui/icons-material/Clear'
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import {startOfDay} from 'date-fns';
+import {LocalizationProvider, MobileDatePicker, MobileTimePicker} from '@mui/x-date-pickers'
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns'
+import {startOfDay} from 'date-fns'
+import ja from 'date-fns/locale/ja'
 
 export interface DateTimeFormProps {
   /** 画面表示ラベル */
@@ -33,20 +34,18 @@ export const DateTimeForm = ({label, dateTime, disabled = false, syncDateTime}: 
   }
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ja}>
       <Grid container spacing={1} alignItems="center">
         <Grid item xs={5}>
-          <DatePicker
+          <MobileDatePicker
+            closeOnSelect
             label={label}
             value={dateTime}
             disabled={disabled}
-            clearable
-            inputFormat="yyyy/MM/dd"
-            mask="____/__/__"
+            format="yyyy/MM/dd"
             onChange={(newValue: Date | null) => {
-              syncDateTime(newValue);
+              syncDateTime(newValue)
             }}
-            renderInput={(params: any) => <TextField {...params} />}
           />
         </Grid>
         <Grid item xs={1}>
@@ -60,13 +59,13 @@ export const DateTimeForm = ({label, dateTime, disabled = false, syncDateTime}: 
           </IconButton>
         </Grid>
         <Grid item xs={5}>
-          <TimePicker
+          <MobileTimePicker
+            closeOnSelect
             value={dateTime}
             disabled={disabled}
             onChange={(newValue: Date | null) => {
               syncDateTime(newValue)
             }}
-            renderInput={(params: any) => <TextField {...params} />}
           />
         </Grid>
         <Grid item xs={1}>

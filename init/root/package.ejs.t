@@ -18,15 +18,14 @@ force: true
     "lint": "next lint"
   },
   "dependencies": {
-    "@date-io/date-fns": "^2.17.0",
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.0",
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.6",
-    "@mui/lab": "^5.0.0-alpha.141",
     "@mui/material": "^5.14.6",
     "@mui/x-data-grid": "^6.12.0",
+    "@mui/x-date-pickers": "^6.12.0",
     "axios": "^0.27.2",
     "date-fns": "^2.30.0",
 <%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
