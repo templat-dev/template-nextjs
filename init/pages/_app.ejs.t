@@ -98,62 +98,63 @@ export default function MyApp({
 <%_ } -%>
 
     return (
-     <>
-       <AppBar position="fixed">
-         <Toolbar variant="dense">
-           <IconButton color="inherit" onClick={() => toggleDrawer(true)} edge="start" sx={{mr: 1}}>
-             <MenuIcon/>
-           </IconButton>
-           <Link href="/">
-             <Typography variant="h6" component="h1" sx={{flexGrow: 1}} color="common.white">
-               <%= projectName %>
-             </Typography>
-           </Link>
-           {currentPageTitle && (
-             <Typography variant="subtitle2" component="h2" sx={{
-               ml: 2,
-               px: '8px',
-               py: '4px',
-               border: '1px solid',
-               borderRadius: '4px',
-               lineHeight: 1,
-             }}>{currentPageTitle}</Typography>
-           )}
-           <Box sx={{ flexGrow: 1 }} />
+      <>
+        <AppBar position="fixed">
+          <Toolbar variant="dense">
+            <IconButton color="inherit" onClick={() => toggleDrawer(true)} edge="start" sx={{mr: 1}}>
+              <MenuIcon/>
+            </IconButton>
+            <Link href="/">
+              <Typography variant="h6" component="h1" sx={{flexGrow: 1}} color="common.white">
+                templat-test-32-web
+              </Typography>
+            </Link>
+            {currentPageTitle && (
+              <Typography variant="subtitle2" component="h2" sx={{
+                ml: 2,
+                px: '8px',
+                py: '4px',
+                border: '1px solid',
+                borderRadius: '4px',
+                lineHeight: 1,
+              }}>{currentPageTitle}</Typography>
+            )}
+            <Box sx={{flexGrow: 1}}/>
 <%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
-           <Stack spacing={1} alignItems="center" direction="row">
-             <Typography variant="subtitle2"
-                         sx={{color: '#FFFFFF'}}>{auth.user?.displayName}</Typography>
-             <IconButton onClick={() => logout()} edge="start" sx={{
-               mr: 1,
-               color: '#FFFFFF'
-             }}>
-               <LogoutIcon/>
-             </IconButton>
-           </Stack>
+            <Stack spacing={1} alignItems="center" direction="row">
+              <Typography variant="subtitle2"
+                          sx={{color: '#FFFFFF'}}>{auth.user?.displayName}</Typography>
+              <IconButton onClick={() => logout()} edge="start" sx={{
+                mr: 1,
+                color: '#FFFFFF'
+              }}>
+                <LogoutIcon/>
+              </IconButton>
+            </Stack>
 <%_ } -%>
-         </Toolbar>
-       </AppBar>
-       <Drawer
-         open={open}
-         onClose={() => toggleDrawer(false)}
-         sx={{
-           '& .MuiDrawer-paper': {
-             width: drawerWidth,
-             boxSizing: 'border-box',
-           },
-         }}>
-         <List>
-           {menus.map((menu, index) => (
-             <ListItemButton key={index} component={Link} href={menu.to} selected={menu === activeMenu}
-                             onClick={() => toggleDrawer(false)}>
-               <ListItemText primary={menu.title}/>
-             </ListItemButton>
-           ))}
-         </List>
-       </Drawer>
-     </>
-  )}
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          open={open}
+          onClose={() => toggleDrawer(false)}
+          sx={{
+            '& .MuiDrawer-paper': {
+              width: drawerWidth,
+              boxSizing: 'border-box',
+            },
+          }}>
+          <List>
+            {menus.map((menu, index) => (
+              <ListItemButton key={index} component={Link} href={menu.to} selected={menu === activeMenu}
+                              onClick={() => toggleDrawer(false)}>
+                <ListItemText primary={menu.title}/>
+              </ListItemButton>
+            ))}
+          </List>
+        </Drawer>
+      </>
+    )
+  }
 
 <%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
   const Auth = ({children}: Props) => {
