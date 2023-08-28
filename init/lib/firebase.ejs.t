@@ -7,4 +7,14 @@ import { initializeApp } from "firebase/app";
 // Your web app's Firebase configuration
 <%- project.plugins.find(p => p.name === 'auth')?.parameter %>
 
-export const app = initializeApp(firebaseConfig)
+const firebaseApp = initializeApp(firebaseConfig)
+
+let firebaseAuth: f.Auth, firebaseAuthUI: auth.AuthUI
+if (firebaseApp.name && typeof window !== 'undefined') {
+  initializeAnalytics(firebaseApp)
+  firebaseAuth = getAuth(firebaseApp)
+  const firebaseui = require('firebaseui')
+  firebaseAuthUI = new firebaseui.auth.AuthUI(firebaseAuth)
+}
+
+export {firebaseAuth, firebaseAuthUI}

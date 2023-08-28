@@ -22,19 +22,20 @@ import {
   Typography
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
-
+<%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
+import LogoutIcon from '@mui/icons-material/Logout'
+<%_ } -%>
 import createEmotionCache from '@/styles/createEmotionCache'
 import theme from '@/styles/theme'
-
+<%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
+import {firebaseAuth} from '@/lib/firebase'
+<%_ } -%>
 import Link from '@/components/Link'
 import {AppDialog} from '@/components/modal/AppDialog'
 import {AppLoading} from '@/components/modal/AppLoading'
 import {AppSnackbar} from '@/components/modal/AppSnackbar'
 <%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
-import useAuth from "@/components/common/UseAuth"
-import LogoutIcon from '@mui/icons-material/Logout'
-import {getAuth} from "firebase/auth"
-import {app} from "@/lib/firebase"
+import useAuth from '@/components/common/UseAuth'
 <%_ } -%>
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -55,16 +56,21 @@ const menus = [
 ]
 
 type Props = {
-  children: JSX.Element;
-};
+  children: JSX.Element
+}
 
-export default function MyApp({Component, pageProps, router, emotionCache = clientSideEmotionCache}: MyAppProps): JSX.Element | null {
+export default function MyApp({
+                                Component,
+                                pageProps,
+                                router,
+                                emotionCache = clientSideEmotionCache
+                              }: MyAppProps): JSX.Element | null {
   const [open, setOpen] = useState(false)
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setMounted(true)
+  }, [])
 
   const activeMenu = useMemo(() => {
     return menus.find(menu => router.pathname === menu.to)
@@ -83,11 +89,10 @@ export default function MyApp({Component, pageProps, router, emotionCache = clie
 
   const AppHeader = () => {
 <%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
-    const {auth, setAuth, isAuthed} = useAuth();
-    const fbAuth = getAuth(app)
+    const {auth, setAuth, isAuthed} = useAuth()
 
     const logout = useCallback(() => {
-      fbAuth.signOut()
+      firebaseAuth.signOut()
       setAuth({token: null, user: null})
     }, [])
 <%_ } -%>
@@ -151,8 +156,8 @@ export default function MyApp({Component, pageProps, router, emotionCache = clie
   )}
 
 <%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
-  const Auth = ({ children }: Props) => {
-    const {setAuth, isAuthed} = useAuth();
+  const Auth = ({children}: Props) => {
+    const {setAuth, isAuthed} = useAuth()
 
     useEffect(() => {
       if (router.pathname === '/login') {
@@ -161,18 +166,18 @@ export default function MyApp({Component, pageProps, router, emotionCache = clie
       if (!!isAuthed) {
         return
       }
-      router.push('/login')
+      router.push(`/login?r=${encodeURIComponent(router.asPath)}`)
     }, [router.pathname, isAuthed])
 
     return !isAuthed && router.pathname !== '/login' ? (
       <Box>
         <Typography>Loading...</Typography>
       </Box>
-    ): children;
+    ) : children
   }
 <%_ } -%>
 
-  if (!mounted) return null;
+  if (!mounted) return null
 
   return (
     <RecoilRoot>

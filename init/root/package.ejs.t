@@ -18,39 +18,39 @@ force: true
     "lint": "next lint"
   },
   "dependencies": {
-    "@date-io/date-fns": "^2.11.0",
-    "@emotion/cache": "^11.5.0",
-    "@emotion/react": "^11.5.0",
-    "@emotion/server": "^11.4.0",
-    "@emotion/styled": "^11.3.0",
-    "@mui/icons-material": "^5.1.0",
-    "@mui/lab": "^5.0.0-alpha.54",
-    "@mui/material": "^5.1.0",
-    "@mui/x-data-grid": "^6.6.0",
-    "axios": "^0.24.0",
-    "date-fns": "^2.25.0",
-    "firebase": "^9.6.4",
+    "@date-io/date-fns": "^2.17.0",
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.0",
+    "@emotion/server": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.6",
+    "@mui/lab": "^5.0.0-alpha.141",
+    "@mui/material": "^5.14.6",
+    "@mui/x-data-grid": "^6.12.0",
+    "axios": "^0.27.2",
+    "date-fns": "^2.30.0",
+<%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
+    "firebase": "^10.3.0",
+    "firebaseui": "^6.1.0",
+<%_ } -%>
     "lodash-es": "^4.17.21",
-    "next": "12.1.6",
-    "react": "18.1.0",
-    "react-dom": "18.1.0",
-    "react-firebaseui": "^6.0.0",
-    "react-responsive-carousel": "^3.2.22",
-    "recoil": "^0.7.1"
+    "next": "13.4.19",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-responsive-carousel": "^3.2.23",
+    "recoil": "^0.7.7"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.3.0",
     "@openapitools/openapi-generator-cli": "^1.0.18-5.0.0-beta2",
-    "@types/lodash-es": "^4.17.5",
-    "@types/node": "17.0.41",
-    "@types/react": "^18.0.10",
-    "@types/react-dom": "^18.0.5",
-    "eslint": "7",
-    "eslint-config-next": "12.0.3",
-    "typescript": "4.4.4"
+    "@types/lodash-es": "^4.17.8",
+    "@types/node": "20.5.7",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "typescript": "5.2.2"
   },
   "resolutions": {
-    "**/@types/react": "^18.0.10",
-    "**/@types/react-dom": "^18.0.5"
+    "**/@types/react": "^18.2.21",
+    "**/@types/react-dom": "^18.2.7"
   }
 }

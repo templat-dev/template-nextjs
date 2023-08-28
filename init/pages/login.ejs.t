@@ -2,46 +2,65 @@
 to: "<%= project.plugins.find(p => p.name === 'auth')?.enable ? `${rootDirectory}/pages/login.tsx` : null %>"
 force: true
 ---
-import {NextPage} from "next";
-import {useEffect} from "react";
-import {Card, CardActions, CardContent, CardHeader, Grid, Stack} from "@mui/material";
-import {useRecoilState} from "recoil";
-import {authState, AuthState} from "@/state/Auth";
-import Image from "next/image";
-import * as React from "react";
-import {
-  getAuth,
-  GoogleAuthProvider,
-} from 'firebase/auth'
-import { auth } from 'firebaseui'
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
-import {app} from "@/lib/firebase";
+import * as React from 'react'
+import {useEffect} from 'react'
+import {NextPage} from 'next'
+import {useRouter} from 'next/router'
+import {Box, Grid, Stack, Typography} from '@mui/material'
+import {GoogleAuthProvider} from 'firebase/auth'
+import {firebaseAuthUI} from '@/lib/firebase'
 
-const uiConfig: auth.Config = {
+const AUTH_UI_DEFAULT_CONFIG = {
   signInFlow: 'popup',
   signInOptions: [
-    GoogleAuthProvider.PROVIDER_ID,
-  ],
-  signInSuccessUrl: '/',
+    {
+      provider: GoogleAuthProvider.PROVIDER_ID,
+      scopes: []
+    }
+  ]
 }
 
 const Login: NextPage = () => {
+  const router = useRouter()
+
+  useEffect(() => {
+    let signInSuccessUrl = '/'
+    if (router.query.r) {
+      signInSuccessUrl = router.query.r.toString()
+    }
+    firebaseAuthUI.start('#firebaseui-auth-container', {
+      ...AUTH_UI_DEFAULT_CONFIG,
+      signInSuccessUrl
+    })
+  }, [])
+
   return (
-    <Grid container direction="column" alignItems="center">
-      <Grid item xs={6}>
-        <Stack justifyContent="center" alignItems="center" sx={{flexGrow: 1, my: '36px', py: '24px', px: '24px', backgroundColor: theme => theme.palette.primary.main}}>
-          <Image src="/image/logo.png" alt="logo" width="134px" height="135px"/>
+    <Grid container justifyContent="center">
+      <Grid item md={6} sm={8} xs={12} sx={{
+        p: '32px',
+        mt: '32px',
+        borderRadius: '4px',
+        backgroundColor: 'rgba(0, 0, 0, 0.02)',
+      }}>
+        <Stack alignItems="center" sx={{flexGrow: 1}}>
+          <Stack alignItems="center" sx={{mb: '16px'}}>
+            <Box
+              component="img"
+              sx={{
+                height: 120,
+                width: 120
+              }}
+              alt="logo"
+              src="/image/logo.png"
+            />
+          </Stack>
+          <Stack alignItems="center">
+            <Typography variant="h6" component="span">
+              ログイン
+            </Typography>
+            <div id="firebaseui-auth-container"></div>
+          </Stack>
         </Stack>
-      </Grid>
-      <Grid item xs={6}>
-        <Card sx={{}}>
-          <CardHeader title="ログイン"/>
-          <CardContent>
-          </CardContent>
-          <CardActions>
-            <StyledFirebaseAuth firebaseAuth={getAuth(app)} uiConfig={uiConfig} />
-          </CardActions>
-        </Card>
       </Grid>
     </Grid>
   )
