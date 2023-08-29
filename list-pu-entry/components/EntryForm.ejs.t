@@ -129,7 +129,7 @@ export interface <%= struct.name.pascalName %>EntryFormProps {
   remove?: () => void
 }
 
-const schema = yup.object({
+export const <%= struct.name.lowerCamelName %>Schema = yup.object({
 <%_ struct.fields.forEach(function (field, key) { -%>
   <%_ if (field.editType.startsWith('array')) { -%>
   <%= field.name.lowerCamelName %>: yup.array().of(yup.mixed()),
@@ -138,7 +138,7 @@ const schema = yup.object({
   <%_ } -%>
 <%_ }) -%>
 })
-type Schema = yup.InferType<typeof schema>
+export type <%= struct.name.pascalName %>Schema = yup.InferType<typeof <%= struct.name.lowerCamelName %>Schema>
 
 const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}, target, syncTarget, isEmbedded = false, hasParent = false, isNew = true, updated = () => {}, remove = () => {}}: <%= struct.name.pascalName %>EntryFormProps) => {
 <%_ if (struct.structType !== 'struct') { -%>
@@ -152,9 +152,9 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
     formState: {errors},
     control,
     handleSubmit
-  } = useForm<Schema>({
+  } = useForm<<%= struct.name.pascalName %>Schema>({
     mode: 'all',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(<%= struct.name.lowerCamelName %>Schema),
   })
 
   const close = useCallback(() => {
