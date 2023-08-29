@@ -127,6 +127,9 @@ export interface <%= struct.name.pascalName %>EntryFormProps {
 
 const schema = yup.object({
 <%_ struct.fields.forEach(function (field, key) { -%>
+  <%_ if (field.editType.startsWith('array')) { -%>
+  <%= field.name.lowerCamelName %>: yup.array().of(yup.mixed()),
+  <%_ } -%>
   <%_ if (field.editType !== 'none') { -%>
   <%= field.name.lowerCamelName %>: yup.mixed(),
   <%_ } -%>
@@ -205,7 +208,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
     <%_ if (field.editType === 'string' && field.name.lowerCamelName === 'id') { -%>
     <TextField
       error={!!errors.<%= field.name.lowerCamelName %>}
-      helperText={errors.<%= field.name.lowerCamelName %>?.message || ''}
+      helperText={errors.<%= field.name.lowerCamelName %>?.message?.toString()}
       disabled={!isNew}
       margin="dense"
       id="<%= field.name.lowerCamelName %>"
@@ -222,7 +225,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
     <%_ if (field.editType === 'string' && field.name.lowerCamelName !== 'id') { -%>
     <TextField
       error={!!errors.<%= field.name.lowerCamelName %>}
-      helperText={errors.<%= field.name.lowerCamelName %>?.message || ''}
+      helperText={errors.<%= field.name.lowerCamelName %>?.message?.toString()}
       margin="dense"
       id="<%= field.name.lowerCamelName %>"
       label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
@@ -238,7 +241,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
     <%_ if (field.editType === 'textarea') { -%>
     <TextField
       error={!!errors.<%= field.name.lowerCamelName %>}
-      helperText={errors.<%= field.name.lowerCamelName %>?.message || ''}
+      helperText={errors.<%= field.name.lowerCamelName %>?.message?.toString()}
       margin="dense"
       id="<%= field.name.lowerCamelName %>"
       label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
@@ -256,7 +259,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
     <%_ if (field.editType === 'number' && field.name.lowerCamelName === 'id') { -%>
     <TextField
       error={!!errors.<%= field.name.lowerCamelName %>}
-      helperText={errors.<%= field.name.lowerCamelName %>?.message || ''}
+      helperText={errors.<%= field.name.lowerCamelName %>?.message?.toString()}
       disabled={!isNew}
       margin="dense"
       id="<%= field.name.lowerCamelName %>"
@@ -274,7 +277,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
     <%_ if (field.editType === 'number' && field.name.lowerCamelName !== 'id') { -%>
     <TextField
       error={!!errors.<%= field.name.lowerCamelName %>}
-      helperText={errors.<%= field.name.lowerCamelName %>?.message || ''}
+      helperText={errors.<%= field.name.lowerCamelName %>?.message?.toString()}
       margin="dense"
       id="<%= field.name.lowerCamelName %>"
       label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
@@ -313,7 +316,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
             }
             label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
           />
-          <FormHelperText>{errors.<%= field.name.lowerCamelName %>?.message || ''}</FormHelperText>
+          <FormHelperText>{errors.<%= field.name.lowerCamelName %>?.message?.toString()}</FormHelperText>
         </FormControl>
       )}
     />
@@ -341,8 +344,10 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
         items={target.<%= field.name.lowerCamelName %> || []}
         syncItems={items => syncTarget({<%= field.name.lowerCamelName %>: items})}
         initial={''}
-        form={(editTarget, updatedForm) => (
+        form={(editTarget, updatedForm, index) => (
           <TextField
+            error={!!errors.<%= field.name.lowerCamelName %>?.[index]}
+            helperText={errors.<%= field.name.lowerCamelName %>?.[index]?.message?.toString()}
             margin="dense"
             id="<%= field.name.lowerCamelName %>"
             label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
@@ -350,7 +355,9 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
             value={editTarget || ''}
             fullWidth
             variant="standard"
-            onChange={e => updatedForm(e.target.value)}
+            {...register(`<%= field.name.lowerCamelName %>.${index}`, {
+              onChange: e => updatedForm(e.target.value)
+            })}
           />
         )}
       />
@@ -360,8 +367,10 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
         items={target.<%= field.name.lowerCamelName %> || []}
         syncItems={items => syncTarget({<%= field.name.lowerCamelName %>: items})}
         initial={''}
-        form={(editTarget, updatedForm) => (
+        form={(editTarget, updatedForm, index) => (
           <TextField
+            error={!!errors.<%= field.name.lowerCamelName %>?.[index]}
+            helperText={errors.<%= field.name.lowerCamelName %>?.[index]?.message?.toString()}
             margin="dense"
             id="<%= field.name.lowerCamelName %>"
             label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
@@ -371,7 +380,9 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
             multiline
             minRows={4}
             variant="standard"
-            onChange={e => updatedForm(e.target.value)}
+            {...register(`<%= field.name.lowerCamelName %>.${index}`, {
+              onChange: e => updatedForm(e.target.value)
+            })}
           />
         )}
       />
@@ -381,8 +392,10 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
         items={target.<%= field.name.lowerCamelName %> || []}
         syncItems={items => syncTarget({<%= field.name.lowerCamelName %>: items})}
         initial={0}
-        form={(editTarget, updatedForm) => (
+        form={(editTarget, updatedForm, index) => (
           <TextField
+            error={!!errors.<%= field.name.lowerCamelName %>?.[index]}
+            helperText={errors.<%= field.name.lowerCamelName %>?.[index]?.message?.toString()}
             margin="dense"
             id="<%= field.name.lowerCamelName %>"
             label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
@@ -391,7 +404,9 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
             value={editTarget || editTarget === 0 ? editTarget : ''}
             fullWidth
             variant="standard"
-            onChange={e => updatedForm(e.target.value === '' ? undefined : Number(e.target.value))}
+            {...register(`<%= field.name.lowerCamelName %>.${index}`, {
+              onChange: e => updatedForm(e.target.value === '' ? undefined : Number(e.target.value))
+            })}
           />
         )}
       />
@@ -401,15 +416,27 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
         items={target.<%= field.name.lowerCamelName %> || []}
         syncItems={items => syncTarget({<%= field.name.lowerCamelName %>: items})}
         initial={false}
-        form={(editTarget, updatedForm) => (
-          <FormControlLabel
-            control={
-              <Switch
-                checked={!!editTarget}
-                onChange={e => updatedForm(e.target.checked)}
-              />
-            }
-            label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
+        form={(editTarget, updatedForm, index) => (
+          <Controller
+            name={`<%= field.name.lowerCamelName %>.${index}`}
+            control={control}
+            render={({field: {onChange}}) => (
+              <FormControl error={!!errors.<%= field.name.lowerCamelName %>?.[index]}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={!!editTarget}
+                      onChange={e => {
+                        updatedForm(e.target.checked)
+                        onChange(e)
+                      }}
+                    />
+                  }
+                  label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
+                />
+                <FormHelperText>{errors.<%= field.name.lowerCamelName %>?.[index]?.message?.toString()}</FormHelperText>
+              </FormControl>
+            )}
           />
         )}
       />
@@ -419,7 +446,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
         items={target.<%= field.name.lowerCamelName %> || []}
         syncItems={items => syncTarget({<%= field.name.lowerCamelName %>: items})}
         initial={formatISO(new Date())}
-        form={(editTarget, updatedForm) => (
+        form={(editTarget, updatedForm, index) => (
           <DateTimeForm
             label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
             dateTime={editTarget ? new Date(editTarget) : null}
@@ -485,6 +512,9 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
     <%_ } -%>
     <%_ if (field.name.lowerCamelName === 'id') { -%>
   ), [isNew, target.<%= field.name.lowerCamelName %>, errors.<%= field.name.lowerCamelName %>, syncTarget])
+    <%_ } else if (field.editType.startsWith('array')) { -%>
+  ), [target.<%= field.name.lowerCamelName %>, ...(Array.isArray(errors.<%= field.name.lowerCamelName %>) ? errors.<%= field.name.lowerCamelName %> : [errors.<%= field.name.lowerCamelName %>]), syncTarget])
+    <%_ } -%>
     <%_ } else { -%>
   ), [target.<%= field.name.lowerCamelName %>, errors.<%= field.name.lowerCamelName %>, syncTarget])
     <%_ } -%>

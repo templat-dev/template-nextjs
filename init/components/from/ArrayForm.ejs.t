@@ -18,7 +18,7 @@ export interface ArrayFormProps<T, > {
   /** 単一の編集対象の初期値 */
   initial: T
   /** EntryForm描画メソッド */
-  form: (editTarget: T, updatedForm: (item: T | undefined) => void) => ReactNode
+  form: (editTarget: T, updatedForm: (item: T | undefined) => void, index: number) => ReactNode
 }
 
 export const ArrayForm = <T, >({items, syncItems, initial, form}: ArrayFormProps<T>) => {
@@ -64,7 +64,7 @@ export const ArrayForm = <T, >({items, syncItems, initial, form}: ArrayFormProps
         {items.map((item, index) => (
           <Stack key={index} direction="row" justifyContent="space-between" alignItems="center"
                  spacing={2} sx={{p: '12px', pt: 0}}>
-            {form(item, value => updatedForm(index, (value as T)))}
+            {form(item, value => updatedForm(index, (value as T)), index)}
             <IconButton onClick={() => remove(index)} sx={{width: '32px', height: '32px'}}>
               <DeleteIcon/>
             </IconButton>
