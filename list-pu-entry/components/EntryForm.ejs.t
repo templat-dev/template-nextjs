@@ -129,8 +129,7 @@ const schema = yup.object({
 <%_ struct.fields.forEach(function (field, key) { -%>
   <%_ if (field.editType.startsWith('array')) { -%>
   <%= field.name.lowerCamelName %>: yup.array().of(yup.mixed()),
-  <%_ } -%>
-  <%_ if (field.editType !== 'none') { -%>
+  <%_ } else if (field.editType !== 'none') { -%>
   <%= field.name.lowerCamelName %>: yup.mixed(),
   <%_ } -%>
 <%_ }) -%>
