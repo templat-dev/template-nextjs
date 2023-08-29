@@ -3,7 +3,11 @@ to: <%= rootDirectory %>/components/<%= struct.name.lowerCamelName %>/<%= struct
 ---
 import * as React from 'react'
 import {useCallback, useMemo} from 'react'
+<%_ if (struct.exists.edit.bool || struct.exists.edit.arrayBool) { -%>
+import {Controller, useForm} from 'react-hook-form'
+<%_ } else { -%>
 import {useForm} from 'react-hook-form'
+<%_ } -%>
 import {yupResolver} from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 <%_ if (struct.exists.edit.struct) { -%>
@@ -21,7 +25,9 @@ import {
   DialogContent,
   DialogTitle,
 <%_ if (struct.exists.edit.bool || struct.exists.edit.arrayBool) { -%>
+  FormControl,
   FormControlLabel,
+  FormHelperText,
 <%_ } -%>
   Grid,
 <%_ if (struct.exists.edit.bool || struct.exists.edit.arrayBool) { -%>
@@ -305,14 +311,26 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
     />
     <%_ } -%>
     <%_ if (field.editType === 'bool') { -%>
-    <FormControlLabel
-      control={
-        <Switch
-          checked={!!target.<%= field.name.lowerCamelName %>}
-          onChange={e => syncTarget({<%= field.name.lowerCamelName %>: e.target.checked})}
-        />
-      }
-      label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
+    <Controller
+      name="<%= field.name.lowerCamelName %>"
+      control={control}
+      render={({field: {onChange}}) => (
+        <FormControl error={!!errors.<%= field.name.lowerCamelName %>}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={!!target.<%= field.name.lowerCamelName %>}
+                onChange={e => {
+                  syncTarget({<%= field.name.lowerCamelName %>: e.target.checked})
+                  onChange(e)
+                }}
+              />
+            }
+            label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
+          />
+          <FormHelperText>{errors.<%= field.name.lowerCamelName %>?.message || ''}</FormHelperText>
+        </FormControl>
+      )}
     />
     <%_ } -%>
     <%_ if (field.editType === 'image' && field.dataType === 'string') { -%>
