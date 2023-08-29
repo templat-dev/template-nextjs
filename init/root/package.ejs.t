@@ -22,6 +22,7 @@ force: true
     "@emotion/react": "^11.11.0",
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+    "@hookform/resolvers": "^3.3.1",
     "@mui/icons-material": "^5.14.6",
     "@mui/material": "^5.14.6",
     "@mui/x-data-grid": "^6.12.0",
@@ -36,8 +37,10 @@ force: true
     "next": "13.4.19",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.45.4",
     "react-responsive-carousel": "^3.2.23",
-    "recoil": "^0.7.7"
+    "recoil": "^0.7.7",
+    "zod": "^3.22.2"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.3.0",
