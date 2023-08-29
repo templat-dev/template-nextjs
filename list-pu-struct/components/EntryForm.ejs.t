@@ -514,7 +514,6 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
   ), [isNew, target.<%= field.name.lowerCamelName %>, errors.<%= field.name.lowerCamelName %>, syncTarget])
     <%_ } else if (field.editType.startsWith('array')) { -%>
   ), [target.<%= field.name.lowerCamelName %>, ...(Array.isArray(errors.<%= field.name.lowerCamelName %>) ? errors.<%= field.name.lowerCamelName %> : [errors.<%= field.name.lowerCamelName %>]), syncTarget])
-    <%_ } -%>
     <%_ } else { -%>
   ), [target.<%= field.name.lowerCamelName %>, errors.<%= field.name.lowerCamelName %>, syncTarget])
     <%_ } -%>
