@@ -213,9 +213,6 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
   const <%= field.name.lowerCamelName %>Form = useMemo(() => (
     <%_ if (field.editType === 'string' && field.name.lowerCamelName === 'id') { -%>
     <TextField
-      {...register('<%= field.name.lowerCamelName %>', {
-        onChange={e => syncTarget({<%= field.name.lowerCamelName %>: e.target.value})}
-      })}
       error={!!errors.<%= field.name.lowerCamelName %>}
       helperText={errors.<%= field.name.lowerCamelName %>?.message || ''}
       disabled={!isNew}
@@ -226,6 +223,9 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       value={target.<%= field.name.lowerCamelName %> || ''}
       fullWidth
       variant="standard"
+      {...register('<%= field.name.lowerCamelName %>', {
+        onChange: e => syncTarget({<%= field.name.lowerCamelName %>: e.target.value})
+      })}
     />
     <%_ } -%>
     <%_ if (field.editType === 'string' && field.name.lowerCamelName !== 'id') { -%>
@@ -240,7 +240,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       fullWidth
       variant="standard"
       {...register('<%= field.name.lowerCamelName %>', {
-        onChange={e => syncTarget({<%= field.name.lowerCamelName %>: e.target.value})}
+        onChange: e => syncTarget({<%= field.name.lowerCamelName %>: e.target.value})
       })}
     />
     <%_ } -%>
@@ -258,7 +258,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       minRows={4}
       variant="standard"
       {...register('<%= field.name.lowerCamelName %>', {
-        onChange={e => syncTarget({<%= field.name.lowerCamelName %>: e.target.value})}
+        onChange: e => syncTarget({<%= field.name.lowerCamelName %>: e.target.value})
       })}
     />
     <%_ } -%>
@@ -276,7 +276,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       fullWidth
       variant="standard"
       {...register('<%= field.name.lowerCamelName %>', {
-        onChange={e => syncTarget({<%= field.name.lowerCamelName %>: e.target.value === '' ? undefined : Number(e.target.value)})}
+        onChange: e => syncTarget({<%= field.name.lowerCamelName %>: e.target.value === '' ? undefined : Number(e.target.value)})
       })}
     />
     <%_ } -%>
@@ -293,7 +293,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
       fullWidth
       variant="standard"
       {...register('<%= field.name.lowerCamelName %>', {
-        onChange={e => syncTarget({<%= field.name.lowerCamelName %>: e.target.value === '' ? undefined : Number(e.target.value)})}
+        onChange: e => syncTarget({<%= field.name.lowerCamelName %>: e.target.value === '' ? undefined : Number(e.target.value)})
       })}
     />
     <%_ } -%>
