@@ -4,8 +4,8 @@ to: <%= rootDirectory %>/components/<%= struct.name.lowerCamelName %>/<%= struct
 import * as React from 'react'
 import {useCallback, useMemo} from 'react'
 import {useForm} from 'react-hook-form'
-import {zodResolver} from '@hookform/resolvers/zod'
-import {z} from 'zod'
+import {yupResolver} from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 <%_ if (struct.exists.edit.struct) { -%>
 import {cloneDeep} from 'lodash-es'
 <%_ } -%>
@@ -119,12 +119,20 @@ export interface <%= struct.name.pascalName %>EntryFormProps {
   remove?: () => void
 }
 
-const schema = z.object({
+const schema = yup.object({
 <%_ struct.fields.forEach(function (field, key) { -%>
-  <%= field.name.lowerCamelName %>: z.any(),
+  <%_ if (field.editType === 'string' || field.editType === 'textarea') { -%>
+  <%= field.name.lowerCamelName %>: yup.string(),
+  <%_ } -%>
+  <%_ if (field.editType === 'bool') { -%>
+  <%= field.name.lowerCamelName %>: yup.bool(),
+  <%_ } -%>
+  <%_ if (field.editType === 'number') { -%>
+  <%= field.name.lowerCamelName %>: yup.number(),
+  <%_ } -%>
 <%_ }) -%>
 })
-type Schema = z.TypeOf<typeof schema>
+type Schema = yup.InferType<typeof schema>
 
 const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}, target, syncTarget, isEmbedded = false, hasParent = false, isNew = true, updated = () => {}, remove = () => {}}: <%= struct.name.pascalName %>EntryFormProps) => {
 <%_ if (struct.structType !== 'struct') { -%>
@@ -139,7 +147,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
     handleSubmit
   } = useForm<Schema>({
     mode: 'all',
-    resolver: zodResolver(schema),
+    resolver: yupResolver(schema),
   })
 
 <%_ } -%>

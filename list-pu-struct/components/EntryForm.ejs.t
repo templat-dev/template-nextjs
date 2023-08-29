@@ -3,6 +3,9 @@ to: <%= rootDirectory %>/components/<%= struct.name.lowerCamelName %>/<%= struct
 ---
 import * as React from 'react'
 import {useCallback, useMemo} from 'react'
+import {useForm} from 'react-hook-form'
+import {yupResolver} from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 <%_ if (struct.exists.edit.struct) { -%>
 import {cloneDeep} from 'lodash-es'
 <%_ } -%>
@@ -29,7 +32,7 @@ import {
 <%_ } -%>
 } from '@mui/material'
 <%_ if (struct.structType !== 'struct') { -%>
-import {loadingState} from '@/state/App'
+import {dialogState, DialogState, loadingState} from '@/state/App'
 <%_ } -%>
 <%_ if (struct.exists.edit.time || struct.exists.edit.arrayTime) { -%>
 import DateTimeForm from '@/components/form/DateTimeForm'
@@ -116,10 +119,36 @@ export interface <%= struct.name.pascalName %>EntryFormProps {
   remove?: () => void
 }
 
+const schema = yup.object({
+<%_ struct.fields.forEach(function (field, key) { -%>
+  <%_ if (field.editType === 'string' || field.editType === 'textarea') { -%>
+  <%= field.name.lowerCamelName %>: yup.string(),
+  <%_ } -%>
+  <%_ if (field.editType === 'bool') { -%>
+  <%= field.name.lowerCamelName %>: yup.bool(),
+  <%_ } -%>
+  <%_ if (field.editType === 'number') { -%>
+  <%= field.name.lowerCamelName %>: yup.number(),
+  <%_ } -%>
+<%_ }) -%>
+})
+type Schema = yup.InferType<typeof schema>
+
 const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}, target, syncTarget, isEmbedded = false, hasParent = false, isNew = true, updated = () => {}, remove = () => {}}: <%= struct.name.pascalName %>EntryFormProps) => {
 <%_ if (struct.structType !== 'struct') { -%>
   const showLoading = useSetRecoilState<boolean>(loadingState)
   const hideLoading = useResetRecoilState(loadingState)
+  const showDialog = useSetRecoilState<DialogState>(dialogState)
+
+  const {
+    register,
+    formState: {errors},
+    control,
+    handleSubmit
+  } = useForm<Schema>({
+    mode: 'all',
+    resolver: yupResolver(schema),
+  })
 
 <%_ } -%>
   const close = useCallback(() => {
@@ -163,11 +192,21 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
   }, [updated, close])
 <%_ } -%>
 
+  const validateError = useCallback(() => {
+    showDialog({
+      title: 'エラー',
+      message: '入力項目を確認して下さい。',
+    })
+  }, [])
+
   <%_ struct.fields.forEach(function (field, key) { -%>
     <%_ if (field.editType === 'none') { return } -%>
   const <%= field.name.lowerCamelName %>Form = useMemo(() => (
     <%_ if (field.editType === 'string' && field.name.lowerCamelName === 'id') { -%>
     <TextField
+      {...register('<%= field.name.lowerCamelName %>')}
+      error={!!errors.<%= field.name.lowerCamelName %>}
+      helperText={errors.<%= field.name.lowerCamelName %>?.message || ''}
       disabled={!isNew}
       margin="dense"
       id="<%= field.name.lowerCamelName %>"
@@ -181,6 +220,9 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
     <%_ } -%>
     <%_ if (field.editType === 'string' && field.name.lowerCamelName !== 'id') { -%>
     <TextField
+      {...register('<%= field.name.lowerCamelName %>')}
+      error={!!errors.<%= field.name.lowerCamelName %>}
+      helperText={errors.<%= field.name.lowerCamelName %>?.message || ''}
       margin="dense"
       id="<%= field.name.lowerCamelName %>"
       label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
@@ -193,6 +235,9 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
     <%_ } -%>
     <%_ if (field.editType === 'textarea') { -%>
     <TextField
+      {...register('<%= field.name.lowerCamelName %>')}
+      error={!!errors.<%= field.name.lowerCamelName %>}
+      helperText={errors.<%= field.name.lowerCamelName %>?.message || ''}
       margin="dense"
       id="<%= field.name.lowerCamelName %>"
       label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
@@ -207,6 +252,9 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
     <%_ } -%>
     <%_ if (field.editType === 'number' && field.name.lowerCamelName === 'id') { -%>
     <TextField
+      {...register('<%= field.name.lowerCamelName %>')}
+      error={!!errors.<%= field.name.lowerCamelName %>}
+      helperText={errors.<%= field.name.lowerCamelName %>?.message || ''}
       disabled={!isNew}
       margin="dense"
       id="<%= field.name.lowerCamelName %>"
@@ -221,6 +269,9 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
     <%_ } -%>
     <%_ if (field.editType === 'number' && field.name.lowerCamelName !== 'id') { -%>
     <TextField
+      {...register('<%= field.name.lowerCamelName %>')}
+      error={!!errors.<%= field.name.lowerCamelName %>}
+      helperText={errors.<%= field.name.lowerCamelName %>?.message || ''}
       margin="dense"
       id="<%= field.name.lowerCamelName %>"
       label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"

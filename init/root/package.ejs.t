@@ -40,7 +40,7 @@ force: true
     "react-hook-form": "^7.45.4",
     "react-responsive-carousel": "^3.2.23",
     "recoil": "^0.7.7",
-    "zod": "^3.22.2"
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.3.0",
