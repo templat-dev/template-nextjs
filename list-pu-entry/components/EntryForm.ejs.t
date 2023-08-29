@@ -15,6 +15,8 @@ import {cloneDeep} from 'lodash-es'
 <%_ } -%>
 <%_ if (struct.structType !== 'struct') { -%>
 import {useResetRecoilState, useSetRecoilState} from 'recoil'
+<%_ } else { -%>
+import {useSetRecoilState} from 'recoil'
 <%_ } -%>
 <%_ if (struct.exists.edit.time || struct.exists.edit.arrayTime) { -%>
 import {formatISO} from 'date-fns'
@@ -39,6 +41,8 @@ import {
 } from '@mui/material'
 <%_ if (struct.structType !== 'struct') { -%>
 import {dialogState, DialogState, loadingState} from '@/state/App'
+<%_ } else { -%>
+import {dialogState, DialogState} from '@/state/App'
 <%_ } -%>
 <%_ if (struct.exists.edit.time || struct.exists.edit.arrayTime) { -%>
 import DateTimeForm from '@/components/form/DateTimeForm'
@@ -140,6 +144,7 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
 <%_ if (struct.structType !== 'struct') { -%>
   const showLoading = useSetRecoilState<boolean>(loadingState)
   const hideLoading = useResetRecoilState(loadingState)
+<%_ } -%>
   const showDialog = useSetRecoilState<DialogState>(dialogState)
 
   const {
@@ -152,7 +157,6 @@ const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}
     resolver: yupResolver(schema),
   })
 
-<%_ } -%>
   const close = useCallback(() => {
     if (!isEmbedded) {
       setOpen(false)
