@@ -127,23 +127,8 @@ export interface <%= struct.name.pascalName %>EntryFormProps {
 
 const schema = yup.object({
 <%_ struct.fields.forEach(function (field, key) { -%>
-  <%_ if (field.editType === 'struct') { -%>
+  <%_ if (field.editType !== 'none') { -%>
   <%= field.name.lowerCamelName %>: yup.mixed(),
-  <%_ } -%>
-  <%_ if (field.editType.startsWith('array')) { -%>
-  <%= field.name.lowerCamelName %>: yup.mixed(),
-  <%_ } -%>
-  <%_ if (field.editType === 'time') { -%>
-  <%= field.name.lowerCamelName %>: yup.mixed(),
-  <%_ } -%>
-  <%_ if (field.editType === 'string' || field.editType === 'textarea') { -%>
-  <%= field.name.lowerCamelName %>: yup.string(),
-  <%_ } -%>
-  <%_ if (field.editType === 'bool') { -%>
-  <%= field.name.lowerCamelName %>: yup.bool(),
-  <%_ } -%>
-  <%_ if (field.editType === 'number') { -%>
-  <%= field.name.lowerCamelName %>: yup.number(),
   <%_ } -%>
 <%_ }) -%>
 })
