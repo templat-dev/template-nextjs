@@ -1,5 +1,5 @@
 ---
-to: <%= rootDirectory %>/state/Auth.tsx
+to: "<%= project.plugins.find(p => p.name === 'auth')?.enable ? `${rootDirectory}/state/Auth.ts` : null %>"
 force: true
 ---
 import {atom} from 'recoil'
