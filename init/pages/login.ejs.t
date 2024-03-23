@@ -1,5 +1,5 @@
 ---
-to: "<%= project.plugins.find(p => p.name === 'auth')?.enable ? `${rootDirectory}/pages/login.tsx` : null %>"
+to: "<%= project.plugins.find(p => p.name === 'auth')?.enable ? `${rootDirectory}/pages/${project.buildConfig.webPageRoot}login.tsx` : null %>"
 force: true
 ---
 import * as React from 'react'
