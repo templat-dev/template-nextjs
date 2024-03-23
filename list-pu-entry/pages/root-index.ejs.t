@@ -1,5 +1,5 @@
 ---
-to: "<%= struct.generateEnable ? `${rootDirectory}/pages/index.tsx` : null %>"
+to: "<%= struct.generateEnable ? `${rootDirectory}/pages/${project.buildConfig.webPageRoot}index.tsx` : null %>"
 inject: true
 skip_if: メニュー <%= struct.name.lowerCamelName %>
 after: メニュー
