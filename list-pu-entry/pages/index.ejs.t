@@ -68,7 +68,7 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
       const data = await new <%= struct.name.pascalName %>Api().search<%= struct.name.pascalName %>({
         <%_ struct.fields.forEach(function(field, index){ -%>
 <%#_ 通常の検索 -%>
-        <%_ if ((field.listType === 'string' || field.listType === 'time' || field.listType === 'bool' || field.listType === 'number')  && field.searchType === 1 && field.lowerCamelName != 'id') { -%>
+        <%_ if ((field.listType === 'string' || field.listType === 'time' || field.listType === 'bool' || field.listType === 'number')  && field.searchType === 1 && field.name.lowerCamelName != 'id') { -%>
         <%= field.name.lowerCamelName %>: searchCondition.<%= field.name.lowerCamelName %> || undefined,
 <%#_ 配列の検索 -%>
         <%_ } else if ((field.listType === 'array-string' || field.listType === 'array-time' || field.listType === 'array-bool' || field.listType === 'array-number')  && field.searchType === 1) { -%>
