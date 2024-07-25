@@ -3,9 +3,11 @@ to: <%= rootDirectory %>/app.yaml
 force: true
 ---
 runtime: nodejs18
+<%_ if (applicationType === 'console') { -%>
+service: console
+<%_ } -%>
 
 instance_class: F2
-
 
 handlers:
   - url: /_next/static

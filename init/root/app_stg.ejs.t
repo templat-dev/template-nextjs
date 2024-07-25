@@ -3,10 +3,13 @@ to: <%= rootDirectory %>/app_stg.yaml
 force: true
 ---
 runtime: nodejs14
+<%_ if (applicationType === 'console') { -%>
+service: console-stg
+<%_ } else { -%>
+service: stg
+<%_ } -%>
 
 instance_class: F2
-
-service: stg
 
 handlers:
   - url: /_next/static
