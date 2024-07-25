@@ -1,9 +1,9 @@
 ---
 to: <%= rootDirectory %>/components/common/AppDataGrid.tsx
 ---
-import * as React from 'react'
 import {styled} from '@mui/system'
 import {DataGrid, DataGridProps, GridColDef, GridPaginationModel, GridSortModel} from '@mui/x-data-grid'
+import * as React from 'react'
 import {useMemo} from 'react'
 
 const StyledDataGrid = styled(DataGrid)<DataGridProps>(({theme}) => ({
@@ -24,7 +24,7 @@ const StyledDataGrid = styled(DataGrid)<DataGridProps>(({theme}) => ({
   },
   '& .MuiDataGrid-columnHeader:focus-within, & .MuiDataGrid-columnHeader:focus': {
     outline: 'none !important'
-  },
+  }
 }))
 
 export interface GridPageInfo {
@@ -50,7 +50,7 @@ export const INITIAL_GRID_PAGE_INFO: GridPageInfo = {
 }
 
 // index.tsxから渡されるProps
-export interface AppDataGridBaseProps<I, S> {
+export interface AppDataGridBaseProps<I> {
   /** 一覧表示用の配列 */
   items?: I[]
   /** 表示ページ情報 */
@@ -59,14 +59,10 @@ export interface AppDataGridBaseProps<I, S> {
   totalCount?: number
   /** 一覧の読み込み状態 */
   isLoading?: boolean
-  /** 検索条件 */
-  searchCondition?: S
   /** 表示方式 (true: 子要素として表示, false: 親要素として表示) */
   hasParent?: boolean
   /** 表示ページ情報変更コールバック */
   onChangePageInfo: (pageInfo: GridPageInfo) => void
-  /** 検索条件変更コールバック */
-  onChangeSearch?: (searchCondition: S) => void
   /** 編集ダイアログ表示コールバック */
   onOpenEntryForm: (item?: I) => void
   /** 削除コールバック */
@@ -74,12 +70,12 @@ export interface AppDataGridBaseProps<I, S> {
 }
 
 // DataTableから渡されるProps
-interface AppDataGridProps<I, S> extends AppDataGridBaseProps<I, S>, DataGridProps {
+interface AppDataGridProps<I> extends AppDataGridBaseProps<I>, DataGridProps {
   /* 画面表示情報 */
   columns: GridColDef[]
 }
 
-export const AppDataGrid = <I, S>(props: AppDataGridProps<I, S>) => {
+export const AppDataGrid = <I, >(props: AppDataGridProps<I>) => {
   const {
     items = [],
     pageInfo = INITIAL_GRID_PAGE_INFO,
@@ -87,7 +83,7 @@ export const AppDataGrid = <I, S>(props: AppDataGridProps<I, S>) => {
     isLoading = false,
     hasParent = false,
     onOpenEntryForm,
-    onChangePageInfo = () => {},
+    onChangePageInfo = () => {}
   } = props
 
   const itemIndexMap = useMemo((): Map<I, number> => {
@@ -108,7 +104,11 @@ export const AppDataGrid = <I, S>(props: AppDataGridProps<I, S>) => {
       pageSizeOptions={[pageInfo.pageSize]}
       paginationMode={hasParent ? 'client' : 'server'}
       paginationModel={{page: pageInfo.page, pageSize: pageInfo.pageSize}}
-      onPaginationModelChange={(model: GridPaginationModel) => onChangePageInfo({...pageInfo, page: model.page, pageSize: model.pageSize})}
+      onPaginationModelChange={(model: GridPaginationModel) => onChangePageInfo({
+        ...pageInfo,
+        page: model.page,
+        pageSize: model.pageSize
+      })}
       sortingMode={hasParent ? 'client' : 'server'}
       sortModel={pageInfo.sortModel}
       onSortModelChange={sortModel => onChangePageInfo({...pageInfo, page: 0, sortModel})}
