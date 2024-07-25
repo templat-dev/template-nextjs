@@ -6,16 +6,14 @@ force: true
   "name": "<%= project.name %>",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "dev:dev": "sh ./env.sh dev local && next dev",
-    "dev:stg": "sh ./env.sh stg local && next dev",
-    "dev:prod": "sh ./env.sh prod local && next dev",
-    "build": "next build",
-    "build:dev": "sh ./env.sh dev production && next build",
-    "build:stg": "sh ./env.sh stg production && next build",
-    "build:prod": "sh ./env.sh prod production && next build",
-    "start": "next start",
-    "lint": "next lint"
+    "openapi": "npx -y @openapitools/openapi-generator-cli@^2.13.4 generate --generator-key default",
+    "dev:dev": "sh ./env.sh dev && next dev",
+    "dev:stg": "sh ./env.sh stg && next dev",
+    "dev:prod": "sh ./env.sh prod && next dev",
+    "build:dev": "sh ./env.sh dev && next build",
+    "build:stg": "sh ./env.sh stg && next build",
+    "build:prod": "sh ./env.sh prod && next build",
+    "start": "next start"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",
@@ -44,7 +42,7 @@ force: true
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.3.0",
-    "@openapitools/openapi-generator-cli": "^1.0.18-5.0.0-beta2",
+    "@openapitools/openapi-generator-cli": "^2.13.4",
     "@types/lodash-es": "^4.17.8",
     "@types/node": "20.5.7",
     "@types/react": "^18.2.21",

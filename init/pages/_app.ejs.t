@@ -2,6 +2,7 @@
 to: <%= rootDirectory %>/pages/_app.tsx
 force: true
 ---
+import globalAxios from 'axios'
 import * as React from 'react'
 import {useCallback, useEffect, useMemo, useState} from 'react'
 import {AppProps} from 'next/app'
@@ -37,6 +38,11 @@ import {AppSnackbar} from '@/components/modal/AppSnackbar'
 <%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
 import useAuth from '@/components/common/UseAuth'
 <%_ } -%>
+
+// axiosにBASE_PATHを設定
+if (process?.env?.NEXT_PUBLIC_API_BASE_PATH) {
+  globalAxios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_PATH
+}
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
