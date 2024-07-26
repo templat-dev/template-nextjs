@@ -1,13 +1,35 @@
 ---
 to: <%= rootDirectory %>/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>DataTable.tsx
 ---
-import * as React from 'react'
 <%_ if (struct.structType !== 'struct') { -%>
-import {useMemo, useState} from 'react'
+import {Model<%= struct.name.pascalName %>, <%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request} from '@/apis'
+import {AppDataGrid, AppDataGridBaseProps} from '@/components/common/AppDataGrid'
+import <%= struct.name.pascalName %>SearchForm, {
+  INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION
+} from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>SearchForm'
+import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
+import SearchIcon from '@mui/icons-material/Search'
 import {Box, Divider, Fab, IconButton, Paper, Typography} from '@mui/material'
+import {
+  GridActionsCellItem,
+  GridColDef,
+  GridRenderCellParams,
+  GridRowParams,
+  GridToolbarContainer
+} from '@mui/x-data-grid'
+import * as React from 'react'
+import {useMemo, useState} from 'react'
+import {Writable} from 'type-fest'
 <%_ } else { -%>
-import {useMemo} from 'react'
+import {Model<%= struct.name.pascalName %>} from '@/apis'
+import {AppDataGrid, AppDataGridBaseProps} from '@/components/common/AppDataGrid'
+import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
 import {Box, Fab, Paper, Typography} from '@mui/material'
+import {GridActionsCellItem, GridColDef, GridRowParams, GridToolbarContainer} from '@mui/x-data-grid'
+import * as React from 'react'
+import {useMemo} from 'react'
 <%_ } -%>
 <%_ if (struct.exists.list.image || struct.exists.list.arrayImage) { -%>
 import {
@@ -20,37 +42,28 @@ import {
 <%_ } else { -%>
 import {GridActionsCellItem, GridColDef, GridRowParams, GridToolbarContainer} from '@mui/x-data-grid'
 <%_ } -%>
-<%_ if (struct.structType !== 'struct') { -%>
-import SearchIcon from '@mui/icons-material/Search'
-<%_ } -%>
-import AddIcon from '@mui/icons-material/Add'
-import DeleteIcon from '@mui/icons-material/Delete'
 <%_ if (struct.exists.list.arrayImage) { -%>
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import {Carousel} from 'react-responsive-carousel'
 <%_ } -%>
-import {Model<%= struct.name.pascalName %>} from '@/apis'
-import {AppDataGrid, AppDataGridBaseProps} from '@/components/common/AppDataGrid'
-<%_ if (struct.structType !== 'struct') { -%>
-import <%= struct.name.pascalName %>SearchForm, {
-  INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION,
-  <%= struct.name.pascalName %>SearchCondition
-} from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>SearchForm'
-<%_ } -%>
 
 <%_ if (struct.structType === 'struct') { -%>
-const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Model<%= struct.name.pascalName %>, never>) => {
-  const {items = [], onOpenEntryForm, onRemove} = props
+const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Model<%= struct.name.pascalName %>>) => {
+  const {
+    items = [],
+    onOpenEntryForm,
+    onRemove
+  } = props
 <%_ } -%>
 <%_ if (struct.structType !== 'struct') { -%>
-const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Model<%= struct.name.pascalName %>, <%= struct.name.pascalName %>SearchCondition>) => {
+const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Model<%= struct.name.pascalName %>, Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>>) => {
   const {
     items = [],
     searchCondition = INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION,
-    hasParent,
     onChangeSearch = () => {},
     onOpenEntryForm,
-    onRemove
+    onRemove,
+    hasParent = false
   } = props
 
   /** 検索フォームの表示表示状態 (true: 表示, false: 非表示) */

@@ -8,15 +8,15 @@ import {cloneDeep} from 'lodash-es'
 import {NextPage} from 'next'
 import {useRouter} from 'next/router'
 import {useResetRecoilState, useSetRecoilState} from 'recoil'
+import {Writable} from 'type-fest'
 import {Container, Dialog} from '@mui/material'
 import {dialogState, DialogState, loadingState, snackbarState, SnackbarState} from '@/state/App'
-import {Model<%= struct.name.pascalName %>, <%= struct.name.pascalName %>Api} from '@/apis'
+import {Model<%= struct.name.pascalName %>, <%= struct.name.pascalName %>Api, <%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request} from '@/apis'
 import {NEW_INDEX} from '@/components/common/Base'
 import {GridPageInfo, INITIAL_GRID_PAGE_INFO} from '@/components/common/AppDataGrid'
 import <%= struct.name.pascalName %>DataTable from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>DataTable'
 import {
-  INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION,
-  <%= struct.name.pascalName %>SearchCondition
+  INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION
 } from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>SearchForm'
 import <%= struct.name.pascalName %>EntryForm, {INITIAL_<%= struct.name.upperSnakeName %>} from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>EntryForm'
 
@@ -40,7 +40,7 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   /** 検索条件 */
-  const [searchCondition, setSearchCondition] = useState<<%= struct.name.pascalName %>SearchCondition>(cloneDeep(INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION))
+  const [searchCondition, setSearchCondition] = useState<Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>>(cloneDeep(INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION))
 
   /** 入力フォームの表示表示状態 (true: 表示, false: 非表示) */
   const [entryFormOpen, setEntryFormOpen] = useState<boolean>(false)
@@ -60,7 +60,7 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
 
   const fetch = useCallback(async (
     {searchCondition = INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION, pageInfo = INITIAL_GRID_PAGE_INFO}
-      : { searchCondition: <%= struct.name.pascalName %>SearchCondition, pageInfo: GridPageInfo }
+      : { searchCondition: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>, pageInfo: GridPageInfo }
       = {searchCondition: INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION, pageInfo: INITIAL_GRID_PAGE_INFO}
   ) => {
     setIsLoading(true)
@@ -112,7 +112,7 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
     await fetch({searchCondition, pageInfo})
   }, [fetch, searchCondition, pageInfo])
 
-  const search = useCallback(async (searchCondition: <%= struct.name.pascalName %>SearchCondition) => {
+  const search = useCallback(async (searchCondition: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>) => {
     setSearchCondition(searchCondition)
     await fetch({searchCondition, pageInfo})
   }, [fetch, pageInfo])

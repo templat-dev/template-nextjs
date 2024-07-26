@@ -1,11 +1,9 @@
 ---
 to: <%= rootDirectory %>/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>SearchForm.tsx
 ---
-import * as React from 'react'
-import {useCallback, useEffect, useState} from 'react'
-import {cloneDeep} from 'lodash-es'
+import {<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request} from '@/apis'
 <%_ if (struct.exists.search.time || struct.exists.search.arrayTime) { -%>
-import {formatISO} from 'date-fns'
+import DateTimeForm from '@/components/form/DateTimeForm'
 <%_ } -%>
 import {
   Button,
@@ -25,8 +23,12 @@ import {
 <%_ } -%>
 } from '@mui/material'
 <%_ if (struct.exists.search.time || struct.exists.search.arrayTime) { -%>
-import DateTimeForm from '@/components/form/DateTimeForm'
+import {formatISO} from 'date-fns'
 <%_ } -%>
+import {cloneDeep} from 'lodash-es'
+import * as React from 'react'
+import {useCallback, useEffect, useState} from 'react'
+import {Writable} from 'type-fest'
 
 <%_ const searchConditions = [] -%>
 <%_ if (struct.fields && struct.fields.length > 0) { -%>
@@ -48,31 +50,8 @@ import DateTimeForm from '@/components/form/DateTimeForm'
   <%_ } -%>
 <%_ }) -%>
 <%_ } -%>
-export interface <%= struct.name.pascalName %>SearchCondition {
-  <%_ searchConditions.forEach(function(searchCondition) { -%>
-    <%_ if (searchCondition.type === 'string' && !searchCondition.range) { -%>
-  <%= searchCondition.name %>?: <%= searchCondition.type %>
-    <%_ } -%>
-    <%_ if (searchCondition.type === 'boolean' && !searchCondition.range) { -%>
-  <%= searchCondition.name %>?: <%= searchCondition.type %>
-    <%_ } -%>
-    <%_ if (searchCondition.type === 'number' && !searchCondition.range) { -%>
-  <%= searchCondition.name %>?: <%= searchCondition.type %>
-    <%_ } -%>
-    <%_ if (searchCondition.type === 'number' && searchCondition.range) { -%>
-  <%= searchCondition.name %>?: <%= searchCondition.type %>
-  <%= searchCondition.name %>From?: <%= searchCondition.type %>
-  <%= searchCondition.name %>To?: <%= searchCondition.type %>
-    <%_ } -%>
-    <%_ if (searchCondition.type === 'string' && searchCondition.range) { -%>
-  <%= searchCondition.name %>?: <%= searchCondition.type %>
-  <%= searchCondition.name %>From?: <%= searchCondition.type %>
-  <%= searchCondition.name %>To?: <%= searchCondition.type %>
-    <%_ } -%>
-  <%_ }) -%>
-}
 
-export const INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION: <%= struct.name.pascalName %>SearchCondition = {
+export const INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request> = {
   <%_ searchConditions.forEach(function(searchCondition) { -%>
     <%_ if (searchCondition.type === 'string' && !searchCondition.range) { -%>
   <%= searchCondition.name %>: undefined,
@@ -99,8 +78,8 @@ export const INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION: <%= str
 export interface <%= struct.name.pascalName %>SearchFormProps {
   open: boolean,
   setOpen: (open: boolean) => void,
-  currentSearchCondition: <%= struct.name.pascalName %>SearchCondition,
-  onSearch: (searchCondition: <%= struct.name.pascalName %>SearchCondition) => void
+  currentSearchCondition: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>,
+  onSearch: (searchCondition: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>) => void
 }
 
 const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCondition, onSearch}: <%= struct.name.pascalName %>SearchFormProps) => {
@@ -124,7 +103,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
     close()
   }, [onSearch, close])
 
-  const setSingleSearchCondition = useCallback((value: Partial<<%= struct.name.pascalName %>SearchCondition>) => {
+  const setSingleSearchCondition = useCallback((value: Partial<Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>>) => {
     setSearchCondition(searchCondition => ({
       ...searchCondition,
       ...value

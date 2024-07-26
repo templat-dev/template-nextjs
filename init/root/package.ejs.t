@@ -47,6 +47,7 @@ force: true
     "@types/node": "20.5.7",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
+    "type-fest": "^4.23.0",
     "typescript": "5.2.2"
   },
   "resolutions": {
