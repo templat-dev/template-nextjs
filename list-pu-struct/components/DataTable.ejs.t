@@ -75,7 +75,7 @@ const <%= struct.name.pascalName %>DataTable = (props: <%= struct.name.pascalNam
   const previewSearchCondition = useMemo((): string => {
     const previewSearchConditions = []
     for (const [key, value] of Object.entries(searchCondition)) {
-      if (!value) {
+      if (value === undefined) {
         continue
       }
       previewSearchConditions.push(`${key}=${value}`)

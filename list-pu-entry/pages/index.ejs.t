@@ -64,25 +64,7 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
     setIsLoading(true)
     try {
       const data = await new <%= struct.name.pascalName %>Api().search<%= struct.name.pascalName %>({
-        <%_ struct.fields.forEach(function(field, index){ -%>
-<%#_ 通常の検索 -%>
-        <%_ if ((field.listType === 'string' || field.listType === 'time' || field.listType === 'bool' || field.listType === 'number')  && field.searchType === 1 && field.name.lowerCamelName != 'id') { -%>
-        <%= field.name.lowerCamelName %>: searchCondition.<%= field.name.lowerCamelName %> || undefined,
-<%#_ 配列の検索 -%>
-        <%_ } else if ((field.listType === 'array-string' || field.listType === 'array-time' || field.listType === 'array-bool' || field.listType === 'array-number')  && field.searchType === 1) { -%>
-        <%= field.name.lowerCamelName %>: searchCondition.<%= field.name.lowerCamelName %> ? [searchCondition.<%= field.name.lowerCamelName %>] : undefined,
-<%#_ 範囲検索 -%>
-        <%_ } else if ((field.listType === 'time' || field.listType === 'number') && 2 <= field.searchType &&  field.searchType <= 5) { -%>
-        <%= field.name.lowerCamelName %>: searchCondition.<%= field.name.lowerCamelName %> || undefined,
-        <%= field.name.lowerCamelName %>From: searchCondition.<%= field.name.lowerCamelName %>From || undefined,
-        <%= field.name.lowerCamelName %>To: searchCondition.<%= field.name.lowerCamelName %>To || undefined,
-<%#_ 配列の範囲検索 -%>
-        <%_ } else if ((field.listType === 'array-time' || field.listType === 'array-number') && 2 <= field.searchType &&  field.searchType <= 5) { -%>
-        <%= field.name.lowerCamelName %>: searchCondition.<%= field.name.lowerCamelName %> ? [searchCondition.<%= field.name.lowerCamelName %>] : undefined,
-        <%= field.name.lowerCamelName %>From: searchCondition.<%= field.name.lowerCamelName %>From || undefined,
-        <%= field.name.lowerCamelName %>To: searchCondition.<%= field.name.lowerCamelName %>To || undefined,
-        <%_ } -%>
-        <%_ }) -%>
+        ...searchCondition,
         limit: pageInfo.pageSize !== -1 ? pageInfo.pageSize : undefined,
 <%_ if (project.dbType === 'datastore') { -%>
         cursor: pageInfo.page !== 0 ? pageInfo.cursors[pageInfo.page - 1] : undefined,

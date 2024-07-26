@@ -44,6 +44,18 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
     setSearchCondition(cloneDeep(currentSearchCondition))
   }, [currentSearchCondition])
 
+  useEffect(() => {
+    // 空文字とfalseは表示されないため検索条件から除外する
+    setSearchCondition(searchCondition => {
+      for (const [key, value] of Object.entries(searchCondition)) {
+        if ((typeof value === 'boolean' || typeof value === 'string') && !value) {
+          (searchCondition as any)[key] = undefined
+        }
+      }
+      return searchCondition
+    })
+  }, [searchCondition])
+
   const close = useCallback(() => {
     setOpen(false)
   }, [setOpen])
@@ -97,7 +109,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
               value={searchCondition.<%= field.name.lowerCamelName %>}
               fullWidth
               variant="standard"
-              onChange={e => setSingleSearchCondition({<%= field.name.lowerCamelName %>: Number(e.target.value) || undefined})}
+              onChange={e => setSingleSearchCondition({<%= field.name.lowerCamelName %>: e.target.value === '' ? undefined : Number(e.target.value)})}
             />
           </Grid>
           <%_ } -%>
@@ -112,7 +124,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
               value={searchCondition.<%= field.name.lowerCamelName %>From}
               fullWidth
               variant="standard"
-              onChange={e => setSingleSearchCondition({<%= field.name.lowerCamelName %>From: Number(e.target.value) || undefined})}
+              onChange={e => setSingleSearchCondition({<%= field.name.lowerCamelName %>From: e.target.value === '' ? undefined : Number(e.target.value)})}
             />
           </Grid>
           <Grid item xs={12}>
@@ -125,7 +137,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
               value={searchCondition.<%= field.name.lowerCamelName %>To}
               fullWidth
               variant="standard"
-              onChange={e => setSingleSearchCondition({<%= field.name.lowerCamelName %>To: Number(e.target.value) || undefined})}
+              onChange={e => setSingleSearchCondition({<%= field.name.lowerCamelName %>To: e.target.value === '' ? undefined : Number(e.target.value)})}
             />
           </Grid>
           <%_ } -%>
