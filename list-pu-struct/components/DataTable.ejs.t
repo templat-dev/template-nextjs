@@ -4,9 +4,8 @@ to: <%= rootDirectory %>/components/<%= struct.name.lowerCamelName %>/<%= struct
 <%_ if (struct.structType !== 'struct') { -%>
 import {Model<%= struct.name.pascalName %>, <%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request} from '@/apis'
 import {AppDataGrid, AppDataGridBaseProps} from '@/components/common/AppDataGrid'
-import <%= struct.name.pascalName %>SearchForm, {
-  INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION
-} from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>SearchForm'
+import <%= struct.name.pascalName %>SearchForm from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>SearchForm'
+import {INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION} from '@/initials/<%= struct.name.pascalName %>Initials'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SearchIcon from '@mui/icons-material/Search'
@@ -24,7 +23,13 @@ import {GridActionsCellItem, GridColDef, GridRowParams, GridToolbarContainer} fr
 <%_ } -%>
 import * as React from 'react'
 import {useMemo, useState} from 'react'
+  <%_ if (struct.exists.list.arrayImage) { -%>
+import {Carousel} from 'react-responsive-carousel'
+  <%_ } -%>
 import {Writable} from 'type-fest'
+  <%_ if (struct.exists.list.arrayImage) { -%>
+import 'react-responsive-carousel/lib/styles/carousel.min.css'
+  <%_ } -%>
 <%_ } else { -%>
 import {Model<%= struct.name.pascalName %>} from '@/apis'
 import {AppDataGrid, AppDataGridBaseProps} from '@/components/common/AppDataGrid'
@@ -34,10 +39,10 @@ import {Box, Fab, Paper, Typography} from '@mui/material'
 import {GridActionsCellItem, GridColDef, GridRowParams, GridToolbarContainer} from '@mui/x-data-grid'
 import * as React from 'react'
 import {useMemo} from 'react'
-<%_ } -%>
-<%_ if (struct.exists.list.arrayImage) { -%>
-import 'react-responsive-carousel/lib/styles/carousel.min.css'
+  <%_ if (struct.exists.list.arrayImage) { -%>
 import {Carousel} from 'react-responsive-carousel'
+import 'react-responsive-carousel/lib/styles/carousel.min.css'
+  <%_ } -%>
 <%_ } -%>
 
 <%_ if (struct.structType === 'struct') { -%>

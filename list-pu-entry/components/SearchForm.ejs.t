@@ -5,6 +5,7 @@ import {<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Reque
 <%_ if (struct.exists.search.time || struct.exists.search.arrayTime) { -%>
 import DateTimeForm from '@/components/form/DateTimeForm'
 <%_ } -%>
+import {INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION} from '@/initials/<%= struct.name.pascalName %>Initials'
 import {
   Button,
   Dialog,
@@ -30,58 +31,12 @@ import * as React from 'react'
 import {useCallback, useEffect, useState} from 'react'
 import {Writable} from 'type-fest'
 
-<%_ const searchConditions = [] -%>
-<%_ if (struct.fields && struct.fields.length > 0) { -%>
-<%_ struct.fields.forEach(function (field, key) { -%>
-  <%_ if ((field.dataType === 'string' || field.dataType === 'array-string' || field.dataType === 'time' || field.dataType === 'array-time') && field.searchType === 1) { -%>
-    <%_ searchConditions.push({name: field.name.lowerCamelName, type: 'string', range: false}) -%>
-  <%_ } -%>
-  <%_ if ((field.dataType === 'bool' || field.dataType === 'array-bool') && field.searchType === 1) { -%>
-    <%_ searchConditions.push({name: field.name.lowerCamelName, type: 'boolean', range: false}) -%>
-  <%_ } -%>
-  <%_ if ((field.dataType === 'number' || field.dataType === 'array-number') && field.searchType === 1) { -%>
-    <%_ searchConditions.push({name: field.name.lowerCamelName, type: 'number', range: false}) -%>
-  <%_ } -%>
-  <%_ if ((field.dataType === 'number' || field.dataType === 'array-number') && 2 <= field.searchType &&  field.searchType <= 5) { -%>
-    <%_ searchConditions.push({name: field.name.lowerCamelName, type: 'number', range: true}) -%>
-  <%_ } -%>
-  <%_ if ((field.dataType === 'time' || field.dataType === 'array-time') && 2 <= field.searchType &&  field.searchType <= 5) { -%>
-    <%_ searchConditions.push({name: field.name.lowerCamelName, type: 'string', range: true}) -%>
-  <%_ } -%>
-<%_ }) -%>
-<%_ } -%>
-
-export const INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request> = {
-  <%_ searchConditions.forEach(function(searchCondition) { -%>
-    <%_ if (searchCondition.type === 'string' && !searchCondition.range) { -%>
-  <%= searchCondition.name %>: undefined,
-    <%_ } -%>
-    <%_ if (searchCondition.type === 'boolean' && !searchCondition.range) { -%>
-  <%= searchCondition.name %>: undefined,
-    <%_ } -%>
-    <%_ if (searchCondition.type === 'number' && !searchCondition.range) { -%>
-  <%= searchCondition.name %>: undefined,
-    <%_ } -%>
-    <%_ if (searchCondition.type === 'number' && searchCondition.range) { -%>
-  <%= searchCondition.name %>: undefined,
-  <%= searchCondition.name %>From: undefined,
-  <%= searchCondition.name %>To: undefined,
-    <%_ } -%>
-    <%_ if (searchCondition.type === 'string' && searchCondition.range) { -%>
-  <%= searchCondition.name %>: undefined,
-  <%= searchCondition.name %>From: undefined,
-  <%= searchCondition.name %>To: undefined,
-    <%_ } -%>
-  <%_ }) -%>
-}
-
 export interface <%= struct.name.pascalName %>SearchFormProps {
   open: boolean,
   setOpen: (open: boolean) => void,
   currentSearchCondition: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>,
   onSearch: (searchCondition: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>) => void
 }
-
 const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCondition, onSearch}: <%= struct.name.pascalName %>SearchFormProps) => {
   const [searchCondition, setSearchCondition] = useState(cloneDeep(INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION))
 

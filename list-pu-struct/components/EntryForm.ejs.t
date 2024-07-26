@@ -88,25 +88,16 @@ import <%= field.structName.pascalName %>EntryForm, {INITIAL_<%= field.structNam
   <%_ } -%>
 <%_ }) -%>
 
-export const INITIAL_<%= struct.name.upperSnakeName %>: Model<%= struct.name.pascalName %> = {
+export const <%= struct.name.lowerCamelName %>Schema = yup.object({
 <%_ struct.fields.forEach(function (field, key) { -%>
-  <%_ if (field.editType === 'struct') { -%>
-  <%= field.name.lowerCamelName %>: INITIAL_<%= field.structName.upperSnakeName %>,
-  <%_ } -%>
   <%_ if (field.editType.startsWith('array')) { -%>
-  <%= field.name.lowerCamelName %>: [],
-  <%_ } -%>
-  <%_ if (field.editType === 'string' || field.editType === 'textarea' || field.editType === 'time') { -%>
-  <%= field.name.lowerCamelName %>: undefined,
-  <%_ } -%>
-  <%_ if (field.editType === 'bool') { -%>
-  <%= field.name.lowerCamelName %>: undefined,
-  <%_ } -%>
-  <%_ if (field.editType === 'number') { -%>
-  <%= field.name.lowerCamelName %>: undefined,
+  <%= field.name.lowerCamelName %>: yup.array().of(yup.mixed()),
+  <%_ } else if (field.editType !== 'none') { -%>
+  <%= field.name.lowerCamelName %>: yup.mixed(),
   <%_ } -%>
 <%_ }) -%>
-}
+})
+export type <%= struct.name.pascalName %>Schema = yup.InferType<typeof <%= struct.name.lowerCamelName %>Schema>
 
 export interface <%= struct.name.pascalName %>EntryFormProps {
   /** 表示状態 */
@@ -128,19 +119,19 @@ export interface <%= struct.name.pascalName %>EntryFormProps {
   /** 削除コールバック */
   remove?: () => void
 }
+const <%= struct.name.pascalName %>EntryForm = (props: <%= struct.name.pascalName %>EntryFormProps) => {
+  const {
+    open = true,
+    setOpen = () => {},
+    target,
+    syncTarget,
+    isEmbedded = false,
+    hasParent = false,
+    isNew = true,
+    updated = () => {},
+    remove = () => {}
+  } = props
 
-export const <%= struct.name.lowerCamelName %>Schema = yup.object({
-<%_ struct.fields.forEach(function (field, key) { -%>
-  <%_ if (field.editType.startsWith('array')) { -%>
-  <%= field.name.lowerCamelName %>: yup.array().of(yup.mixed()),
-  <%_ } else if (field.editType !== 'none') { -%>
-  <%= field.name.lowerCamelName %>: yup.mixed(),
-  <%_ } -%>
-<%_ }) -%>
-})
-export type <%= struct.name.pascalName %>Schema = yup.InferType<typeof <%= struct.name.lowerCamelName %>Schema>
-
-const <%= struct.name.pascalName %>EntryForm = ({open = true, setOpen = () => {}, target, syncTarget, isEmbedded = false, hasParent = false, isNew = true, updated = () => {}, remove = () => {}}: <%= struct.name.pascalName %>EntryFormProps) => {
 <%_ if (struct.structType !== 'struct') { -%>
   const showLoading = useSetRecoilState<boolean>(loadingState)
   const hideLoading = useResetRecoilState(loadingState)

@@ -2,23 +2,21 @@
 to: "<%= struct.generateEnable ? `${rootDirectory}/pages/${project.buildConfig.webPageRoot}${struct.name.lowerCamelName}/index.tsx` : null %>"
 force: true
 ---
-import * as React from 'react'
-import {useCallback, useEffect, useState} from 'react'
+import {Model<%= struct.name.pascalName %>, <%= struct.name.pascalName %>Api, <%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request} from '@/apis'
+import {GridPageInfo, INITIAL_GRID_PAGE_INFO} from '@/components/common/AppDataGrid'
+import {NEW_INDEX} from '@/components/common/Base'
+import <%= struct.name.pascalName %>DataTable from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>DataTable'
+import <%= struct.name.pascalName %>EntryForm from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>EntryForm'
+import {INITIAL_<%= struct.name.upperSnakeName %>, INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION} from '@/initials/<%= struct.name.pascalName %>Initials'
+import {dialogState, DialogState, loadingState, snackbarState, SnackbarState} from '@/state/App'
+import {Container, Dialog} from '@mui/material'
 import {cloneDeep} from 'lodash-es'
 import {NextPage} from 'next'
 import {useRouter} from 'next/router'
+import * as React from 'react'
+import {useCallback, useEffect, useState} from 'react'
 import {useResetRecoilState, useSetRecoilState} from 'recoil'
 import {Writable} from 'type-fest'
-import {Container, Dialog} from '@mui/material'
-import {dialogState, DialogState, loadingState, snackbarState, SnackbarState} from '@/state/App'
-import {Model<%= struct.name.pascalName %>, <%= struct.name.pascalName %>Api, <%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request} from '@/apis'
-import {NEW_INDEX} from '@/components/common/Base'
-import {GridPageInfo, INITIAL_GRID_PAGE_INFO} from '@/components/common/AppDataGrid'
-import <%= struct.name.pascalName %>DataTable from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>DataTable'
-import {
-  INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION
-} from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>SearchForm'
-import <%= struct.name.pascalName %>EntryForm, {INITIAL_<%= struct.name.upperSnakeName %>} from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>EntryForm'
 
 const <%= struct.name.pascalPluralName %>: NextPage = () => {
   const router = useRouter()
