@@ -11,6 +11,7 @@ import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SearchIcon from '@mui/icons-material/Search'
 import {Box, Divider, Fab, IconButton, Paper, Typography} from '@mui/material'
+<%_ if (struct.exists.list.image || struct.exists.list.arrayImage) { -%>
 import {
   GridActionsCellItem,
   GridColDef,
@@ -18,6 +19,9 @@ import {
   GridRowParams,
   GridToolbarContainer
 } from '@mui/x-data-grid'
+<%_ } else { -%>
+import {GridActionsCellItem, GridColDef, GridRowParams, GridToolbarContainer} from '@mui/x-data-grid'
+<%_ } -%>
 import * as React from 'react'
 import {useMemo, useState} from 'react'
 import {Writable} from 'type-fest'
@@ -31,17 +35,6 @@ import {GridActionsCellItem, GridColDef, GridRowParams, GridToolbarContainer} fr
 import * as React from 'react'
 import {useMemo} from 'react'
 <%_ } -%>
-<%_ if (struct.exists.list.image || struct.exists.list.arrayImage) { -%>
-import {
-  GridActionsCellItem,
-  GridColDef,
-  GridRenderCellParams,
-  GridRowParams,
-  GridToolbarContainer
-} from '@mui/x-data-grid'
-<%_ } else { -%>
-import {GridActionsCellItem, GridColDef, GridRowParams, GridToolbarContainer} from '@mui/x-data-grid'
-<%_ } -%>
 <%_ if (struct.exists.list.arrayImage) { -%>
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import {Carousel} from 'react-responsive-carousel'
@@ -54,9 +47,14 @@ const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Mode
     onOpenEntryForm,
     onRemove
   } = props
-<%_ } -%>
-<%_ if (struct.structType !== 'struct') { -%>
-const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Model<%= struct.name.pascalName %>, Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>>) => {
+<%_ } else { -%>
+type <%= struct.name.pascalName %>DataTableProps = {
+  /** 検索条件 */
+  searchCondition: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>
+  /** 検索条件変更コールバック */
+  onChangeSearch: (searchCondition: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>) => void
+}
+const <%= struct.name.pascalName %>DataTable = (props: <%= struct.name.pascalName %>DataTableProps & AppDataGridBaseProps<Model<%= struct.name.pascalName %>>) => {
   const {
     items = [],
     searchCondition = INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION,
