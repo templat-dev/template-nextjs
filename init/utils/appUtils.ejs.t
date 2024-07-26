@@ -2,10 +2,10 @@
 to: <%= rootDirectory %>/utils/appUtils.ts
 force: true
 ---
-import {dialogState, DialogState} from '@/state/App'
+import {DialogState} from '@/state/App'
 import {AxiosError} from 'axios'
 import dayjs from 'dayjs'
-import {useSetRecoilState} from 'recoil'
+import {SetterOrUpdater} from 'recoil'
 
 export default class AppUtils {
   static readonly DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm'
@@ -23,8 +23,7 @@ export default class AppUtils {
     return result
   }
 
-  static showApiErrorDialog = (error: Error): any => {
-    const showDialog = useSetRecoilState<DialogState>(dialogState)
+  static showApiErrorDialog = (error: Error, showDialog: SetterOrUpdater<DialogState>): any => {
     let message = '通信エラーが発生しました。\n再度実行してください。'
     message = error.message ? `エラーが発生しました。\n${error.message}` : message
     if (error instanceof AxiosError) {
@@ -34,34 +33,23 @@ export default class AppUtils {
       title: 'エラー',
       message
     })
-    return Promise.reject(error)
   }
 
-  static toStringArray(array: any[]): string {
-    if (!array) return ''
-    let result = '['
-    for (let idx = 0; idx < array.length; idx++) {
-      const item = array[idx]
-      if (idx !== 0) {
-        result = `${result},`
-      }
-      result = `${result}${item.toString()}`
-    }
-    result = `${result}]`
-    return result
+  static formatArray(items: any[]): string {
+    if (!items) return ''
+    const formattedValues = items.map(item => item ? item.toString() : '')
+    return `[${formattedValues.join(',')}]`
   }
 
-  static toStringTimeArray(array: string[]): string {
-    if (!array) return ''
-    let result = '['
-    for (let idx = 0; idx < array.length; idx++) {
-      const formatted = dayjs(array[idx]).format(this.DATE_TIME_FORMAT)
-      if (idx !== 0) {
-        result = `${result},`
-      }
-      result = `${result}${formatted}`
-    }
-    result = `${result}]`
-    return result
+  static formatTime(time: string): string {
+    if (!time) return ''
+    return dayjs(time).format(this.DATE_TIME_FORMAT)
+  }
+
+  static formatTimeArray(times: string[]): string {
+    if (!times) return ''
+    const formattedValues = times.map(time => time ? dayjs(time).format(this.DATE_TIME_FORMAT) : '')
+    return `[${formattedValues.join(',')}]`
   }
 }
+

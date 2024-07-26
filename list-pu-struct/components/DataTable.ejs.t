@@ -6,11 +6,14 @@ import {Model<%= struct.name.pascalName %>, <%= struct.name.pascalName %>ApiSear
 import {AppDataGrid, AppDataGridBaseProps} from '@/components/common/AppDataGrid'
 import <%= struct.name.pascalName %>SearchForm from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>SearchForm'
 import {INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION} from '@/initials/<%= struct.name.pascalName %>Initials'
+  <%_ if (struct.exists.list.time || struct.exists.list.arrayTime) { -%>
+import AppUtils from '@/utils/appUtils'
+  <%_ } -%>
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SearchIcon from '@mui/icons-material/Search'
 import {Box, Divider, Fab, IconButton, Paper, Typography} from '@mui/material'
-<%_ if (struct.exists.list.image || struct.exists.list.arrayImage) { -%>
+  <%_ if (struct.exists.list.image || struct.exists.list.arrayImage) { -%>
 import {
   GridActionsCellItem,
   GridColDef,
@@ -18,9 +21,9 @@ import {
   GridRowParams,
   GridToolbarContainer
 } from '@mui/x-data-grid'
-<%_ } else { -%>
+  <%_ } else { -%>
 import {GridActionsCellItem, GridColDef, GridRowParams, GridToolbarContainer} from '@mui/x-data-grid'
-<%_ } -%>
+  <%_ } -%>
 import * as React from 'react'
 import {useMemo, useState} from 'react'
   <%_ if (struct.exists.list.arrayImage) { -%>
@@ -33,6 +36,9 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'
 <%_ } else { -%>
 import {Model<%= struct.name.pascalName %>} from '@/apis'
 import {AppDataGrid, AppDataGridBaseProps} from '@/components/common/AppDataGrid'
+  <%_ if (struct.exists.list.time || struct.exists.list.arrayTime) { -%>
+import AppUtils from '@/utils/appUtils'
+  <%_ } -%>
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import {Box, Fab, Paper, Typography} from '@mui/material'
@@ -134,6 +140,20 @@ const <%= struct.name.pascalName %>DataTable = (props: <%= struct.name.pascalNam
             ))}
           </Carousel> : <Box/>
       )
+    },
+        <%_ } else if (field.listType === 'time') { -%>
+    {
+      field: '<%= field.name.lowerCamelName %>',
+      headerName: '<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>',
+      width: 140,
+      valueFormatter: (params) => AppUtils.formatTime(params.value)
+    },
+        <%_ } else if (field.listType === 'array-time') { -%>
+    {
+      field: '<%= field.name.lowerCamelName %>',
+      headerName: '<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>',
+      width: 160,
+      valueFormatter: (params) => AppUtils.formatTimeArray(params.value)
     },
         <%_ } else if (field.listType !== 'none' && field.dataType !== 'struct' && field.dataType !== 'array-struct') { -%>
     {field: '<%= field.name.lowerCamelName %>', headerName: '<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName === 'id' ? 'ID' : field.name.lowerCamelName %>', width: <%= field.name.lowerCamelName === 'id' ? 160 : 120 %>},
