@@ -24,7 +24,7 @@ import {
 <%_ } -%>
 } from '@mui/material'
 <%_ if (struct.exists.search.time || struct.exists.search.arrayTime) { -%>
-import {formatISO} from 'date-fns'
+import dayjs from 'dayjs'
 <%_ } -%>
 import {cloneDeep} from 'lodash-es'
 import * as React from 'react'
@@ -145,8 +145,8 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
           <Grid item xs={12}>
             <DateTimeForm
               label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
-              dateTime={searchCondition.<%= field.name.lowerCamelName %> ? new Date(searchCondition.<%= field.name.lowerCamelName %>) : null}
-              syncDateTime={value => setSingleSearchCondition({<%= field.name.lowerCamelName %>: value ? formatISO(value) : undefined})}
+              dateTime={searchCondition.<%= field.name.lowerCamelName %>}
+              syncDateTime={value => setSingleSearchCondition({<%= field.name.lowerCamelName %>: value ? dayjs(value).format() : undefined})}
             />
           </Grid>
           <%_ } -%>
@@ -154,15 +154,15 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
           <Grid item xs={12}>
             <DateTimeForm
               label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>From"
-              dateTime={searchCondition.<%= field.name.lowerCamelName %>From ? new Date(searchCondition.<%= field.name.lowerCamelName %>From) : null}
-              syncDateTime={value => setSingleSearchCondition({<%= field.name.lowerCamelName %>From: value ? formatISO(value) : undefined})}
+              dateTime={searchCondition.<%= field.name.lowerCamelName %>From}
+              syncDateTime={value => setSingleSearchCondition({<%= field.name.lowerCamelName %>From: value ? dayjs(value).format() : undefined})}
             />
           </Grid>
           <Grid item xs={12}>
             <DateTimeForm
               label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>To"
-              dateTime={searchCondition.<%= field.name.lowerCamelName %>To ? new Date(searchCondition.<%= field.name.lowerCamelName %>To) : null}
-              syncDateTime={value => setSingleSearchCondition({<%= field.name.lowerCamelName %>To: value ? formatISO(value) : undefined})}
+              dateTime={searchCondition.<%= field.name.lowerCamelName %>To}
+              syncDateTime={value => setSingleSearchCondition({<%= field.name.lowerCamelName %>To: value ? dayjs(value).format() : undefined})}
             />
           </Grid>
           <%_ } -%>

@@ -71,7 +71,7 @@ import {
 <%_ } -%>
 } from '@mui/material'
 <%_ if (struct.exists.edit.time || struct.exists.edit.arrayTime) { -%>
-import {formatISO} from 'date-fns'
+import dayjs from 'dayjs'
 <%_ } -%>
 <%_ if (struct.exists.edit.struct) { -%>
 import {cloneDeep} from 'lodash-es'
@@ -290,8 +290,8 @@ const <%= struct.name.pascalName %>EntryForm = (props: <%= struct.name.pascalNam
     <%_ if (field.editType === 'time') { -%>
     <DateTimeForm
       label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
-      dateTime={target.<%= field.name.lowerCamelName %> ? new Date(target.<%= field.name.lowerCamelName %>) : null}
-      syncDateTime={dateTime => syncTarget({<%= field.name.lowerCamelName %>: dateTime ? formatISO(dateTime) : undefined})}
+      dateTime={target.<%= field.name.lowerCamelName %>}
+      syncDateTime={dateTime => syncTarget({<%= field.name.lowerCamelName %>: dateTime})}
     />
     <%_ } -%>
     <%_ if (field.editType === 'bool') { -%>
@@ -441,12 +441,12 @@ const <%= struct.name.pascalName %>EntryForm = (props: <%= struct.name.pascalNam
       <ArrayForm
         items={target.<%= field.name.lowerCamelName %> || []}
         syncItems={items => syncTarget({<%= field.name.lowerCamelName %>: items})}
-        initial={formatISO(new Date())}
+        initial={dayjs().format()}
         form={(editTarget, updatedForm, index) => (
           <DateTimeForm
             label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
-            dateTime={editTarget ? new Date(editTarget) : null}
-            syncDateTime={dateTime => updatedForm(dateTime ? formatISO(dateTime) : undefined)}
+            dateTime={editTarget}
+            syncDateTime={dateTime => updatedForm(dateTime)}
           />
         )}
       />
