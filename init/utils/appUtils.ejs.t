@@ -35,15 +35,15 @@ export default class AppUtils {
     })
   }
 
+  static formatTime(time: string): string {
+    if (!time) return ''
+    return dayjs(time).format(this.DATE_TIME_FORMAT)
+  }
+
   static formatArray(items: any[]): string {
     if (!items) return ''
     const formattedValues = items.map(item => item ? item.toString() : '')
     return `[${formattedValues.join(',')}]`
-  }
-
-  static formatTime(time: string): string {
-    if (!time) return ''
-    return dayjs(time).format(this.DATE_TIME_FORMAT)
   }
 
   static formatTimeArray(times: string[]): string {
