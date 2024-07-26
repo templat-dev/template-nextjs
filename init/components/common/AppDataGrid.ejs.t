@@ -59,8 +59,8 @@ export type AppDataGridBaseProps<I> = {
   hasParent?: boolean
   /** 表示ページ情報変更コールバック */
   onChangePageInfo: (pageInfo: GridPageInfo) => void
-  /** 編集ダイアログ表示コールバック */
-  onOpenEntryForm: (item?: I) => void
+  /** 行選択コールバック */
+  onClickRow: (item?: I) => void
   /** 削除コールバック */
   onRemove: (item: I) => void
 }
@@ -77,7 +77,7 @@ export const AppDataGrid = <I, >(props: AppDataGridProps<I>) => {
     totalCount,
     isLoading = false,
     hasParent = false,
-    onOpenEntryForm,
+    onClickRow,
     onChangePageInfo = () => {}
   } = props
 
@@ -95,7 +95,7 @@ export const AppDataGrid = <I, >(props: AppDataGridProps<I>) => {
       rowCount={totalCount}
       disableRowSelectionOnClick
       getRowId={item => itemIndexMap.get(item as I)!}
-      onRowClick={params => onOpenEntryForm(params.row as I)}
+      onRowClick={params => onClickRow(params.row as I)}
       pageSizeOptions={[pageInfo.pageSize]}
       paginationMode={hasParent ? 'client' : 'server'}
       paginationModel={{page: pageInfo.page, pageSize: pageInfo.pageSize}}

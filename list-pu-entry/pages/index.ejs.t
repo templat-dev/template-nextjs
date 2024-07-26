@@ -169,7 +169,8 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
         searchCondition={searchCondition}
         onChangePageInfo={changePageInfo}
         onChangeSearch={search}
-        onOpenEntryForm={openEntryForm}
+        onClickAdd={openEntryForm}
+        onClickRow={openEntryForm}
         onRemove={removeRow}
       />
       <Dialog open={entryFormOpen} onClose={() => setEntryFormOpen(false)}>

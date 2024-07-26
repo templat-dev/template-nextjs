@@ -64,12 +64,15 @@ type <%= struct.name.pascalName %>DataTableProps = {
   searchCondition: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>
   /** 検索条件変更コールバック */
   onChangeSearch: (searchCondition: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>) => void
+  /** 追加ボタン押下コールバック */
+  onClickAdd: () => void
 }
 const <%= struct.name.pascalName %>DataTable = (props: <%= struct.name.pascalName %>DataTableProps & AppDataGridBaseProps<Model<%= struct.name.pascalName %>>) => {
   const {
     items = [],
     searchCondition = INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION,
     onChangeSearch = () => {},
+    onClickAdd,
     onOpenEntryForm,
     onRemove,
     hasParent = false
@@ -210,7 +213,7 @@ const <%= struct.name.pascalName %>DataTable = (props: <%= struct.name.pascalNam
               )}
 <%_ } -%>
               <Box sx={{flexGrow: 1}}/>
-              <Fab color="primary" size="small" onClick={() => onOpenEntryForm()}>
+              <Fab color="primary" size="small" onClick={() => onClickAdd()}>
                 <AddIcon/>
               </Fab>
             </GridToolbarContainer>
