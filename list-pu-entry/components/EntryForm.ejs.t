@@ -1,51 +1,15 @@
 ---
 to: <%= rootDirectory %>/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>EntryForm.tsx
 ---
-import * as React from 'react'
-import {useCallback, useMemo} from 'react'
-<%_ if (struct.exists.edit.bool || struct.exists.edit.arrayBool) { -%>
-import {Controller, useForm} from 'react-hook-form'
-<%_ } else { -%>
-import {useForm} from 'react-hook-form'
-<%_ } -%>
-import {yupResolver} from '@hookform/resolvers/yup'
-import * as yup from 'yup'
-<%_ if (struct.exists.edit.struct) { -%>
-import {cloneDeep} from 'lodash-es'
-<%_ } -%>
-<%_ if (struct.structType !== 'struct') { -%>
-import {useResetRecoilState, useSetRecoilState} from 'recoil'
-<%_ } else { -%>
-import {useSetRecoilState} from 'recoil'
-<%_ } -%>
-<%_ if (struct.exists.edit.time || struct.exists.edit.arrayTime) { -%>
-import {formatISO} from 'date-fns'
-<%_ } -%>
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-<%_ if (struct.exists.edit.bool || struct.exists.edit.arrayBool) { -%>
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-<%_ } -%>
-  Grid,
-<%_ if (struct.exists.edit.bool || struct.exists.edit.arrayBool) { -%>
-  Switch,
-<%_ } -%>
-<%_ if (struct.exists.edit.text || struct.exists.edit.textArea || struct.exists.edit.number || struct.exists.edit.arrayText || struct.exists.edit.arrayTextArea || struct.exists.edit.arrayNumber) { -%>
-  TextField,
-<%_ } -%>
-} from '@mui/material'
-<%_ if (struct.structType !== 'struct') { -%>
-import {dialogState, DialogState, loadingState} from '@/state/App'
-<%_ } else { -%>
-import {dialogState, DialogState} from '@/state/App'
+import {<%_ if (struct.structType !== 'struct') { -%><%= struct.name.pascalName %>Api, <% } -%>Model<%= struct.name.pascalName %>} from '@/apis'
+<%_ if (struct.exists.edit.arrayNumber || struct.exists.edit.arrayText || struct.exists.edit.arrayTextArea || struct.exists.edit.arrayBool || struct.exists.edit.arrayTime) { -%>
+import ArrayForm from '@/components/form/ArrayForm'
 <%_ } -%>
 <%_ if (struct.exists.edit.time || struct.exists.edit.arrayTime) { -%>
 import DateTimeForm from '@/components/form/DateTimeForm'
+<%_ } -%>
+<%_ if (struct.exists.edit.struct || struct.exists.edit.arrayNumber || struct.exists.edit.arrayText || struct.exists.edit.arrayTextArea || struct.exists.edit.arrayBool || struct.exists.edit.arrayTime || struct.exists.edit.arrayStruct) { -%>
+import Expansion from '@/components/form/Expansion'
 <%_ } -%>
 <%_ if (struct.exists.edit.image) { -%>
 import ImageForm from '@/components/form/ImageForm'
@@ -53,15 +17,8 @@ import ImageForm from '@/components/form/ImageForm'
 <%_ if (struct.exists.edit.arrayImage) { -%>
 import ImageArrayForm from '@/components/form/ImageArrayForm'
 <%_ } -%>
-import {<%_ if (struct.structType !== 'struct') { -%><%= struct.name.pascalName %>Api, <% } -%>Model<%= struct.name.pascalName %>} from '@/apis'
 <%_ if (struct.exists.edit.struct) { -%>
 import InitForm from '@/components/form/InitForm'
-<%_ } -%>
-<%_ if (struct.exists.edit.struct || struct.exists.edit.arrayNumber || struct.exists.edit.arrayText || struct.exists.edit.arrayTextArea || struct.exists.edit.arrayBool || struct.exists.edit.arrayTime || struct.exists.edit.arrayStruct) { -%>
-import Expansion from '@/components/form/Expansion'
-<%_ } -%>
-<%_ if (struct.exists.edit.arrayNumber || struct.exists.edit.arrayText || struct.exists.edit.arrayTextArea || struct.exists.edit.arrayBool || struct.exists.edit.arrayTime) { -%>
-import ArrayForm from '@/components/form/ArrayForm'
 <%_ } -%>
 <%_ if (struct.exists.edit.arrayStruct) { -%>
 import {NEW_INDEX} from '@/components/common/Base'
@@ -87,6 +44,49 @@ import <%= field.structName.pascalName %>EntryForm, {INITIAL_<%= field.structNam
     <%_ } -%>
   <%_ } -%>
 <%_ }) -%>
+<%_ if (struct.structType !== 'struct') { -%>
+import {dialogState, DialogState, loadingState} from '@/state/App'
+<%_ } else { -%>
+import {dialogState, DialogState} from '@/state/App'
+<%_ } -%>
+import {yupResolver} from '@hookform/resolvers/yup'
+import {
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+<%_ if (struct.exists.edit.bool || struct.exists.edit.arrayBool) { -%>
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+<%_ } -%>
+  Grid,
+<%_ if (struct.exists.edit.bool || struct.exists.edit.arrayBool) { -%>
+  Switch,
+<%_ } -%>
+<%_ if (struct.exists.edit.text || struct.exists.edit.textArea || struct.exists.edit.number || struct.exists.edit.arrayText || struct.exists.edit.arrayTextArea || struct.exists.edit.arrayNumber) { -%>
+  TextField,
+<%_ } -%>
+} from '@mui/material'
+<%_ if (struct.exists.edit.time || struct.exists.edit.arrayTime) { -%>
+import {formatISO} from 'date-fns'
+<%_ } -%>
+<%_ if (struct.exists.edit.struct) { -%>
+import {cloneDeep} from 'lodash-es'
+<%_ } -%>
+import * as React from 'react'
+import {useCallback, useMemo} from 'react'
+<%_ if (struct.exists.edit.bool || struct.exists.edit.arrayBool) { -%>
+import {Controller, useForm} from 'react-hook-form'
+<%_ } else { -%>
+import {useForm} from 'react-hook-form'
+<%_ } -%>
+<%_ if (struct.structType !== 'struct') { -%>
+import {useResetRecoilState, useSetRecoilState} from 'recoil'
+<%_ } else { -%>
+import {useSetRecoilState} from 'recoil'
+<%_ } -%>
+import * as yup from 'yup'
 
 export const <%= struct.name.lowerCamelName %>Schema = yup.object({
 <%_ struct.fields.forEach(function (field, key) { -%>
