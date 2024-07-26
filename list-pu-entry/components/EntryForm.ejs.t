@@ -471,7 +471,8 @@ const <%= struct.name.pascalName %>EntryForm = (props: <%= struct.name.pascalNam
             pageInfo={pageInfo}
             hasParent={true}
             onChangePageInfo={changePageInfo}
-            onOpenEntryForm={openEntryForm}
+            onClickAdd={openEntryForm}
+            onClickRow={openEntryForm}
             onRemove={removeRow}
           />
         )}

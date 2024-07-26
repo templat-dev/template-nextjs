@@ -52,10 +52,14 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'
 <%_ } -%>
 
 <%_ if (struct.structType === 'struct') { -%>
-const <%= struct.name.pascalName %>DataTable = (props: AppDataGridBaseProps<Model<%= struct.name.pascalName %>>) => {
+type <%= struct.name.pascalName %>DataTableProps = {
+  /** 追加ボタン押下コールバック */
+  onClickAdd: () => void
+}
+const <%= struct.name.pascalName %>DataTable = (props: <%= struct.name.pascalName %>DataTableProps & AppDataGridBaseProps<Model<%= struct.name.pascalName %>>) => {
   const {
     items = [],
-    onOpenEntryForm,
+    onClickAdd,
     onRemove
   } = props
 <%_ } else { -%>
@@ -73,7 +77,6 @@ const <%= struct.name.pascalName %>DataTable = (props: <%= struct.name.pascalNam
     searchCondition = INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION,
     onChangeSearch = () => {},
     onClickAdd,
-    onOpenEntryForm,
     onRemove,
     hasParent = false
   } = props
