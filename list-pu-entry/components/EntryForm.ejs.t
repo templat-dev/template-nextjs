@@ -99,7 +99,7 @@ export const <%= struct.name.lowerCamelName %>Schema = yup.object({
 })
 export type <%= struct.name.pascalName %>Schema = yup.InferType<typeof <%= struct.name.lowerCamelName %>Schema>
 
-export interface <%= struct.name.pascalName %>EntryFormProps {
+type <%= struct.name.pascalName %>EntryFormProps = {
   /** 表示状態 */
   open?: boolean
   /** 表示状態設定コールバック */

@@ -31,7 +31,7 @@ import * as React from 'react'
 import {useCallback, useEffect, useState} from 'react'
 import {Writable} from 'type-fest'
 
-export interface <%= struct.name.pascalName %>SearchFormProps {
+type <%= struct.name.pascalName %>SearchFormProps = {
   open: boolean,
   setOpen: (open: boolean) => void,
   currentSearchCondition: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>,

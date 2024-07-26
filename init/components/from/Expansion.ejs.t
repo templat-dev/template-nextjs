@@ -2,18 +2,17 @@
 to: <%= rootDirectory %>/components/form/Expansion.tsx
 force: true
 ---
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import {Accordion, AccordionDetails, AccordionSummary, Box, Typography} from '@mui/material'
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {Accordion, AccordionDetails, AccordionSummary, Box, Typography} from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
-export interface ExpansionProps {
+type ExpansionProps = {
   /** 画面表示ラベル */
   label: string
   /** 描画内容 */
-  children?: ReactNode;
+  children?: ReactNode
 }
-
 export const Expansion = ({label, children}: ExpansionProps) => {
   return (
     <Accordion>
@@ -29,3 +28,4 @@ export const Expansion = ({label, children}: ExpansionProps) => {
   )
 }
 export default Expansion
+

@@ -2,18 +2,18 @@
 to: "<%= project.plugins.find(p => p.name === 'image')?.enable ? `${rootDirectory}/components/form/ImageArrayForm.tsx` : null %>"
 force: true
 ---
+import {ImageApi} from '@/apis'
+import {loadingState} from '@/state/App'
+import appUtils from '@/utils/appUtils'
+import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
+import {Box, Button, Fab, Typography} from '@mui/material'
+import {red} from '@mui/material/colors'
 import * as React from 'react'
 import {DragEvent, FormEvent, useCallback, useEffect, useRef, useState} from 'react'
 import {useResetRecoilState, useSetRecoilState} from 'recoil'
-import {Box, Button, Fab, Typography} from '@mui/material'
-import {red} from '@mui/material/colors'
-import AddIcon from '@mui/icons-material/Add'
-import DeleteIcon from '@mui/icons-material/Delete'
-import {loadingState} from '@/state/App'
-import {ImageApi} from '@/apis'
-import appUtils from '@/utils/appUtils'
 
-export interface ImageArrayFormProps {
+type ImageArrayFormProps = {
   /** 画面表示ラベル */
   label: string
   /** 画像保存ディレクトリ名 */
@@ -27,8 +27,14 @@ export interface ImageArrayFormProps {
   /** 変更コールバック */
   onChange: (imageURLs: string[] | null) => void
 }
-
-export const ImageArrayForm = ({label, dir, imageURLs, thumbnail = false, thumbnailSize = 200, onChange}: ImageArrayFormProps) => {
+export const ImageArrayForm = ({
+                                 label,
+                                 dir,
+                                 imageURLs,
+                                 thumbnail = false,
+                                 thumbnailSize = 200,
+                                 onChange,
+                               }: ImageArrayFormProps) => {
   const showLoading = useSetRecoilState<boolean>(loadingState)
   const hideLoading = useResetRecoilState(loadingState)
 
@@ -54,7 +60,7 @@ export const ImageArrayForm = ({label, dir, imageURLs, thumbnail = false, thumbn
       dir: dir,
       image: file,
       thumbnail: thumbnail,
-      thumbnailSize: thumbnailSize
+      thumbnailSize: thumbnailSize,
     }).then(res => res.data)
     if (responseImage && responseImage.url) {
       if (currentValues.current) {
@@ -126,7 +132,7 @@ export const ImageArrayForm = ({label, dir, imageURLs, thumbnail = false, thumbn
               height: '100px',
               width: '100px',
               aspectRatio: '1',
-              objectFit: 'cover'
+              objectFit: 'cover',
             }}/>
             <Fab color="inherit" sx={[{
               position: 'absolute',
@@ -137,11 +143,11 @@ export const ImageArrayForm = ({label, dir, imageURLs, thumbnail = false, thumbn
               minHeight: '0',
               boxShadow: 'none',
               backgroundColor: red.A400,
-              color: 'white'
+              color: 'white',
             }, {
               '&:hover': {
                 backgroundColor: red.A200,
-              }
+              },
             }]} onClick={() => removeImage(index)}>
               <DeleteIcon sx={{fontSize: 12}}/>
             </Fab>

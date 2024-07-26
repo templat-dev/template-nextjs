@@ -2,15 +2,15 @@
 to: <%= rootDirectory %>/components/form/ArrayForm.tsx
 force: true
 ---
+import {dialogState, DialogState} from '@/state/App'
+import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
+import {Box, Fab, IconButton, Stack} from '@mui/material'
 import * as React from 'react'
 import {ReactNode, useCallback} from 'react'
 import {useSetRecoilState} from 'recoil'
-import {Box, Fab, IconButton, Stack} from '@mui/material'
-import AddIcon from '@mui/icons-material/Add'
-import DeleteIcon from '@mui/icons-material/Delete'
-import {dialogState, DialogState} from '@/state/App'
 
-export interface ArrayFormProps<T, > {
+type ArrayFormProps<T, > = {
   /** 編集対象 */
   items: T[]
   /** 編集対象同期コールバック */
@@ -20,7 +20,6 @@ export interface ArrayFormProps<T, > {
   /** EntryForm描画メソッド */
   form: (editTarget: T, updatedForm: (item: T | undefined) => void, index: number) => ReactNode
 }
-
 export const ArrayForm = <T, >({items, syncItems, initial, form}: ArrayFormProps<T>) => {
   const showDialog = useSetRecoilState<DialogState>(dialogState)
 
@@ -48,7 +47,7 @@ export const ArrayForm = <T, >({items, syncItems, initial, form}: ArrayFormProps
       negativeText: 'Cancel',
       positive: async () => {
         syncItems(items.filter((_, i) => i !== index))
-      }
+      },
     })
   }, [syncItems, items, showDialog])
 

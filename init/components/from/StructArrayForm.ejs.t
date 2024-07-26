@@ -2,16 +2,16 @@
 to: <%= rootDirectory %>/components/form/StructArrayForm.tsx
 force: true
 ---
+import {GridPageInfo, INITIAL_GRID_PAGE_INFO} from '@/components/common/AppDataGrid'
+import {NEW_INDEX} from '@/components/common/Base'
+import {dialogState, DialogState} from '@/state/App'
+import {Dialog} from '@mui/material'
+import {cloneDeep} from 'lodash-es'
 import * as React from 'react'
 import {ReactNode, useCallback, useState} from 'react'
-import {cloneDeep} from 'lodash-es'
 import {useSetRecoilState} from 'recoil'
-import {Dialog} from '@mui/material'
-import {dialogState, DialogState} from '@/state/App'
-import {NEW_INDEX} from '@/components/common/Base'
-import {GridPageInfo, INITIAL_GRID_PAGE_INFO} from '@/components/common/AppDataGrid'
 
-export interface StructArrayFormProps<T, > {
+type StructArrayFormProps<T> = {
   /** 編集対象 */
   items: T[]
   /** 編集対象同期コールバック */
@@ -23,7 +23,6 @@ export interface StructArrayFormProps<T, > {
   /** EntryForm描画メソッド */
   form: (editIndex: number, open: boolean, setOpen: (open: boolean) => void, editTarget: T, syncTarget: (item: T) => void, updatedForm: () => void, removeForm: () => void) => ReactNode
 }
-
 export const StructArrayForm = <T, >({items, syncItems, initial, table, form}: StructArrayFormProps<T>) => {
   const showDialog = useSetRecoilState<DialogState>(dialogState)
 
@@ -76,7 +75,7 @@ export const StructArrayForm = <T, >({items, syncItems, initial, table, form}: S
       positive: async () => {
         syncItems(items.filter((_, i) => i !== index))
         setEntryFormOpen(false)
-      }
+      },
     })
   }, [syncItems, items, showDialog])
 
@@ -92,7 +91,7 @@ export const StructArrayForm = <T, >({items, syncItems, initial, table, form}: S
   const syncTarget = useCallback((target: T) => {
     setEditTarget(editTarget => ({
       ...editTarget,
-      ...target
+      ...target,
     }))
   }, [setEditTarget])
 

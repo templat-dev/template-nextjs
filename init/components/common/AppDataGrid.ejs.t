@@ -27,15 +27,13 @@ const StyledDataGrid = styled(DataGrid)<DataGridProps>(({theme}) => ({
   }
 }))
 
-export interface GridPageInfo {
+export type GridPageInfo = {
   /** ページ番号 (初期ページは0) */
   page: number
   /** ページサイズ */
   pageSize: number
-<%_ if (project.dbType === 'datastore') { -%>
   /** ページング用のcursor配列 */
   cursors: string[]
-<%_ } -%>
   /** ソート情報 */
   sortModel: GridSortModel
 }
@@ -43,14 +41,12 @@ export interface GridPageInfo {
 export const INITIAL_GRID_PAGE_INFO: GridPageInfo = {
   page: 0,
   pageSize: 25,
-<%_ if (project.dbType === 'datastore') { -%>
   cursors: [],
-<%_ } -%>
   sortModel: []
 }
 
 // index.tsxから渡されるProps
-export interface AppDataGridBaseProps<I> {
+export type AppDataGridBaseProps<I> = {
   /** 一覧表示用の配列 */
   items?: I[]
   /** 表示ページ情報 */
@@ -70,11 +66,10 @@ export interface AppDataGridBaseProps<I> {
 }
 
 // DataTableから渡されるProps
-interface AppDataGridProps<I> extends AppDataGridBaseProps<I>, DataGridProps {
+type AppDataGridProps<I> = AppDataGridBaseProps<I> & DataGridProps & {
   /* 画面表示情報 */
   columns: GridColDef[]
 }
-
 export const AppDataGrid = <I, >(props: AppDataGridProps<I>) => {
   const {
     items = [],

@@ -2,15 +2,15 @@
 to: <%= rootDirectory %>/components/form/DateTimeForm.tsx
 force: true
 ---
-import * as React from 'react'
-import {Grid, IconButton} from '@mui/material'
 import ClearIcon from '@mui/icons-material/Clear'
+import {Grid, IconButton} from '@mui/material'
 import {LocalizationProvider, MobileDatePicker, MobileTimePicker} from '@mui/x-date-pickers'
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns'
 import {startOfDay} from 'date-fns'
 import ja from 'date-fns/locale/ja'
+import * as React from 'react'
 
-export interface DateTimeFormProps {
+type DateTimeFormProps = {
   /** 画面表示ラベル */
   label: string
   /** 編集対象 */
@@ -20,7 +20,6 @@ export interface DateTimeFormProps {
   /** 変更コールバック */
   syncDateTime: (dateTime: Date | null) => void
 }
-
 export const DateTimeForm = ({label, dateTime, disabled = false, syncDateTime}: DateTimeFormProps) => {
   const clearDate = () => {
     syncDateTime(null)
