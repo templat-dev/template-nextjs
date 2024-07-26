@@ -2,10 +2,8 @@
 to: <%= rootDirectory %>/utils/appUtils.ts
 force: true
 ---
-import {DialogState} from '@/state/App'
 import {AxiosError} from 'axios'
 import dayjs from 'dayjs'
-import {SetterOrUpdater} from 'recoil'
 
 export default class AppUtils {
   static readonly DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm'
@@ -23,16 +21,13 @@ export default class AppUtils {
     return result
   }
 
-  static showApiErrorDialog = (error: Error, showDialog: SetterOrUpdater<DialogState>): any => {
-    let message = '通信エラーが発生しました。\n再度実行してください。'
+  static formatErrorMessage(error: Error): string {
+    let message = 'エラーが発生しました。'
     message = error.message ? `エラーが発生しました。\n${error.message}` : message
     if (error instanceof AxiosError) {
       message = error.response?.data?.error ? `エラーが発生しました。\n${error.response?.data?.error}` : message
     }
-    showDialog({
-      title: 'エラー',
-      message
-    })
+    return message
   }
 
   static formatTime(time: string): string {
@@ -52,4 +47,3 @@ export default class AppUtils {
     return `[${formattedValues.join(',')}]`
   }
 }
-

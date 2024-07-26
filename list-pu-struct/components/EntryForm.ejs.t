@@ -51,6 +51,7 @@ import {dialogState, DialogState, loadingState} from '@/state/App'
 <%_ } else { -%>
 import {dialogState, DialogState} from '@/state/App'
 <%_ } -%>
+import AppUtils from '@/utils/appUtils'
 import {yupResolver} from '@hookform/resolvers/yup'
 import {
   Button,
@@ -178,6 +179,11 @@ const <%= struct.name.pascalName %>EntryForm = (props: <%= struct.name.pascalNam
         })
       }
       close()
+    } catch (e: any) {
+      showDialog({
+        title: 'エラー',
+        message: AppUtils.formatErrorMessage(e)
+      })
     } finally {
       hideLoading()
     }

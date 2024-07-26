@@ -9,6 +9,7 @@ import <%= struct.name.pascalName %>DataTable from '@/components/<%= struct.name
 import <%= struct.name.pascalName %>EntryForm from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>EntryForm'
 import {INITIAL_<%= struct.name.upperSnakeName %>, INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION} from '@/initials/<%= struct.name.pascalName %>Initials'
 import {dialogState, DialogState, loadingState, snackbarState, SnackbarState} from '@/state/App'
+import AppUtils from '@/utils/appUtils'
 import {Container, Dialog} from '@mui/material'
 import {cloneDeep} from 'lodash-es'
 import {NextPage} from 'next'
@@ -83,6 +84,11 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
 <%_ } -%>
       set<%= struct.name.pascalPluralName %>(data.<%= struct.name.lowerCamelPluralName %> || [])
       setTotalCount(data.count || 0)
+    } catch (e: any) {
+      showDialog({
+        title: 'エラー',
+        message: AppUtils.formatErrorMessage(e)
+      })
     } finally {
       setIsLoading(false)
     }
@@ -124,6 +130,11 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
           await new <%= struct.name.pascalName %>Api().delete<%= struct.name.pascalName %>({id: <%= struct.name.lowerCamelPluralName %>[index].id!})
           setEntryFormOpen(false)
           await reFetch()
+        } catch (e: any) {
+          showDialog({
+            title: 'エラー',
+            message: AppUtils.formatErrorMessage(e)
+          })
         } finally {
           hideLoading()
         }
