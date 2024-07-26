@@ -33,13 +33,15 @@ import <%= field.structName.pascalName %>DataTable from '@/components/<%= field.
       <%_ importStructTableSet.add(field.structName.pascalName) -%>
     <%_ } -%>
     <%_ if (!importStructFormSet.has(field.structName.pascalName)) { -%>
-import <%= field.structName.pascalName %>EntryForm, {INITIAL_<%= field.structName.upperSnakeName %>} from '@/components/<%= field.structName.lowerCamelName %>/<%= field.structName.pascalName %>EntryForm'
+import <%= field.structName.pascalName %>EntryForm from '@/components/<%= field.structName.lowerCamelName %>/<%= field.structName.pascalName %>EntryForm'
+import {INITIAL_<%= field.structName.upperSnakeName %>} from '@/initials/<%= field.structName.pascalName %>Initials'
       <%_ importStructFormSet.add(field.structName.pascalName) -%>
     <%_ } -%>
   <%_ } -%>
   <%_ if (field.editType === 'struct') { -%>
     <%_ if (!importStructFormSet.has(field.structName.pascalName)) { -%>
-import <%= field.structName.pascalName %>EntryForm, {INITIAL_<%= field.structName.upperSnakeName %>} from '@/components/<%= field.structName.lowerCamelName %>/<%= field.structName.pascalName %>EntryForm'
+import <%= field.structName.pascalName %>EntryForm from '@/components/<%= field.structName.lowerCamelName %>/<%= field.structName.pascalName %>EntryForm'
+import {INITIAL_<%= field.structName.upperSnakeName %>} from '@/initials/<%= field.structName.pascalName %>Initials'
       <%_ importStructFormSet.add(field.structName.pascalName) -%>
     <%_ } -%>
   <%_ } -%>
