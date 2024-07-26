@@ -33,19 +33,19 @@ import {Writable} from 'type-fest'
 <%_ const searchConditions = [] -%>
 <%_ if (struct.fields && struct.fields.length > 0) { -%>
 <%_ struct.fields.forEach(function (field, key) { -%>
-  <%_ if ((field.listType === 'string' || field.listType === 'array-string' || field.listType === 'time' || field.listType === 'array-time') && field.searchType === 1) { -%>
+  <%_ if ((field.dataType === 'string' || field.dataType === 'array-string' || field.dataType === 'time' || field.dataType === 'array-time') && field.searchType === 1) { -%>
     <%_ searchConditions.push({name: field.name.lowerCamelName, type: 'string', range: false}) -%>
   <%_ } -%>
-  <%_ if ((field.listType === 'bool' || field.listType === 'array-bool') && field.searchType === 1) { -%>
+  <%_ if ((field.dataType === 'bool' || field.dataType === 'array-bool') && field.searchType === 1) { -%>
     <%_ searchConditions.push({name: field.name.lowerCamelName, type: 'boolean', range: false}) -%>
   <%_ } -%>
-  <%_ if ((field.listType === 'number' || field.listType === 'array-number') && field.searchType === 1) { -%>
+  <%_ if ((field.dataType === 'number' || field.dataType === 'array-number') && field.searchType === 1) { -%>
     <%_ searchConditions.push({name: field.name.lowerCamelName, type: 'number', range: false}) -%>
   <%_ } -%>
-  <%_ if ((field.listType === 'number' || field.listType === 'array-number') && 2 <= field.searchType &&  field.searchType <= 5) { -%>
+  <%_ if ((field.dataType === 'number' || field.dataType === 'array-number') && 2 <= field.searchType &&  field.searchType <= 5) { -%>
     <%_ searchConditions.push({name: field.name.lowerCamelName, type: 'number', range: true}) -%>
   <%_ } -%>
-  <%_ if ((field.listType === 'time' || field.listType === 'array-time') && 2 <= field.searchType &&  field.searchType <= 5) { -%>
+  <%_ if ((field.dataType === 'time' || field.dataType === 'array-time') && 2 <= field.searchType &&  field.searchType <= 5) { -%>
     <%_ searchConditions.push({name: field.name.lowerCamelName, type: 'string', range: true}) -%>
   <%_ } -%>
 <%_ }) -%>
@@ -117,7 +117,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
         <Grid container spacing={2}>
         <%_ if (struct.fields) { -%>
         <%_ struct.fields.forEach(function (field, key) { -%>
-          <%_ if ((field.listType === 'string' || field.listType === 'array-string' || field.listType === 'textarea' || field.listType === 'array-textarea') && field.searchType === 1) { -%>
+          <%_ if ((field.dataType === 'string' || field.dataType === 'array-string' || field.dataType === 'textarea' || field.dataType === 'array-textarea') && field.searchType === 1) { -%>
           <Grid item xs={12}>
             <TextField
               margin="dense"
@@ -131,7 +131,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
             />
           </Grid>
           <%_ } -%>
-          <%_ if ((field.listType === 'number' || field.listType === 'array-number') && field.searchType !== 0) { -%>
+          <%_ if ((field.dataType === 'number' || field.dataType === 'array-number') && field.searchType !== 0) { -%>
           <Grid item xs={12}>
             <TextField
               margin="dense"
@@ -146,7 +146,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
             />
           </Grid>
           <%_ } -%>
-          <%_ if ((field.listType === 'number' || field.listType === 'array-number') && 2 <= field.searchType && field.searchType <= 5) { -%>
+          <%_ if ((field.dataType === 'number' || field.dataType === 'array-number') && 2 <= field.searchType && field.searchType <= 5) { -%>
           <Grid item xs={12}>
             <TextField
               margin="dense"
@@ -174,7 +174,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
             />
           </Grid>
           <%_ } -%>
-          <%_ if ((field.listType === 'time' || field.listType === 'array-time') && field.searchType !== 0) { -%>
+          <%_ if ((field.dataType === 'time' || field.dataType === 'array-time') && field.searchType !== 0) { -%>
           <Grid item xs={12}>
             <DateTimeForm
               label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
@@ -183,7 +183,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
             />
           </Grid>
           <%_ } -%>
-          <%_ if ((field.listType === 'time' || field.listType === 'array-time') && 2 <= field.searchType &&  field.searchType <= 5) { -%>
+          <%_ if ((field.dataType === 'time' || field.dataType === 'array-time') && 2 <= field.searchType &&  field.searchType <= 5) { -%>
           <Grid item xs={12}>
             <DateTimeForm
               label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>From"
@@ -199,7 +199,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
             />
           </Grid>
           <%_ } -%>
-          <%_ if ((field.listType === 'bool' || field.listType === 'array-bool') && field.searchType === 1) { -%>
+          <%_ if ((field.dataType === 'bool' || field.dataType === 'array-bool') && field.searchType === 1) { -%>
           <Grid item xs={12}>
             <FormControlLabel
               label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"
