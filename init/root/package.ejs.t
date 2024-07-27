@@ -25,7 +25,7 @@ force: true
     "@mui/material": "^5.14.6",
     "@mui/x-data-grid": "^6.12.0",
     "@mui/x-date-pickers": "^6.12.0",
-    "axios": "^0.27.2",
+    "axios": "^1.7.2",
     "dayjs": "^1.11.12",
 <%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
     "firebase": "^10.3.0",

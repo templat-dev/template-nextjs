@@ -69,6 +69,7 @@ export default function MyApp({
                                 Component,
                                 pageProps,
                                 router,
+                                // @ts-ignore
                                 emotionCache = clientSideEmotionCache
                               }: MyAppProps): JSX.Element | null {
   const [open, setOpen] = useState(false)
