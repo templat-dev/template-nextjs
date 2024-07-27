@@ -162,7 +162,6 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
       <Dialog open={entryFormOpen} onClose={() => setEntryFormOpen(false)}>
         <<%= struct.name.pascalName %>EntryForm
           target={editTarget!}
-          isNew={editIndex === NEW_INDEX}
           open={entryFormOpen}
           setOpen={setEntryFormOpen}
           syncTarget={syncTarget}
