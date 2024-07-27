@@ -131,7 +131,9 @@ const <%= struct.name.pascalName %>EntryForm = (props: <%= struct.name.pascalNam
     syncTarget,
     isEmbedded = false,
     hasParent = false,
+<%_ if (struct.structType === 'struct') { -%>
     isNew = true,
+<%_ } -%>
     updated = () => {},
     remove = () => {}
   } = props
