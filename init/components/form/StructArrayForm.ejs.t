@@ -3,13 +3,15 @@ to: <%= rootDirectory %>/components/form/StructArrayForm.tsx
 force: true
 ---
 import {GridPageInfo, INITIAL_GRID_PAGE_INFO} from '@/components/common/AppDataGrid'
-import {NEW_INDEX} from '@/components/common/Base'
 import {dialogState, DialogState} from '@/state/App'
 import {Dialog} from '@mui/material'
 import {cloneDeep} from 'lodash-es'
 import * as React from 'react'
 import {ReactNode, useCallback, useState} from 'react'
 import {useSetRecoilState} from 'recoil'
+
+/** 新規追加を識別するためのINDEX */
+const NEW_INDEX = -1
 
 type StructArrayFormProps<T> = {
   /** 編集対象 */
@@ -21,7 +23,7 @@ type StructArrayFormProps<T> = {
   /** DataTable描画メソッド */
   table: (items: T[], pageInfo: GridPageInfo, changePageInfo: (pageInfo: GridPageInfo) => void, openEntryForm: () => void, removeRow: (item: T) => void) => ReactNode
   /** EntryForm描画メソッド */
-  form: (editIndex: number, open: boolean, setOpen: (open: boolean) => void, editTarget: T, syncTarget: (item: T) => void, updatedForm: () => void, removeForm: () => void) => ReactNode
+  form: (isNew: boolean, open: boolean, setOpen: (open: boolean) => void, editTarget: T, syncTarget: (item: T) => void, updatedForm: () => void, removeForm: () => void) => ReactNode
 }
 export const StructArrayForm = <T, >({items, syncItems, initial, table, form}: StructArrayFormProps<T>) => {
   const showDialog = useSetRecoilState<DialogState>(dialogState)
@@ -75,7 +77,7 @@ export const StructArrayForm = <T, >({items, syncItems, initial, table, form}: S
       positive: async () => {
         syncItems(items.filter((_, i) => i !== index))
         setEntryFormOpen(false)
-      },
+      }
     })
   }, [syncItems, items, showDialog])
 
@@ -91,7 +93,7 @@ export const StructArrayForm = <T, >({items, syncItems, initial, table, form}: S
   const syncTarget = useCallback((target: T) => {
     setEditTarget(editTarget => ({
       ...editTarget,
-      ...target,
+      ...target
     }))
   }, [setEditTarget])
 
@@ -100,7 +102,7 @@ export const StructArrayForm = <T, >({items, syncItems, initial, table, form}: S
       {table(items, pageInfo, setPageInfo, openEntryForm, removeRow)}
       <Dialog open={entryFormOpen} onClose={() => setEntryFormOpen(false)}>
         {editTarget && (
-          form(editIndex, entryFormOpen, setEntryFormOpen, editTarget, syncTarget, updatedForm, removeForm)
+          form(editIndex === NEW_INDEX, entryFormOpen, setEntryFormOpen, editTarget, syncTarget, updatedForm, removeForm)
         )}
       </Dialog>
     </>

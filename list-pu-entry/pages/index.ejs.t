@@ -4,7 +4,6 @@ force: true
 ---
 import {Model<%= struct.name.pascalName %>, <%= struct.name.pascalName %>Api, <%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request} from '@/apis'
 import {GridPageInfo, INITIAL_GRID_PAGE_INFO} from '@/components/common/AppDataGrid'
-import {NEW_INDEX} from '@/components/common/Base'
 import <%= struct.name.pascalName %>DataTable from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>DataTable'
 import <%= struct.name.pascalName %>EntryForm from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>EntryForm'
 import {INITIAL_<%= struct.name.upperSnakeName %>, INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION} from '@/initials/<%= struct.name.pascalName %>Initials'
@@ -46,9 +45,6 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
 
   /** 編集対象 */
   const [editTarget, setEditTarget] = useState<Model<%= struct.name.pascalName %> | null>(null)
-
-  /** 編集対象のインデックス */
-  const [editIndex, setEditIndex] = useState<number>(-1)
 
   useEffect(() => {
     (async () => {
@@ -111,15 +107,14 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
   const openEntryForm = useCallback((<%= struct.name.lowerCamelName %>?: Model<%= struct.name.pascalName %>) => {
     if (!!<%= struct.name.lowerCamelName %>) {
       setEditTarget(cloneDeep(<%= struct.name.lowerCamelName %>))
-      setEditIndex(<%= struct.name.lowerCamelPluralName %>.findIndex(item => item.id === <%= struct.name.lowerCamelName %>.id))
     } else {
       setEditTarget(cloneDeep(INITIAL_<%= struct.name.upperSnakeName %>))
-      setEditIndex(NEW_INDEX)
     }
     setEntryFormOpen(true)
   }, [<%= struct.name.lowerCamelPluralName %>])
 
-  const remove = useCallback((index: number) => {
+  const remove = useCallback((<%= struct.name.lowerCamelName %>?: Model<%= struct.name.pascalName %>) => {
+    <%= struct.name.lowerCamelName %> = <%= struct.name.lowerCamelName %> || editTarget!
     showDialog({
       title: '削除確認',
       message: '削除してもよろしいですか？',
@@ -127,7 +122,7 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
       positive: async () => {
         showLoading(true)
         try {
-          await new <%= struct.name.pascalName %>Api().delete<%= struct.name.pascalName %>({id: <%= struct.name.lowerCamelPluralName %>[index].id!})
+          await new <%= struct.name.pascalName %>Api().delete<%= struct.name.pascalName %>({id: <%= struct.name.lowerCamelName %>!.id!})
           setEntryFormOpen(false)
           await reFetch()
         } catch (e: any) {
@@ -141,16 +136,7 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
         showSnackbar({text: '削除しました。'})
       }
     })
-  }, [<%= struct.name.lowerCamelPluralName %>, setEntryFormOpen, reFetch, showDialog, showLoading, hideLoading, showSnackbar])
-
-  const removeRow = useCallback((<%= struct.name.lowerCamelName %>: Model<%= struct.name.pascalName %>) => {
-    const index = <%= struct.name.lowerCamelPluralName %>.indexOf(<%= struct.name.lowerCamelName %>)
-    remove(index)
-  }, [<%= struct.name.lowerCamelPluralName %>, remove])
-
-  const removeForm = useCallback(() => {
-    remove(editIndex)
-  }, [remove, editIndex])
+  }, [editTarget, setEntryFormOpen, reFetch, showDialog, showLoading, hideLoading, showSnackbar])
 
   const syncTarget = useCallback((target: Model<%= struct.name.pascalName %>) => {
     setEditTarget(editTarget => ({
@@ -171,7 +157,7 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
         onChangeSearch={search}
         onClickAdd={openEntryForm}
         onClickRow={openEntryForm}
-        onRemove={removeRow}
+        onRemove={remove}
       />
       <Dialog open={entryFormOpen} onClose={() => setEntryFormOpen(false)}>
         <<%= struct.name.pascalName %>EntryForm
@@ -181,7 +167,7 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
           setOpen={setEntryFormOpen}
           syncTarget={syncTarget}
           updated={reFetch}
-          remove={removeForm}
+          remove={remove}
         />
       </Dialog>
     </Container>

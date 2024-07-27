@@ -21,7 +21,6 @@ import ImageArrayForm from '@/components/form/ImageArrayForm'
 import InitForm from '@/components/form/InitForm'
 <%_ } -%>
 <%_ if (struct.exists.edit.arrayStruct) { -%>
-import {NEW_INDEX} from '@/components/common/Base'
 import StructArrayForm from '@/components/form/StructArrayForm'
 <%_ } -%>
 <%_ const importStructTableSet = new Set() -%>
@@ -115,8 +114,10 @@ type <%= struct.name.pascalName %>EntryFormProps = {
   isEmbedded?: boolean,
   /** 表示方式 (true: 子要素として表示, false: 親要素として表示) */
   hasParent?: boolean,
+<%_ if (struct.structType === 'struct') { -%>
   /** 編集状態 (true: 新規, false: 更新) */
   isNew?: boolean,
+<%_ } -%>
   /** 更新コールバック */
   updated?: () => void,
   /** 削除コールバック */
@@ -136,6 +137,10 @@ const <%= struct.name.pascalName %>EntryForm = (props: <%= struct.name.pascalNam
   } = props
 
 <%_ if (struct.structType !== 'struct') { -%>
+  const isNew = useMemo(() => {
+    return !target.id
+  }, [target])
+
   const showLoading = useSetRecoilState<boolean>(loadingState)
   const hideLoading = useResetRecoilState(loadingState)
 <%_ } -%>
@@ -476,14 +481,14 @@ const <%= struct.name.pascalName %>EntryForm = (props: <%= struct.name.pascalNam
             onRemove={removeRow}
           />
         )}
-        form={(editIndex, open, setOpen, editTarget, syncTarget, updatedForm, removeForm) => (
+        form={(isNew, open, setOpen, editTarget, syncTarget, updatedForm, removeForm) => (
           <<%= field.structName.pascalName %>EntryForm
             open={open}
             setOpen={setOpen}
             target={editTarget}
             syncTarget={syncTarget}
             hasParent={true}
-            isNew={editIndex === NEW_INDEX}
+            isNew={isNew}
             updated={updatedForm}
             remove={removeForm}
           />
