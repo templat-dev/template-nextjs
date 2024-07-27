@@ -28,8 +28,9 @@ export const useDialog = (): [(props: Omit<DialogState, 'open'>) => void, () => 
   return [
     // showDialog
     (props: Omit<DialogState, 'open'>) => setProps({
+      positiveText: 'OK',
+      open: true,
       ...props,
-      open: true
     }),
     // hideDialog
     () => setProps({
