@@ -2,14 +2,40 @@
 to: <%= rootDirectory %>/components/modal/AppSnackbar.tsx
 force: true
 ---
-import React, {useMemo} from 'react'
-import {useRecoilValue, useResetRecoilState} from 'recoil'
 import {Button, Snackbar} from '@mui/material'
-import {snackbarState} from '@/state/App'
+import {useAtomValue} from 'jotai'
+import {atom, useSetAtom} from 'jotai/index'
+import React, {useMemo} from 'react'
+
+export interface SnackbarState {
+  open?: boolean
+  text?: string
+  actionText?: string
+  action?: () => void
+  timeout?: number | null
+}
+
+const SnackbarAtom = atom<SnackbarState>({open: false})
+
+export const useSnackbar = (): [(props: Omit<SnackbarState, 'open'>) => void, () => void] => {
+  const setProps = useSetAtom(SnackbarAtom)
+
+  return [
+    // showSnackbar
+    (props: Omit<SnackbarState, 'open'>) => setProps({
+      ...props,
+      open: true
+    }),
+    // hideSnackbar
+    () => setProps({
+      open: false
+    })
+  ]
+}
 
 export const AppSnackbar = () => {
-  const snackbar = useRecoilValue(snackbarState)
-  const hideSnackbar = useResetRecoilState(snackbarState)
+  const snackbar = useAtomValue(SnackbarAtom)
+  const [, hideSnackbar] = useSnackbar()
 
   const action = useMemo(() => {
     if (!snackbar.actionText) {

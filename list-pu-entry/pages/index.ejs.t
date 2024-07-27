@@ -4,10 +4,12 @@ force: true
 ---
 import {Model<%= struct.name.pascalName %>, <%= struct.name.pascalName %>Api, <%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request} from '@/apis'
 import {GridPageInfo, INITIAL_GRID_PAGE_INFO} from '@/components/common/AppDataGrid'
+import {useDialog} from '@/components/modal/AppDialog'
+import {useLoading} from '@/components/modal/AppLoading'
+import {useSnackbar} from '@/components/modal/AppSnackbar'
 import <%= struct.name.pascalName %>DataTable from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>DataTable'
 import <%= struct.name.pascalName %>EntryForm from '@/components/<%= struct.name.lowerCamelName %>/<%= struct.name.pascalName %>EntryForm'
 import {INITIAL_<%= struct.name.upperSnakeName %>, INITIAL_<%= struct.name.upperSnakeName %>_SEARCH_CONDITION} from '@/initials/<%= struct.name.pascalName %>Initials'
-import {dialogState, DialogState, loadingState, snackbarState, SnackbarState} from '@/state/App'
 import AppUtils from '@/utils/appUtils'
 import {Container, Dialog} from '@mui/material'
 import {cloneDeep} from 'lodash-es'
@@ -15,15 +17,13 @@ import {NextPage} from 'next'
 import {useRouter} from 'next/router'
 import * as React from 'react'
 import {useCallback, useEffect, useState} from 'react'
-import {useResetRecoilState, useSetRecoilState} from 'recoil'
 import {Writable} from 'type-fest'
 
 const <%= struct.name.pascalPluralName %>: NextPage = () => {
   const router = useRouter()
-  const showLoading = useSetRecoilState<boolean>(loadingState)
-  const hideLoading = useResetRecoilState(loadingState)
-  const showDialog = useSetRecoilState<DialogState>(dialogState)
-  const showSnackbar = useSetRecoilState<SnackbarState>(snackbarState)
+  const [showLoading, hideLoading] = useLoading()
+  const [showDialog] = useDialog()
+  const [showSnackbar] = useSnackbar()
 
   /** 一覧表示用の配列 */
   const [<%= struct.name.lowerCamelPluralName %>, set<%= struct.name.pascalPluralName %>] = useState<Model<%= struct.name.pascalName %>[]>([])
@@ -120,11 +120,12 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
       message: '削除してもよろしいですか？',
       negativeText: 'Cancel',
       positive: async () => {
-        showLoading(true)
+        showLoading()
         try {
           await new <%= struct.name.pascalName %>Api().delete<%= struct.name.pascalName %>({id: <%= struct.name.lowerCamelName %>!.id!})
           setEntryFormOpen(false)
           await reFetch()
+          showSnackbar({text: '削除しました。'})
         } catch (e: any) {
           showDialog({
             title: 'エラー',
@@ -133,7 +134,6 @@ const <%= struct.name.pascalPluralName %>: NextPage = () => {
         } finally {
           hideLoading()
         }
-        showSnackbar({text: '削除しました。'})
       }
     })
   }, [editTarget, setEntryFormOpen, reFetch, showDialog, showLoading, hideLoading, showSnackbar])

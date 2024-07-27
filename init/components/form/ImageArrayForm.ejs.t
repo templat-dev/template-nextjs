@@ -3,7 +3,7 @@ to: "<%= project.plugins.find(p => p.name === 'image')?.enable ? `${rootDirector
 force: true
 ---
 import {ImageApi} from '@/apis'
-import {loadingState} from '@/state/App'
+import {useLoading} from '@/components/modal/AppLoading'
 import appUtils from '@/utils/appUtils'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -11,7 +11,6 @@ import {Box, Button, Fab, Typography} from '@mui/material'
 import {red} from '@mui/material/colors'
 import * as React from 'react'
 import {DragEvent, FormEvent, useCallback, useEffect, useRef, useState} from 'react'
-import {useResetRecoilState, useSetRecoilState} from 'recoil'
 
 type ImageArrayFormProps = {
   /** 画面表示ラベル */
@@ -33,10 +32,9 @@ export const ImageArrayForm = ({
                                  imageURLs,
                                  thumbnail = false,
                                  thumbnailSize = 200,
-                                 onChange,
+                                 onChange
                                }: ImageArrayFormProps) => {
-  const showLoading = useSetRecoilState<boolean>(loadingState)
-  const hideLoading = useResetRecoilState(loadingState)
+  const [showLoading, hideLoading] = useLoading()
 
   const fileInput = useRef<HTMLElement>(null)
   const currentValues = useRef<string[] | null>(null)
@@ -60,7 +58,7 @@ export const ImageArrayForm = ({
       dir: dir,
       image: file,
       thumbnail: thumbnail,
-      thumbnailSize: thumbnailSize,
+      thumbnailSize: thumbnailSize
     }).then(res => res.data)
     if (responseImage && responseImage.url) {
       if (currentValues.current) {
@@ -89,7 +87,7 @@ export const ImageArrayForm = ({
       return
     }
     try {
-      showLoading(true)
+      showLoading()
       for (const file of Array.from(e.dataTransfer.files)) {
         await uploadImage(file)
       }
@@ -104,7 +102,7 @@ export const ImageArrayForm = ({
       return
     }
     try {
-      showLoading(true)
+      showLoading()
       for (const file of Array.from(files)) {
         await uploadImage(file)
       }
@@ -132,7 +130,7 @@ export const ImageArrayForm = ({
               height: '100px',
               width: '100px',
               aspectRatio: '1',
-              objectFit: 'cover',
+              objectFit: 'cover'
             }}/>
             <Fab color="inherit" sx={[{
               position: 'absolute',
@@ -143,11 +141,11 @@ export const ImageArrayForm = ({
               minHeight: '0',
               boxShadow: 'none',
               backgroundColor: red.A400,
-              color: 'white',
+              color: 'white'
             }, {
               '&:hover': {
-                backgroundColor: red.A200,
-              },
+                backgroundColor: red.A200
+              }
             }]} onClick={() => removeImage(index)}>
               <DeleteIcon sx={{fontSize: 12}}/>
             </Fab>
@@ -161,7 +159,7 @@ export const ImageArrayForm = ({
                   mb: 2,
                   mr: 2,
                   height: '100px',
-                  width: '100px',
+                  width: '100px'
                 }}>
           <AddIcon fontSize="large"/>
         </Button>

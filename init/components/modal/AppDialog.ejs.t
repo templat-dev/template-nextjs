@@ -2,21 +2,63 @@
 to: <%= rootDirectory %>/components/modal/AppDialog.tsx
 force: true
 ---
-import React, {useCallback} from 'react'
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@mui/material'
-import {useRecoilValue, useResetRecoilState} from 'recoil'
-import {dialogState} from '@/state/App'
+import {atom, useAtomValue, useSetAtom} from 'jotai'
+import React, {useCallback} from 'react'
+
+interface DialogState {
+  open?: boolean
+  title?: string
+  message?: string
+  positiveText?: string
+  neutralText?: string
+  negativeText?: string
+  positive?: () => void
+  neutral?: () => void
+  negative?: () => void
+  close?: () => void
+  persistent?: boolean
+}
+
+const DialogAtom = atom<DialogState>({open: false})
+
+export const useDialog = (): [(props: Omit<DialogState, 'open'>) => void, () => void] => {
+  const setProps = useSetAtom(DialogAtom)
+
+  return [
+    // showDialog
+    (props: Omit<DialogState, 'open'>) => setProps({
+      ...props,
+      open: true
+    }),
+    // hideDialog
+    () => setProps({
+      open: false
+    })
+  ]
+}
 
 export const AppDialog = () => {
-  const dialog = useRecoilValue(dialogState)
-  const _hideDialog = useResetRecoilState(dialogState)
+  const dialog = useAtomValue(DialogAtom)
+  const [_, hideDialog] = useDialog()
 
-  const hideDialog = useCallback(() => {
-    if (dialog.close) {
-      dialog.close()
-    }
-    _hideDialog()
-  }, [dialog, _hideDialog])
+  const positive = useCallback(() => {
+    dialog.positive?.()
+    dialog.close?.()
+    hideDialog()
+  }, [dialog.positive, dialog.close, hideDialog])
+
+  const neutral = useCallback(() => {
+    dialog.neutral?.()
+    dialog.close?.()
+    hideDialog()
+  }, [dialog.neutral, dialog.close, hideDialog])
+
+  const negative = useCallback(() => {
+    dialog.negative?.()
+    dialog.close?.()
+    hideDialog()
+  }, [dialog.negative, dialog.close, hideDialog])
 
   return (
     <Dialog
@@ -40,30 +82,15 @@ export const AppDialog = () => {
       </DialogContent>
       <DialogActions>
         {dialog.negativeText && (
-          <Button onClick={() => {
-            if (dialog.negative) {
-              dialog.negative()
-            }
-            hideDialog()
-          }}>{dialog.negativeText}</Button>
+          <Button onClick={negative}>{dialog.negativeText}</Button>
         )}
         <div style={{flexGrow: 1}}/>
         {dialog.neutralText && (
-          <Button onClick={() => {
-            if (dialog.neutral) {
-              dialog.neutral()
-            }
-            hideDialog()
-          }}>{dialog.neutralText}</Button>
+          <Button onClick={neutral}>{dialog.neutralText}</Button>
         )}
         <div style={{flexGrow: 1}}/>
         {dialog.positiveText && (
-          <Button onClick={() => {
-            if (dialog.positive) {
-              dialog.positive()
-            }
-            hideDialog()
-          }}>{dialog.positiveText}</Button>
+          <Button onClick={positive}>{dialog.positiveText}</Button>
         )}
       </DialogActions>
     </Dialog>

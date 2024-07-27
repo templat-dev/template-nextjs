@@ -23,6 +23,10 @@ import InitForm from '@/components/form/InitForm'
 <%_ if (struct.exists.edit.arrayStruct) { -%>
 import StructArrayForm from '@/components/form/StructArrayForm'
 <%_ } -%>
+import {useDialog} from '@/components/modal/AppDialog'
+<%_ if (struct.structType !== 'struct') { -%>
+import {useLoading} from '@/components/modal/AppLoading'
+<%_ } -%>
 <%_ const importStructTableSet = new Set() -%>
 <%_ const importStructFormSet = new Set() -%>
 <%_ struct.fields.forEach(function (field, key) { -%>
@@ -45,11 +49,6 @@ import {INITIAL_<%= field.structName.upperSnakeName %>} from '@/initials/<%= fie
     <%_ } -%>
   <%_ } -%>
 <%_ }) -%>
-<%_ if (struct.structType !== 'struct') { -%>
-import {dialogState, DialogState, loadingState} from '@/state/App'
-<%_ } else { -%>
-import {dialogState, DialogState} from '@/state/App'
-<%_ } -%>
 import AppUtils from '@/utils/appUtils'
 import {yupResolver} from '@hookform/resolvers/yup'
 import {
@@ -82,11 +81,6 @@ import {useCallback, useMemo} from 'react'
 import {Controller, useForm} from 'react-hook-form'
 <%_ } else { -%>
 import {useForm} from 'react-hook-form'
-<%_ } -%>
-<%_ if (struct.structType !== 'struct') { -%>
-import {useResetRecoilState, useSetRecoilState} from 'recoil'
-<%_ } else { -%>
-import {useSetRecoilState} from 'recoil'
 <%_ } -%>
 import * as yup from 'yup'
 
@@ -143,10 +137,9 @@ const <%= struct.name.pascalName %>EntryForm = (props: <%= struct.name.pascalNam
     return !target.id
   }, [target])
 
-  const showLoading = useSetRecoilState<boolean>(loadingState)
-  const hideLoading = useResetRecoilState(loadingState)
+  const [showLoading, hideLoading] = useLoading()
 <%_ } -%>
-  const showDialog = useSetRecoilState<DialogState>(dialogState)
+  const [showDialog] = useDialog()
 
   const {
     register,
@@ -171,7 +164,7 @@ const <%= struct.name.pascalName %>EntryForm = (props: <%= struct.name.pascalNam
       updated()
       return
     }
-    showLoading(true)
+    showLoading()
     try {
       if (isNew) {
         // 新規の場合
@@ -544,8 +537,8 @@ const <%= struct.name.pascalName %>EntryForm = (props: <%= struct.name.pascalNam
       </DialogContent>
       {!isEmbedded && (
         <DialogActions>
-          <Button onClick={close}>キャンセル</Button>
-          <Button onClick={remove}>削除</Button>
+          <Button onClick={() => close()}>キャンセル</Button>
+          <Button onClick={() => remove()}>削除</Button>
           <Button onClick={handleSubmit(save, validateError)}>保存</Button>
         </DialogActions>
       )}

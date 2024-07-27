@@ -3,12 +3,11 @@ to: <%= rootDirectory %>/components/form/StructArrayForm.tsx
 force: true
 ---
 import {GridPageInfo, INITIAL_GRID_PAGE_INFO} from '@/components/common/AppDataGrid'
-import {dialogState, DialogState} from '@/state/App'
+import {useDialog} from '@/components/modal/AppDialog'
 import {Dialog} from '@mui/material'
 import {cloneDeep} from 'lodash-es'
 import * as React from 'react'
 import {ReactNode, useCallback, useState} from 'react'
-import {useSetRecoilState} from 'recoil'
 
 /** 新規追加を識別するためのINDEX */
 const NEW_INDEX = -1
@@ -26,7 +25,7 @@ type StructArrayFormProps<T> = {
   form: (isNew: boolean, open: boolean, setOpen: (open: boolean) => void, editTarget: T, syncTarget: (item: T) => void, updatedForm: () => void, removeForm: () => void) => ReactNode
 }
 export const StructArrayForm = <T, >({items, syncItems, initial, table, form}: StructArrayFormProps<T>) => {
-  const showDialog = useSetRecoilState<DialogState>(dialogState)
+  const [showDialog] = useDialog()
 
   /** 編集対象Model */
   const [editTarget, setEditTarget] = useState<T | null>(null)

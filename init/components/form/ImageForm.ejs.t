@@ -3,7 +3,7 @@ to: "<%= project.plugins.find(p => p.name === 'image')?.enable ? `${rootDirector
 force: true
 ---
 import {ImageApi} from '@/apis'
-import {loadingState} from '@/state/App'
+import {useLoading} from '@/components/modal/AppLoading'
 import appUtils from '@/utils/appUtils'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -11,7 +11,6 @@ import {Box, Button, Fab, Typography} from '@mui/material'
 import {red} from '@mui/material/colors'
 import * as React from 'react'
 import {DragEvent, FormEvent, Fragment, useCallback, useRef, useState} from 'react'
-import {useResetRecoilState, useSetRecoilState} from 'recoil'
 
 type ImageFormProps = {
   /** 画面表示ラベル */
@@ -28,8 +27,7 @@ type ImageFormProps = {
   onChange: (imageURL: string | null) => void
 }
 export const ImageForm = ({label, dir, imageURL, thumbnail = false, thumbnailSize = 200, onChange}: ImageFormProps) => {
-  const showLoading = useSetRecoilState<boolean>(loadingState)
-  const hideLoading = useResetRecoilState(loadingState)
+  const [showLoading, hideLoading] = useLoading()
 
   const fileInput = useRef<HTMLElement>(null)
 
@@ -48,7 +46,7 @@ export const ImageForm = ({label, dir, imageURL, thumbnail = false, thumbnailSiz
       dir: dir,
       image: file,
       thumbnail: thumbnail,
-      thumbnailSize: thumbnailSize,
+      thumbnailSize: thumbnailSize
     }).then(res => res.data)
     if (responseImage && responseImage.url) {
       onChange(responseImage.url)
@@ -72,7 +70,7 @@ export const ImageForm = ({label, dir, imageURL, thumbnail = false, thumbnailSiz
       return
     }
     try {
-      showLoading(true)
+      showLoading()
       await uploadImage(e.dataTransfer.files[0])
     } finally {
       hideLoading()
@@ -85,7 +83,7 @@ export const ImageForm = ({label, dir, imageURL, thumbnail = false, thumbnailSiz
       return
     }
     try {
-      showLoading(true)
+      showLoading()
       await uploadImage(files[0])
     } finally {
       hideLoading()
@@ -107,7 +105,7 @@ export const ImageForm = ({label, dir, imageURL, thumbnail = false, thumbnailSiz
               height: '100px',
               width: '100px',
               aspectRatio: '1',
-              objectFit: 'cover',
+              objectFit: 'cover'
             }}/>
             <Fab color="inherit" sx={[{
               position: 'absolute',
@@ -118,11 +116,11 @@ export const ImageForm = ({label, dir, imageURL, thumbnail = false, thumbnailSiz
               minHeight: '0',
               boxShadow: 'none',
               backgroundColor: red.A400,
-              color: 'white',
+              color: 'white'
             }, {
               '&:hover': {
-                backgroundColor: red.A200,
-              },
+                backgroundColor: red.A200
+              }
             }]} onClick={removeImage}>
               <DeleteIcon sx={{fontSize: 12}}/>
             </Fab>
@@ -135,7 +133,7 @@ export const ImageForm = ({label, dir, imageURL, thumbnail = false, thumbnailSiz
             <Button variant="contained" disableElevation onClick={selectFile} color="buttonDefault"
                     sx={{
                       height: '100px',
-                      width: '100px',
+                      width: '100px'
                     }}>
               <AddIcon fontSize="large"/>
             </Button>

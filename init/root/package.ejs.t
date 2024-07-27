@@ -27,6 +27,7 @@ force: true
     "@mui/x-date-pickers": "^6.12.0",
     "axios": "^1.7.2",
     "dayjs": "^1.11.12",
+    "jotai": "^2.9.1",
 <%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
     "firebase": "^10.3.0",
     "firebaseui": "^6.1.0",
