@@ -1,5 +1,5 @@
 ---
-to: "<%= project.plugins.find(p => p.name === 'auth')?.enable ? `${rootDirectory}/components/common/Auth.ts` : null %>"
+to: "<%= project.plugins.find(p => p.name === 'auth')?.enable ? `${rootDirectory}/components/common/Auth.tsx` : null %>"
 force: true
 ---
 import {firebaseAuth} from '@/lib/firebase'
