@@ -3,8 +3,7 @@ to: <%= rootDirectory %>/components/modal/AppLoading.tsx
 force: true
 ---
 import {Backdrop, CircularProgress} from '@mui/material'
-import {useAtomValue} from 'jotai'
-import {atom, useSetAtom} from 'jotai/index'
+import {atom, useAtomValue, useSetAtom} from 'jotai'
 
 const LoadingAtom = atom<boolean>(false)
 

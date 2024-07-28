@@ -32,7 +32,6 @@ type MyAppProps = {
 export default function MyApp({
                                 Component,
                                 pageProps,
-                                router,
                                 // @ts-ignore
                                 emotionCache = clientSideEmotionCache
                               }: MyAppProps & AppProps) {

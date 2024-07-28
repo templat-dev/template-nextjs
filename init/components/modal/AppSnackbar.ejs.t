@@ -3,8 +3,7 @@ to: <%= rootDirectory %>/components/modal/AppSnackbar.tsx
 force: true
 ---
 import {Button, Snackbar} from '@mui/material'
-import {useAtomValue} from 'jotai'
-import {atom, useSetAtom} from 'jotai/index'
+import {atom, useAtomValue, useSetAtom} from 'jotai'
 import React, {useMemo} from 'react'
 
 export interface SnackbarState {

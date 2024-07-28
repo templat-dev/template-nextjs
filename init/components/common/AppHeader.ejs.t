@@ -2,10 +2,14 @@
 to: <%= rootDirectory %>/components/common/AppHeader.tsx
 force: true
 ---
+<%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
 import {AuthAtom} from '@/components/common/Auth'
+<%_ } -%>
 import Link from '@/components/Link'
+<%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
 import {firebaseAuth} from '@/lib/firebase'
 import LogoutIcon from '@mui/icons-material/Logout'
+<%_ } -%>
 import MenuIcon from '@mui/icons-material/Menu'
 import {
   AppBar,
@@ -15,11 +19,15 @@ import {
   List,
   ListItemButton,
   ListItemText,
+<%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
   Stack,
+<%_ } -%>
   Toolbar,
   Typography
 } from '@mui/material'
-import {useAtom} from 'jotai/index'
+<%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
+import {useAtom} from 'jotai'
+<%_ } -%>
 import {useRouter} from 'next/router'
 import * as React from 'react'
 import {useCallback, useMemo, useState} from 'react'
@@ -32,12 +40,6 @@ const menus = [
   // メニュー
 ] as const
 
-type Props = {
-  menus: {
-    title: string,
-    to: string
-  }[]
-}
 export const AppHeader = () => {
 <%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
   const [auth, setAuth] = useAtom(AuthAtom)
