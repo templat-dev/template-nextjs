@@ -27,18 +27,17 @@ force: true
     "@mui/x-date-pickers": "^6.12.0",
     "axios": "^1.7.2",
     "dayjs": "^1.11.12",
-    "jotai": "^2.9.1",
 <%_ if (project.plugins.find(p => p.name === 'auth')?.enable) { -%>
     "firebase": "^10.3.0",
     "firebaseui": "^6.1.0",
 <%_ } -%>
+    "jotai": "^2.9.1",
     "lodash-es": "^4.17.21",
     "next": "13.4.19",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.4",
     "react-responsive-carousel": "^3.2.23",
-    "recoil": "^0.7.7",
     "yup": "^1.2.0"
   },
   "devDependencies": {
