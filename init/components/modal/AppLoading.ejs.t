@@ -2,28 +2,25 @@
 to: <%= rootDirectory %>/components/modal/AppLoading.tsx
 force: true
 ---
-import {Backdrop, CircularProgress} from '@mui/material'
-import {atom, useAtomValue, useSetAtom} from 'jotai'
+'use client';
 
-const LoadingAtom = atom<boolean>(false)
+import { Backdrop, CircularProgress } from '@mui/material';
+import { atom, useAtom } from 'jotai';
 
-export const useLoading = (): [() => void, () => void] => {
-  const setProps = useSetAtom(LoadingAtom)
+export const LoadingAtom = atom<boolean>(false);
 
-  return [
-    // showLoading
-    () => setProps(true),
-    // hideLoading
-    () => setProps(false)
-  ]
-}
-
-export const AppLoading = () => {
-  const open = useAtomValue(LoadingAtom)
+export function AppLoading() {
+  const [loading] = useAtom(LoadingAtom);
 
   return (
-    <Backdrop sx={{color: '#fff', zIndex: (theme) => theme.zIndex.modal + 1}} open={open}>
-      <CircularProgress color="primary"/>
+    <Backdrop
+      sx={{ 
+        color: '#fff', 
+        zIndex: (theme) => theme.zIndex.drawer + 1000 
+      }}
+      open={loading}
+    >
+      <CircularProgress color="inherit" />
     </Backdrop>
-  )
+  );
 }
