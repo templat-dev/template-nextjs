@@ -23,6 +23,7 @@ force: true
     "@hookform/resolvers": "^3.3.1",
     "@mui/icons-material": "^5.14.6",
     "@mui/material": "^5.14.6",
+    "@mui/material-nextjs": "^5.15.0",
     "@mui/x-data-grid": "^6.12.0",
     "@mui/x-date-pickers": "^6.12.0",
     "axios": "^1.7.2",
@@ -33,7 +34,7 @@ force: true
 <%_ } -%>
     "jotai": "^2.9.1",
     "lodash-es": "^4.17.21",
-    "next": "13.4.19",
+    "next": "15.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.4",
