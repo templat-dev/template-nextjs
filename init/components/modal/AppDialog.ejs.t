@@ -2,98 +2,65 @@
 to: <%= rootDirectory %>/components/modal/AppDialog.tsx
 force: true
 ---
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@mui/material'
-import {atom, useAtomValue, useSetAtom} from 'jotai'
-import React, {useCallback} from 'react'
+'use client';
 
-interface DialogState {
-  open?: boolean
-  title?: string
-  message?: string
-  positiveText?: string
-  neutralText?: string
-  negativeText?: string
-  positive?: () => void
-  neutral?: () => void
-  negative?: () => void
-  close?: () => void
-  persistent?: boolean
-}
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import { atom, useAtom } from 'jotai';
 
-const DialogAtom = atom<DialogState>({open: false})
+export type DialogState = {
+  open: boolean;
+  title: string;
+  message: string;
+  okLabel?: string;
+  cancelLabel?: string;
+  onOk?: () => void;
+  onCancel?: () => void;
+};
 
-export const useDialog = (): [(props: Omit<DialogState, 'open'>) => void, () => void] => {
-  const setProps = useSetAtom(DialogAtom)
+export const DialogAtom = atom<DialogState>({
+  open: false,
+  title: '',
+  message: '',
+});
 
-  return [
-    // showDialog
-    (props: Omit<DialogState, 'open'>) => setProps({
-      positiveText: 'OK',
-      open: true,
-      ...props,
-    }),
-    // hideDialog
-    () => setProps({
-      open: false
-    })
-  ]
-}
+export function AppDialog() {
+  const [dialog, setDialog] = useAtom(DialogAtom);
 
-export const AppDialog = () => {
-  const dialog = useAtomValue(DialogAtom)
-  const [_, hideDialog] = useDialog()
+  const handleClose = () => {
+    setDialog({ ...dialog, open: false });
+  };
 
-  const positive = useCallback(() => {
-    dialog.positive?.()
-    dialog.close?.()
-    hideDialog()
-  }, [dialog.positive, dialog.close, hideDialog])
+  const handleOk = () => {
+    if (dialog.onOk) dialog.onOk();
+    handleClose();
+  };
 
-  const neutral = useCallback(() => {
-    dialog.neutral?.()
-    dialog.close?.()
-    hideDialog()
-  }, [dialog.neutral, dialog.close, hideDialog])
-
-  const negative = useCallback(() => {
-    dialog.negative?.()
-    dialog.close?.()
-    hideDialog()
-  }, [dialog.negative, dialog.close, hideDialog])
+  const handleCancel = () => {
+    if (dialog.onCancel) dialog.onCancel();
+    handleClose();
+  };
 
   return (
     <Dialog
-      open={!!dialog.open}
-      onClose={() => hideDialog}
-      onBackdropClick={() => {
-        if (!dialog.persistent) {
-          hideDialog()
-        }
-      }}
-      maxWidth={'xs'}
-      fullWidth
+      open={dialog.open}
+      onClose={handleClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
     >
-      <DialogTitle>
-        {dialog.title}
-      </DialogTitle>
+      <DialogTitle id="alert-dialog-title">{dialog.title}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          {dialog.message}
-        </DialogContentText>
+        <div dangerouslySetInnerHTML={{ __html: dialog.message }} />
       </DialogContent>
       <DialogActions>
-        {dialog.negativeText && (
-          <Button onClick={negative}>{dialog.negativeText}</Button>
+        {dialog.cancelLabel && (
+          <Button onClick={handleCancel} color="primary">
+            {dialog.cancelLabel}
+          </Button>
         )}
-        <div style={{flexGrow: 1}}/>
-        {dialog.neutralText && (
-          <Button onClick={neutral}>{dialog.neutralText}</Button>
-        )}
-        <div style={{flexGrow: 1}}/>
-        {dialog.positiveText && (
-          <Button onClick={positive}>{dialog.positiveText}</Button>
-        )}
+        <Button onClick={handleOk} color="primary" autoFocus>
+          {dialog.okLabel || 'OK'}
+        </Button>
       </DialogActions>
     </Dialog>
-  )
+  );
 }
