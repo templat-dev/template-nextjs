@@ -2,8 +2,10 @@
 to: <%= rootDirectory %>/styles/theme.ts
 force: true
 ---
-import {red} from '@mui/material/colors'
-import {createTheme} from '@mui/material/styles'
+'use client';
+
+import {createTheme} from '@mui/material/styles';
+import {purple, red} from '@mui/material/colors';
 
 declare module '@mui/material/styles' {
   interface Palette {
