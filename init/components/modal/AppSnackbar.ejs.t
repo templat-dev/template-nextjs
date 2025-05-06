@@ -2,64 +2,49 @@
 to: <%= rootDirectory %>/components/modal/AppSnackbar.tsx
 force: true
 ---
-import {Button, Snackbar} from '@mui/material'
-import {atom, useAtomValue, useSetAtom} from 'jotai'
-import React, {useMemo} from 'react'
+'use client';
 
-export interface SnackbarState {
-  open?: boolean
-  text?: string
-  actionText?: string
-  action?: () => void
-  timeout?: number | null
-}
+import { Alert, Snackbar } from '@mui/material';
+import { atom, useAtom } from 'jotai';
 
-const SnackbarAtom = atom<SnackbarState>({open: false})
+export type SnackbarState = {
+  open: boolean;
+  message: string;
+  severity?: 'success' | 'info' | 'warning' | 'error';
+  autoHideDuration?: number;
+};
 
-export const useSnackbar = (): [(props: Omit<SnackbarState, 'open'>) => void, () => void] => {
-  const setProps = useSetAtom(SnackbarAtom)
+export const SnackbarAtom = atom<SnackbarState>({
+  open: false,
+  message: '',
+  severity: 'info',
+  autoHideDuration: 6000,
+});
 
-  return [
-    // showSnackbar
-    (props: Omit<SnackbarState, 'open'>) => setProps({
-      ...props,
-      open: true
-    }),
-    // hideSnackbar
-    () => setProps({
-      open: false
-    })
-  ]
-}
+export function AppSnackbar() {
+  const [snackbar, setSnackbar] = useAtom(SnackbarAtom);
 
-export const AppSnackbar = () => {
-  const snackbar = useAtomValue(SnackbarAtom)
-  const [, hideSnackbar] = useSnackbar()
-
-  const action = useMemo(() => {
-    if (!snackbar.actionText) {
-      return null
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
     }
-    return (
-      <Button color="primary" size="small" onClick={() => {
-        if (snackbar.action) {
-          snackbar.action()
-        }
-        hideSnackbar()
-      }}>
-        {snackbar.actionText}
-      </Button>
-    )
-  }, [snackbar, hideSnackbar])
+    setSnackbar({ ...snackbar, open: false });
+  };
 
   return (
     <Snackbar
       open={snackbar.open}
-      autoHideDuration={snackbar.timeout}
-      onClose={() => hideSnackbar()}
-      message={snackbar.text}
-      action={action}
-      anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
-    />
-  )
+      autoHideDuration={snackbar.autoHideDuration}
+      onClose={handleClose}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+    >
+      <Alert 
+        onClose={handleClose} 
+        severity={snackbar.severity} 
+        sx={{ width: '100%' }}
+      >
+        {snackbar.message}
+      </Alert>
+    </Snackbar>
+  );
 }
