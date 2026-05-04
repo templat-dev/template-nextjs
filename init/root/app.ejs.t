@@ -2,7 +2,7 @@
 to: <%= rootDirectory %>/app.yaml
 force: true
 ---
-runtime: nodejs18
+runtime: nodejs22
 <%_ if (applicationType === 'console') { -%>
 service: console
 <%_ } -%>
