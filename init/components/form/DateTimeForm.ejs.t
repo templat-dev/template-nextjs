@@ -14,7 +14,7 @@ type DateTimeFormProps = {
   /** 画面表示ラベル */
   label: string
   /** 編集対象 */
-  dateTime?: string
+  dateTime?: string | null
   /** 変更コールバック */
   syncDateTime: (dateTime?: string) => void
   /** 編集状態 (true: 編集不可, false: 編集可能) */
