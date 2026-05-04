@@ -108,10 +108,8 @@ type <%= struct.name.pascalName %>EntryFormProps = {
   isEmbedded?: boolean,
   /** 表示方式 (true: 子要素として表示, false: 親要素として表示) */
   hasParent?: boolean,
-<%_ if (struct.structType === 'struct') { -%>
   /** 編集状態 (true: 新規, false: 更新) */
   isNew?: boolean,
-<%_ } -%>
   /** 更新コールバック */
   updated?: () => void,
   /** 削除コールバック */

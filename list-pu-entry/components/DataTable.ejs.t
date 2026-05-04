@@ -42,7 +42,17 @@ import AppUtils from '@/utils/appUtils'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import {Box, Fab, Paper, Typography} from '@mui/material'
+  <%_ if (struct.exists.list.image || struct.exists.list.arrayImage) { -%>
+import {
+  GridActionsCellItem,
+  GridColDef,
+  GridRenderCellParams,
+  GridRowParams,
+  GridToolbarContainer
+} from '@mui/x-data-grid'
+  <%_ } else { -%>
 import {GridActionsCellItem, GridColDef, GridRowParams, GridToolbarContainer} from '@mui/x-data-grid'
+  <%_ } -%>
 import * as React from 'react'
 import {useMemo} from 'react'
   <%_ if (struct.exists.list.arrayImage) { -%>
@@ -65,9 +75,9 @@ const <%= struct.name.pascalName %>DataTable = (props: <%= struct.name.pascalNam
 <%_ } else { -%>
 type <%= struct.name.pascalName %>DataTableProps = {
   /** 検索条件 */
-  searchCondition: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>
+  searchCondition?: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>
   /** 検索条件変更コールバック */
-  onChangeSearch: (searchCondition: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>) => void
+  onChangeSearch?: (searchCondition: Writable<<%= struct.name.pascalName %>ApiSearch<%= struct.name.pascalName %>Request>) => void
   /** 追加ボタン押下コールバック */
   onClickAdd: () => void
 }

@@ -98,7 +98,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
             />
           </Grid>
           <%_ } -%>
-          <%_ if ((field.dataType === 'number' || field.dataType === 'array-number') && field.searchType !== 0) { -%>
+          <%_ if ((field.dataType === 'number' || field.dataType === 'array-number') && field.searchType === 1) { -%>
           <Grid item xs={12}>
             <TextField
               margin="dense"
@@ -141,7 +141,7 @@ const <%= struct.name.pascalName %>SearchForm = ({open, setOpen, currentSearchCo
             />
           </Grid>
           <%_ } -%>
-          <%_ if ((field.dataType === 'time' || field.dataType === 'array-time') && field.searchType !== 0) { -%>
+          <%_ if ((field.dataType === 'time' || field.dataType === 'array-time') && field.searchType === 1) { -%>
           <Grid item xs={12}>
             <DateTimeForm
               label="<%= field.screenLabel ? field.screenLabel : field.name.lowerCamelName %>"

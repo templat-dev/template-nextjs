@@ -2,7 +2,7 @@
 to: <%= rootDirectory %>/app_stg.yaml
 force: true
 ---
-runtime: nodejs14
+runtime: nodejs22
 <%_ if (applicationType === 'console') { -%>
 service: console-stg
 <%_ } else { -%>
